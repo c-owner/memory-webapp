@@ -1,0 +1,16 @@
+.header {
+    position: fixed;
+    top: 0;
+    z-index: 11;
+}
+
+.body {
+    /*height: calc(100vh - 120px);*/
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    z-index: 11;
+    border-top: 1px solid #e2e8f0;
+}
