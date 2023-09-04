@@ -8,7 +8,7 @@ export default function LoginButton() {
         return (
             <button
                 onClick={() => setIsLoggedIn(false)}
-                className="bg-white dark:bg-neutral-800 text-black dark:text-white px-3 py-1 rounded-md"
+                className="bg-neutral-800 dark:bg-neutral-800 text-white px-3 py-1 rounded-md"
             >
                 Logout
             </button>
@@ -16,7 +16,7 @@ export default function LoginButton() {
     return (
         <button
             onClick={() => setIsLoggedIn(true)}
-            className="bg-white dark:bg-neutral-800 text-black dark:text-white px-3 py-1 rounded-md"
+            className="bg-neutral-800 dark:bg-neutral-800 text-white px-3 py-1 rounded-md"
         >
             Login
         </button>
