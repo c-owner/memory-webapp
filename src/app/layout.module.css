@@ -14,3 +14,9 @@
     z-index: 11;
     border-top: 1px solid #e2e8f0;
 }
+
+@media screen and (min-width: 760px) {
+    .footer {
+        display: none;
+    }
+}
