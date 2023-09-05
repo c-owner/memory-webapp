@@ -1,0 +1,9 @@
+tailwind.config.js
+next.config.js
+
+
+ios/
+android/
+
+node_modules/
+.next/

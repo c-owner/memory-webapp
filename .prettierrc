@@ -9,7 +9,7 @@
         {
             "files": ["*.js", "*.ts", "*.tsx", "*.jsx"],
             "options": {
-                "semi": false
+                "semi": true
             }
         },
         {
