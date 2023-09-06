@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 export default function LoginButton() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     if (isLoggedIn)
         return (
             <button
@@ -12,7 +12,7 @@ export default function LoginButton() {
             >
                 Logout
             </button>
-        )
+        );
     return (
         <button
             onClick={() => setIsLoggedIn(true)}
@@ -20,5 +20,5 @@ export default function LoginButton() {
         >
             Login
         </button>
-    )
+    );
 }
