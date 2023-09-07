@@ -1,7 +1,9 @@
 export default function Home() {
     return (
-        <section className="flex min-h-screen flex-col items-center justify-between pl-12 pr-12 pb-16 pt-16">
-            <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex"></div>
-        </section>
+        <>
+            <div className="flex flex-col items-center justify-center min-h-screen py-2">
+                <h1 className="text-6xl font-bold mb-32">Welcome to Memory</h1>
+            </div>
+        </>
     );
 }

@@ -1,11 +1,15 @@
 .header {
-    position: fixed;
-    top: 0;
-    z-index: 11;
+    /*position: fixed;*/
+    /*top: 0;*/
+    /*z-index: 11;*/
 }
 
 .body {
     /*height: calc(100vh - 120px);*/
+}
+
+.lnb_button {
+    display: none;
 }
 
 .footer {
