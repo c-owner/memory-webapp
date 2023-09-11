@@ -16,7 +16,7 @@ export default function Header() {
     };
 
     /*  if 768px 이상이면 LNB true 감지  */
-    if (window !== undefined) {
+    /* if (window !== undefined) {
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
                 setLnb(true);
@@ -24,7 +24,7 @@ export default function Header() {
                 setLnb(false);
             }
         });
-    }
+    } */
 
     return (
         <>
