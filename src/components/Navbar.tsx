@@ -1,46 +1,40 @@
 'use client';
 
-import layout from '@/app/layout.module.css';
 import Link from 'next/link';
-import { Nanum_Gothic } from 'next/font/google';
 import { useState } from 'react';
 import Lnb from '@/components/Lnb';
+import SearchIcon from '@/components/ui/SearchIcon';
+import SearchForm from '@/components/SearchForm';
 
-const gothic = Nanum_Gothic({ weight: '700', subsets: ['latin'] });
-
-export default function Header() {
+export default function Navbar() {
     const [lnb, setLnb] = useState(false);
+
+    const [screenSize, setScreenSize] = useState((window && window.innerWidth) || 0);
+    if (window) {
+        window.addEventListener('resize', () => {
+            setScreenSize(window.innerWidth);
+        });
+    }
     const lnbChange = () => {
         setLnb(!lnb);
-        console.log(lnb);
+        console.log('lnb : ', lnb);
     };
-
-    /*  if 768px 이상이면 LNB true 감지  */
-    /* if (window !== undefined) {
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                setLnb(true);
-            } else {
-                setLnb(false);
-            }
-        });
-    } */
 
     return (
         <>
-            <header className={`${layout.header} shadow-2xl w-full p-3 flex justify-between items-center`}>
+            <div className="flex justify-between items-center p-4">
                 <nav className="w-full flex items-center justify-between">
-                    <h1 className={`${gothic.className} text-indigo-900 dark:text-indigo-300 text-3xl`}>
+                    <h1 className="text-indigo-900 dark:text-indigo-300 text-3xl">
                         <Link href="/">Memory</Link>
                     </h1>
                     <div className="flex items-center justify-center">
-                        {/* search input */}
-                        <input
-                            type="text"
-                            className="w-64 h-10 px-3 pr-10 text-sm text-gray-700
-                                placeholder-gray-600 border rounded-full focus:outline-none focus:border-indigo-900"
-                            placeholder="Search"
-                        />
+                        {screenSize > 468 ? (
+                            <SearchForm />
+                        ) : (
+                            <Link className="mr-2" href="/search">
+                                <SearchIcon />
+                            </Link>
+                        )}
 
                         {/*     햄버거 메뉴 */}
                         <button
@@ -66,7 +60,7 @@ export default function Header() {
                         </button>
                     </div>
                 </nav>
-            </header>
+            </div>
             {lnb && <Lnb />}
         </>
     );

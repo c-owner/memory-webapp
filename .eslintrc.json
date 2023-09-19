@@ -28,7 +28,13 @@
         // eslint-config-prettier prettier와 중복된 eslint 규칙 제거
     ],
     "rules": {
-//        "prettier/prettier": ["error", { "endOfLine": "auto" }],
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            }
+        ],
+        "react/require-default-props": "off",
         "import/prefer-default-export": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "jsx-a11y/label-has-associated-control": "off",
@@ -57,6 +63,7 @@
                 "extensions": [".ts", ".tsx"]
             }
         ],
-        "no-useless-catch": "off" // 불필요한 catch 못쓰게 하는 기능 끔
+        "no-useless-catch": "off"
+        // 불필요한 catch 못쓰게 하는 기능 끔
     }
 }

@@ -4,12 +4,14 @@
     "useTabs": false,
     "tabWidth": 4,
     "trailingComma": "all",
-    "printWidth": 120,
+    "endOfLine": "lf",
+    "printWidth": 100,
     "overrides": [
         {
             "files": ["*.js", "*.ts", "*.tsx", "*.jsx"],
             "options": {
-                "semi": true
+                "semi": true,
+                "trailingComma": "none"
             }
         },
         {
