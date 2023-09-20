@@ -7,5 +7,5 @@ type OAuthUser = {
 };
 
 export async function addUser({ id, username, email, name, image }: OAuthUser) {
-    console.log('addUser');
+    return 'add user';
 }

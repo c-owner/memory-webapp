@@ -1,9 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
 import SearchIcon from '@/components/ui/SearchIcon';
-import SearchForm from '@/components/SearchForm';
 import ColorButton from '@/components/ui/ColorButton';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Avatar from '@/components/Avatar';
@@ -11,19 +9,6 @@ import Avatar from '@/components/Avatar';
 export default function Navbar() {
     const { data: session } = useSession();
     const user = session?.user;
-
-    const [lnb, setLnb] = useState(false);
-
-    const [screenSize, setScreenSize] = useState((window && window.innerWidth) || 0);
-    if (window) {
-        window.addEventListener('resize', () => {
-            setScreenSize(window.innerWidth);
-        });
-    }
-    const lnbChange = () => {
-        setLnb(!lnb);
-        console.log('lnb : ', lnb);
-    };
 
     return (
         <>
@@ -33,17 +18,13 @@ export default function Navbar() {
                         <Link href="/">Memory</Link>
                     </h1>
                     <div className="flex items-center justify-center">
-                        {screenSize > 468 ? (
-                            <SearchForm />
-                        ) : (
-                            <Link className="mr-2" href="/search">
-                                <SearchIcon />
-                            </Link>
-                        )}
+                        <Link className="mr-2" href="/search">
+                            <SearchIcon />
+                        </Link>
                     </div>
                     <div className="flex items-center justify-center gap-4">
                         <button
-                            onClick={lnbChange}
+                            onClick={() => {}}
                             className={
                                 'md:hidden flex items-center justify-center w-10 h-10 rounded-full text-indigo-900 dark:text-indigo-300'
                             }
