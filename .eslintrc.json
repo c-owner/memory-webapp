@@ -34,6 +34,7 @@
                 "endOfLine": "auto"
             }
         ],
+        "no-param-reassign": "off",
         "react/require-default-props": "off",
         "import/prefer-default-export": "off",
         "@typescript-eslint/ban-ts-comment": "off",

@@ -1,8 +1,9 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Nanum_Gothic } from 'next/font/google';
-import Navbar from '@/components/Navbar';
 import AuthContext from '@/context/AuthContext';
+import dynamic from 'next/dynamic';
+import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
     title: {
@@ -14,6 +15,10 @@ export const metadata: Metadata = {
 
 const gothic = Nanum_Gothic({ weight: '700', subsets: ['latin'] });
 
+const NavbarComponent = dynamic(() => import('@/components/Navbar'), {
+    ssr: false
+});
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" className={gothic.className}>
@@ -21,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <AuthContext>
                     <header className="sticky top-0 bg-white z-10 border-b">
                         <div className="max-w-screen-xl mx-auto">
-                            <Navbar />
+                            <NavbarComponent />
                         </div>
                     </header>
                     <main className="w-full flex justify-center max-w-screen-xl mx-auto">
