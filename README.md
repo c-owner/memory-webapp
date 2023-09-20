@@ -1,34 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Memory SNS
 
-## Getting Started
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a768e4e8-46bd-420c-856e-9581d10eaf6f/deploy-status)](https://app.netlify.com/sites/baby-memory/deploys)
 
-First, run the development server:
+## 1. 프로젝트 소개
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+### 1.1. 프로젝트 개요
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-   프로젝트 명: Memory SNS
+-   프로젝트 기간: 2023.08.28 ~ 2023.09 ~
+-   프로젝트 인원: 2명
+-   프로젝트 목표: Next.js 이용한 SNS 서비스 구현
+-   프로젝트 주제: 일상을 **기억**하며 기록하는 SNS 서비스
+-   프로젝트 기술 스택: Next.js, TypeScript, Tailwind CSS, Vercel, Netlify
+-   프로젝트 형상 관리: Git, GitHub
+-   프로젝트 협업 도구: Notion, Discord, Kakao Talk
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1.2. 프로젝트 목표
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+-   Next.js를 이용한 SNS 서비스 구현
+-   TypeScript를 이용한 타입 안정성 확보
+-   Tailwind CSS를 이용한 UI 구현
+-   Vercel을 이용한 배포 자동화
+-   Netlify를 이용한 CI/CD 구현
+-   Git을 이용한 형상 관리
+-   GitHub를 이용한 협업
+-   Notion을 이용한 프로젝트 관리
+-   Discord를 이용한 음성 채팅
+-   Kakao Talk을 이용한 메신저
+-   프로젝트 기획, 설계, 개발, 배포, 유지보수까지 전 과정을 경험
+-   프로젝트를 통해 협업 능력 향상
+-   프로젝트를 통해 문제 해결 능력 향상
