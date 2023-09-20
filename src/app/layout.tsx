@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Nanum_Gothic } from 'next/font/google';
 import AuthContext from '@/context/AuthContext';
 import dynamic from 'next/dynamic';
-import Navbar from '@/components/Navbar';
+import Lnb from '@/components/Lnb';
 
 export const metadata: Metadata = {
     title: {

@@ -9,3 +9,7 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+li {
+    list-style: none;
+}

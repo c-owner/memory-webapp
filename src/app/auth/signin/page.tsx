@@ -20,8 +20,6 @@ export default async function SignInPage({ searchParams: { callbackUrl } }: Prop
     const session = await getServerSession(authOptions);
     if (session) {
         redirect('/');
-    } else {
-        console.log('no session');
     }
     const providers = (await getProviders()) ?? {};
     return (

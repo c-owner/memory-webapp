@@ -2,11 +2,16 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import Lnb from '@/components/Lnb';
 import SearchIcon from '@/components/ui/SearchIcon';
 import SearchForm from '@/components/SearchForm';
+import ColorButton from '@/components/ui/ColorButton';
+import { signIn, signOut, useSession } from 'next-auth/react';
+import Avatar from '@/components/Avatar';
 
 export default function Navbar() {
+    const { data: session } = useSession();
+    const user = session?.user;
+
     const [lnb, setLnb] = useState(false);
 
     const [screenSize, setScreenSize] = useState((window && window.innerWidth) || 0);
@@ -35,8 +40,8 @@ export default function Navbar() {
                                 <SearchIcon />
                             </Link>
                         )}
-
-                        {/*     햄버거 메뉴 */}
+                    </div>
+                    <div className="flex items-center justify-center gap-4">
                         <button
                             onClick={lnbChange}
                             className={
@@ -58,10 +63,21 @@ export default function Navbar() {
                                 />
                             </svg>
                         </button>
+                        {user && (
+                            <li>
+                                <Link href={`/user/${user.username}`}>
+                                    <Avatar size="small" highlight image={user.image} />
+                                </Link>
+                            </li>
+                        )}
+                        {session ? (
+                            <ColorButton text={'Sign out'} onClick={() => signOut()} />
+                        ) : (
+                            <ColorButton text={'Sign in'} onClick={() => signIn()} />
+                        )}
                     </div>
                 </nav>
             </div>
-            {lnb && <Lnb />}
         </>
     );
 }

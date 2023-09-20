@@ -17,6 +17,7 @@ export default function SearchForm() {
                                         border rounded-full focus:outline-none focus:border-indigo-300"
                 placeholder="Search for users or posts..."
                 value={search}
+                onChange={(e) => setSearch(e.target.value)}
             />
         </form>
     );
