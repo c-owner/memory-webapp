@@ -17,9 +17,9 @@ const gothic = Nanum_Gothic({ weight: '700', subsets: ['latin'] });
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" className={gothic.className}>
-            <body className="flex flex-col w-full mx-auto">
+            <body className={`flex flex-col w-full mx-auto dark:bg-apple-dark-2`}>
                 <AuthContext>
-                    <header className="sticky top-0 bg-white z-10 border-b">
+                    <header className="sticky top-0 bg-white z-10 border-b dark:bg-apple-dark-1">
                         <div className="max-w-screen-xl mx-auto">
                             <Navbar />
                         </div>
