@@ -26,3 +26,9 @@ body {
 li {
     list-style: none;
 }
+
+@media screen and (max-width: 465px) {
+    .nav-button {
+        display: none;
+    }
+}

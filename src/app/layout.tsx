@@ -19,12 +19,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en" className={gothic.className}>
             <body className={`flex flex-col w-full mx-auto dark:bg-apple-dark-2`}>
                 <AuthContext>
-                    <header className="sticky top-0 bg-white z-10 border-b dark:bg-apple-dark-1">
-                        <div className="max-w-screen-xl mx-auto">
+                    <header className="sticky top-0 bg-white z-10 border-b shadow-lg dark:border-b-neutral-800  dark:bg-apple-dark-1">
+                        <div className="max-w-screen-xl mx-auto dark:text-white">
                             <Navbar />
                         </div>
                     </header>
-                    <main className="w-full flex justify-center max-w-screen-xl mx-auto">
+                    <main className="w-full flex justify-center max-w-screen-xl mx-auto dark:text-white">
                         {children}
                     </main>
                 </AuthContext>
