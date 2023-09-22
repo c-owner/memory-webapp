@@ -1,6 +1,5 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { addUser } from '@/service/user';
 
 export const authOptions: NextAuthOptions = {
     // Configure one or more authentication providers
@@ -20,13 +19,6 @@ export const authOptions: NextAuthOptions = {
             if (!email) {
                 return false;
             }
-            await addUser({
-                id,
-                name: name || '',
-                image,
-                email,
-                username: email.split('@')[0] || ''
-            });
             return true;
         },
         async session({ session, token }) {
