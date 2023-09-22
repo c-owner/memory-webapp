@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Nanum_Gothic } from 'next/font/google';
 import AuthContext from '@/context/AuthContext';
 import Navbar from '@/components/Navbar';
+import SWRConfigContext from '@/context/SWRConfigContext';
 
 export const metadata: Metadata = {
     title: {
@@ -25,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         </div>
                     </header>
                     <main className="w-full flex justify-center max-w-screen-xl mx-auto dark:text-white">
-                        {children}
+                        <SWRConfigContext>{children}</SWRConfigContext>
                     </main>
                 </AuthContext>
                 <div id="portal" />
