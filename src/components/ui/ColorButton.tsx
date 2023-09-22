@@ -1,6 +1,6 @@
 type Props = {
     text: string;
-    onClick: () => void;
+    onClick?: () => void;
     size?: 'sm' | 'lg';
 };
 
@@ -12,7 +12,7 @@ export default function ColorButton({ text, onClick, size = 'sm' }: Props) {
             } dark:from-emerald-500 dark:via-violet-600 dark:to-indigo-200`}
         >
             <button
-                className={`bg-white rounded-sm hover:opacity-90 transition-opacity ${
+                className={`w-full bg-white rounded-sm hover:opacity-90 transition-opacity ${
                     size === 'lg' ? 'p-4 text-2xl' : 'p-[0.3rem] text-base'
                 }
                 dark:bg-gray-800 dark:text-gray-100`}

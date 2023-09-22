@@ -4,6 +4,8 @@ import { getProviders } from 'next-auth/react';
 import { Metadata } from 'next';
 import Signin from '@/components/Signin';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import ColorButton from '@/components/ui/ColorButton';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Sign In',
@@ -22,9 +24,13 @@ export default async function SignInPage({ searchParams: { callbackUrl } }: Prop
         redirect('/');
     }
     const providers = (await getProviders()) ?? {};
+
     return (
-        <section className="flex justify-center mt-24">
+        <section className="flex flex-col gap-10 justify-center mt-24">
             <Signin providers={providers} callbackUrl={callbackUrl ?? '/'} />
+            <Link href="/auth/signin/email">
+                <ColorButton text={'Sign In With Email'} size="lg" />
+            </Link>
         </section>
     );
 }
