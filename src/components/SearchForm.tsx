@@ -13,7 +13,7 @@ export default function SearchForm() {
         <form onSubmit={submitHandler}>
             <input
                 type="text"
-                className="w-[190px] px-1 h-10 text-sm text-gray-700 placeholder-neutral-300
+                className="w-[195px] px-3 h-10 text-sm text-gray-700 placeholder-neutral-300
                                         border rounded-full focus:outline-none focus:border-indigo-300
                                         dark:bg-apple-dark-2 dark:text-white dark:placeholder-neutral-400
                                         "

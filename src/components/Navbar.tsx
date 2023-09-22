@@ -6,6 +6,7 @@ import ColorButton from '@/components/ui/ColorButton';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Avatar from '@/components/Avatar';
 import BottomArrowIcon from '@/components/ui/BottomArrowIcon';
+import SearchForm from '@/components/SearchForm';
 
 export default function Navbar() {
     const { data: session } = useSession();
@@ -17,9 +18,15 @@ export default function Navbar() {
                 <h1 className="text-indigo-900 dark:text-indigo-300 text-2xl">
                     <Link href="/">Memory</Link>
                 </h1>
+                <div className="hidden items-center justify-center sm:flex gap-2">
+                    <SearchForm />
+                    <Link className="mr-2" href="/search">
+                        <SearchIcon />
+                    </Link>
+                </div>
                 <div className="flex items-center justify-center gap-4">
-                    <div className="flex items-center justify-center">
-                        <Link className="mr-2" href="/search">
+                    <div className="flex items-center justify-center sm:hidden">
+                        <Link className="mr-2" href={`/search`}>
                             <SearchIcon />
                         </Link>
                     </div>
