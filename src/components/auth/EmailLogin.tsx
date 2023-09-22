@@ -2,13 +2,16 @@
 
 import { useState } from 'react';
 import DefaultButton from '@/components/ui/DefaultButton';
+import useMe from '@/hooks/me';
 
 export default function EmailLogin() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const { loginUser } = useMe();
     const loginSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        await loginUser({ email, password });
     };
     return (
         <form onSubmit={loginSubmit} className="flex flex-col gap-4 px-14 w-full">

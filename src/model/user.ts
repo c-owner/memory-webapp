@@ -17,6 +17,11 @@ export type NormalUser = {
     image?: string | null;
 };
 
+export type LoginUser = {
+    email: string;
+    password: string;
+};
+
 /*
 
 export type HomeUser = AuthUser & {

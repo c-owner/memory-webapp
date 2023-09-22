@@ -1,8 +1,15 @@
-import { AuthUser, NormalUser } from '@/model/user';
+import { AuthUser, LoginUser } from '@/model/user';
 import useSWR from 'swr';
 
 export function register(user: AuthUser) {
-    return fetch('/api/users/me', {
+    return fetch('/api/users/signup', {
+        method: 'POST',
+        body: JSON.stringify(user)
+    }).then((res) => res.json());
+}
+
+export function login(user: LoginUser) {
+    return fetch('/api/users/signin', {
         method: 'POST',
         body: JSON.stringify(user)
     }).then((res) => res.json());
@@ -18,5 +25,9 @@ export default function useMe() {
         });
     };
 
-    return { user, isLoading, error, mutate, addUser };
+    const loginUser = (user: LoginUser) => {
+        return mutate(login(user), {});
+    };
+
+    return { user, isLoading, error, mutate, addUser, loginUser };
 }
