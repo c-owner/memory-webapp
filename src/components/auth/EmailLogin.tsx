@@ -36,7 +36,7 @@ export default function EmailLogin() {
                 type={'password'}
                 placeholder="Password"
                 value={password}
-                minLength={8}
+                minLength={7}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-2 rounded-md bg-gray-100
                 focus:outline-none focus:ring-2 focus:ring-emerald-500
