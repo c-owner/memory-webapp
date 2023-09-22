@@ -7,8 +7,8 @@ import SWRConfigContext from '@/context/SWRConfigContext';
 
 export const metadata: Metadata = {
     title: {
-        default: 'Baby Memory',
-        template: '%s | Baby Memory'
+        default: 'Memory',
+        template: '%s | Memory'
     },
     description: 'Memory Board'
 };

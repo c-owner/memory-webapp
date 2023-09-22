@@ -1,8 +1,8 @@
 import Avatar from '@/components/Avatar';
-import { AuthUser } from '@/model/user';
+import { OAuthUser } from '@/model/user';
 
 type Props = {
-    user: AuthUser;
+    user: OAuthUser;
 };
 export default function SideBar({ user: { image, username, name } }: Props) {
     return (
@@ -15,7 +15,7 @@ export default function SideBar({ user: { image, username, name } }: Props) {
                 </div>
             </div>
             <p className="text-sm text-neutral-500 mt-8">
-                About • Help • Press • API • Jobs • Privacy • Terms • Location • Language
+                About • Help • Privacy • Terms • Location • Language
             </p>
             <p className="font-bold text-sm mt-8 text-neutral-500">©Copyright MEMORY, Inc.</p>
         </>

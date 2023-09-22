@@ -7,7 +7,7 @@ type Props = {
     providers: Record<string, ClientSafeProvider>;
     callbackUrl: string;
 };
-export default function Signin({ providers, callbackUrl }: Props) {
+export default function OAuth({ providers, callbackUrl }: Props) {
     return (
         <>
             {Object.values(providers).map(({ id, name }) => (
