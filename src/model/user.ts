@@ -1,20 +1,16 @@
 export type AuthUser = {
     email: string;
-    name: string;
-    username: string;
+    memberName: string;
     image?: string | null;
-    password?: string | null;
 };
 
 export type OAuthUser = {
-    id: string;
     email: string;
-    name: string;
-    username: string;
+    memberName: string;
     image?: string | null | undefined;
 };
 
-export type LoginUser = {
+export type SignUser = {
     email: string;
     password: string;
 };
