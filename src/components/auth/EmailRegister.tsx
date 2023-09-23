@@ -20,7 +20,7 @@ export default function EmailRegister() {
         if (password !== passwordConfirm) {
             alert('비밀번호가 일치하지 않습니다.');
         }
-        await addUser({ email, password, name, image: '' }).then((data) => {
+        await addUser({ email, password, name, username: '', image: '' }).then((data) => {
             console.log(data);
         });
     };
