@@ -1,11 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import SearchIcon from '@/components/ui/SearchIcon';
+import SearchIcon from '@/components/ui/icon/SearchIcon';
 import ColorButton from '@/components/ui/ColorButton';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Avatar from '@/components/Avatar';
-import BottomArrowIcon from '@/components/ui/BottomArrowIcon';
+import BottomArrowIcon from '@/components/ui/icon/BottomArrowIcon';
 import SearchForm from '@/components/SearchForm';
 
 export default function Navbar() {

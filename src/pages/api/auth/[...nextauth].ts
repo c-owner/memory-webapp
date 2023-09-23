@@ -15,7 +15,7 @@ export const authOptions: NextAuthOptions = {
         signIn: '/auth/signin'
     },
     callbacks: {
-        async signIn({ user: { id, name, image, email } }) {
+        async signIn({ user: { email, name, image, id } }) {
             if (!email) {
                 return false;
             }
@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
             if (user) {
                 session.user = {
                     ...user,
-                    username: user.email?.split('@')[0] || '',
+                    name: user.email?.split('@')[0] || '',
                     id: token.id as string
                 };
             }

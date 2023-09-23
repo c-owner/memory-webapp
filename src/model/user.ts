@@ -6,35 +6,13 @@ export type AuthUser = {
 };
 
 export type OAuthUser = {
+    id: string;
     email: string;
     name: string;
     image?: string | null | undefined;
-};
-
-export type NormalUser = {
-    email: string;
-    password: string;
-    image?: string | null;
 };
 
 export type LoginUser = {
     email: string;
     password: string;
 };
-
-/*
-
-export type HomeUser = AuthUser & {
-    following: SimpleUser[];
-    followers: SimpleUser[];
-    bookmarks: string[];
-};
-
-export type SearchUser = AuthUser & {
-    following: number;
-    followers: number;
-};
-
-export type ProfileUser = SearchUser & {
-    posts: number;
-}; */

@@ -3,16 +3,36 @@
 import { useState } from 'react';
 import DefaultButton from '@/components/ui/DefaultButton';
 import useMe from '@/hooks/me';
+import DefaultAlert from '@/components/DefaultAlert';
+import ModalPortal from '@/components/ui/ModalPortal';
+import { useRouter } from 'next/navigation';
 
 export default function EmailLogin() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const { loginUser } = useMe();
+    const [alert, setAlert] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const { emailLogin } = useMe();
+    const router = useRouter();
+
     const loginSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await loginUser({ email, password });
+        await emailLogin({ email, password }).then(({ data, isLoading, error, mutate }) => {
+            setLoading(isLoading);
+            if (data && data.accessToken) {
+                setAlert(true);
+            }
+            const timeHandler = setTimeout(() => {
+                setAlert(false);
+                router.push('/');
+                return () => {
+                    clearTimeout(timeHandler);
+                };
+            }, 2000);
+        });
     };
+
     return (
         <form onSubmit={loginSubmit} className="flex flex-col gap-4 px-14 w-full">
             <label htmlFor="email" className="text-xl font-semibold">
@@ -47,6 +67,17 @@ export default function EmailLogin() {
                 dark:bg-gray-800 dark:text-gray-100"
             />
             <DefaultButton text={`OK`} />
+            {alert && (
+                <ModalPortal>
+                    <DefaultAlert onClose={() => setAlert(false)}>
+                        {loading ? (
+                            <p className="text-xl font-semibold">Loading...</p>
+                        ) : (
+                            <p className="text-xl font-semibold">Login Success</p>
+                        )}
+                    </DefaultAlert>
+                </ModalPortal>
+            )}
         </form>
     );
 }

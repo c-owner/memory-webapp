@@ -20,7 +20,9 @@ export default function EmailRegister() {
         if (password !== passwordConfirm) {
             alert('비밀번호가 일치하지 않습니다.');
         }
-        await addUser({ email, password, name, image: '' });
+        await addUser({ email, password, name, image: '' }).then((data) => {
+            console.log(data);
+        });
     };
     return (
         <form onSubmit={loginSubmit} className="flex flex-col gap-4 px-14 w-full">

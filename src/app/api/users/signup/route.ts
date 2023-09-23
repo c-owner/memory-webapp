@@ -6,8 +6,6 @@ export async function POST(req: NextRequest) {
         return new NextResponse('Bad Request', { status: 400 });
     }
 
-    console.log(email, password);
-
     const response = await fetch(`${process.env.API_DOMAIN}/members/new`, {
         method: 'POST',
         headers: {
