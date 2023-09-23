@@ -1,17 +1,17 @@
 import Avatar from '@/components/Avatar';
-import { OAuthUser } from '@/model/user';
+import { AuthUser } from '@/model/user';
 
 type Props = {
-    user: OAuthUser;
+    user: AuthUser;
 };
-export default function SideBar({ user: { image, username, name } }: Props) {
+export default function SideBar({ user: { image, memberName } }: Props) {
     return (
         <>
             <div className="flex items-center">
                 {image && <Avatar image={image} />}
                 <div className="ml-4">
-                    <p className="font-bold">{username}</p>
-                    <p className="text-lg text-neutral-500 leading-4">{name}</p>
+                    <p className="font-bold">{memberName}</p>
+                    <p className="text-lg text-neutral-500 leading-4">{memberName}</p>
                 </div>
             </div>
             <p className="text-sm text-neutral-500 mt-8">

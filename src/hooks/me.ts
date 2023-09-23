@@ -1,35 +1,37 @@
-import { AuthUser, LoginUser } from '@/model/user';
+import { AuthUser, OAuthUser, SignUser } from '@/model/user';
 import useSWR from 'swr';
 import { useCallback } from 'react';
+import { useSession } from 'next-auth/react';
 
-export function register(user: AuthUser) {
+export function register(user: SignUser | OAuthUser) {
     return fetch('/api/users/signup', {
         method: 'POST',
         body: JSON.stringify(user)
     }).then((res) => res.json());
 }
 
-export function login(user: LoginUser) {
+export function login(user: SignUser) {
     return fetch('/api/users/signin', {
         method: 'POST',
         body: JSON.stringify(user)
-    }).then((res) => res.json());
+    }).then((res) => {
+        return res.json();
+    });
 }
 export default function useMe() {
     const { data: user, isLoading, error, mutate } = useSWR<AuthUser>(`/api/users/me`);
 
-    const addUser = (user: AuthUser) => {
+    const addUser = (user: SignUser) => {
         return mutate(register(user), {
-            optimisticData: user,
             revalidate: false,
             rollbackOnError: true
         });
     };
 
     const emailLogin = useCallback(
-        async (user: LoginUser) => {
+        async (user: SignUser) => {
             const data = await login(user);
-            mutate(data.accessToken);
+            mutate(data);
             return { data, mutate, isLoading, error };
         },
         [user, mutate]

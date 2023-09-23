@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
     const { email, password } = await req.json();
@@ -12,9 +13,15 @@ export async function POST(req: NextRequest) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ memberEmail: email, memberPassword: password })
-    }).then((res) => {
-        return res.json();
-    });
+    })
+        .then((res) => {
+            const data = res.json();
+
+            return data;
+        })
+        .catch((err) => {
+            return err;
+        });
 
     return new Response(JSON.stringify(response), { status: 200 });
 }
