@@ -37,7 +37,7 @@ export default function Navbar() {
 
                     {user && (
                         <li>
-                            <Link href={`/user/${user.mame}`}>
+                            <Link href={`/user/${user.name}`}>
                                 <Avatar size="small" highlight image={user.image} />
                             </Link>
                         </li>
