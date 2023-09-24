@@ -3,9 +3,9 @@ import { redirect } from 'next/navigation';
 import { getProviders } from 'next-auth/react';
 import { Metadata } from 'next';
 import OAuth from '@/components/auth/OAuth';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import ColorButton from '@/components/ui/ColorButton';
 import Link from 'next/link';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 
 export const metadata: Metadata = {
     title: 'Sign In',

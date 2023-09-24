@@ -7,10 +7,12 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import Avatar from '@/components/Avatar';
 import BottomArrowIcon from '@/components/ui/icon/BottomArrowIcon';
 import SearchForm from '@/components/SearchForm';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
     const { data: session } = useSession();
     const user = session?.user;
+    const router = useRouter();
 
     return (
         <div className="flex justify-between items-center p-4">
@@ -46,7 +48,10 @@ export default function Navbar() {
                         {session ? (
                             <ColorButton text={'Sign out'} onClick={() => signOut()} />
                         ) : (
-                            <ColorButton text={'Sign in'} onClick={() => signIn()} />
+                            <ColorButton
+                                text={'Sign in'}
+                                onClick={() => router.push('/auth/signin')}
+                            />
                         )}
                     </div>
                 </div>

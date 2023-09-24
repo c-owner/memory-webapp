@@ -15,8 +15,6 @@ export async function GET(req: Request) {
         return res.json();
     });
 
-    console.log('response', response);
-
     const { responseObject } = response;
     if (!responseObject) {
         return NextResponse.json({ message: 'Not Authorized' }, { status: 401 });

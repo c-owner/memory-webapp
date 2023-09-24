@@ -1,22 +1,29 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { redirect } from 'next/navigation';
+// Ref: https://next-auth.js.org/configuration/nextjs#advanced-usage
+import { withAuth } from 'next-auth/middleware';
+import { NextFetchEvent, NextRequest, NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
 
-// This function can be marked `async` if using `await` inside
-export async function middleware(request: NextRequest) {
-    const session = await getServerSession(authOptions);
-    const user = session?.user;
-
-    if (!user) {
-        redirect('/auth/signin');
+export default withAuth({
+    callbacks: {
+        authorized: ({ token }) => !!token
     }
+});
 
-    return NextResponse.redirect(new URL('/', request.url));
+export function middleware(request: NextRequest, event: NextFetchEvent) {
+    console.log('??');
+    // const session = await getToken({ req, secret, raw: true });
+    // const { pathname } = req.nextUrl;
+    // console.log(request.nextUrl.pathname)
+    // console.log(request.nextauth.token)
+    console.log('request.nextUrl', request.nextUrl);
+    if (request.nextUrl.pathname.startsWith('/')) {
+        return NextResponse.rewrite(new URL('/auth/signin', request.url));
+    }
+    if (request.nextUrl.pathname.startsWith('/user/:path*')) {
+        return NextResponse.rewrite(new URL('/auth/signin', request.url));
+    }
 }
-
-// See "Matching Paths" below to learn more
-export const config = {
-    matcher: '/:path*'
-};
+// Applies next-auth only to matching routes - can be regex
+// Ref: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
+// export const config = { matcher: ['/auth/signin', '/auth/signin/email', '/auth/signup'] };
+export const config = { matcher: ['/'] };

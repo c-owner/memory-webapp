@@ -34,6 +34,7 @@
                 "endOfLine": "auto"
             }
         ],
+        "no-else-return": "off",
         "consistent-return": "warn",
         "no-console": "warn",
         "no-param-reassign": "off",

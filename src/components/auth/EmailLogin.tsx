@@ -42,7 +42,6 @@ export default function EmailLogin() {
                     content: '로그인에 성공했습니다.'
                 });
                 mutate();
-                signIn(email, { callbackUrl: '/' });
                 const timeHandler = setTimeout(() => {
                     setAlert(false);
                     router.push('/');

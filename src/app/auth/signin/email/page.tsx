@@ -1,7 +1,7 @@
 import EmailLogin from '@/components/auth/EmailLogin';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { redirect } from 'next/navigation';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 
 export default async function EmailPage() {
     const session = await getServerSession(authOptions);
