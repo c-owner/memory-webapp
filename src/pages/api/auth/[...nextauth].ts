@@ -2,11 +2,13 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider, { GithubProfile } from 'next-auth/providers/github';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import axios from 'axios';
 
 export const authOptions: NextAuthOptions = {
     // Configure one or more authentication providers
     providers: [
         GoogleProvider({
+            name: 'Google',
             clientId: process.env.GOOGLE_OAUTH_ID || '',
             clientSecret: process.env.GOOGLE_OAUTH_SECRET || ''
         }),
@@ -27,21 +29,11 @@ export const authOptions: NextAuthOptions = {
         }),
         // ...add more providers here
         CredentialsProvider({
-            name: 'Credentials',
+            name: '다른 방법으로 로그인',
             credentials: {
                 email: {
                     label: 'Email',
                     type: 'email',
-                    placeholder: 'your-cool-username'
-                },
-                username: {
-                    label: 'Username',
-                    type: 'text',
-                    placeholder: 'your-cool-username'
-                },
-                name: {
-                    label: 'name',
-                    type: 'text',
                     placeholder: 'your-cool-username'
                 },
                 password: {
@@ -51,29 +43,34 @@ export const authOptions: NextAuthOptions = {
                 }
             },
             async authorize(credentials) {
-                // This is where you need to retrieve user data
-                // to verify with credentials
-                // Docs: https://next-auth.js.org/configuration/providers/credentials
-                console.log(credentials);
-                const user = {
-                    id: '1',
-                    email: 'test@t.ts',
-                    name: 'test',
-                    username: '',
-                    password: 'nextauth',
-                    image: ''
-                };
-
-                if (
-                    credentials?.email === user.email &&
-                    credentials?.password === user.password &&
-                    credentials?.name === user.name &&
-                    credentials?.username === user.username
-                ) {
-                    return user;
-                } else {
-                    return null;
+                if (!credentials) {
+                    throw new Error(' 잘못된 입력입니다. ');
                 }
+
+                const { email, password } = credentials;
+                const exUser = await axios
+                    .post(`${process.env.API_DOMAIN}/members/sign-in`, {
+                        memberEmail: email,
+                        memberPassword: password
+                    })
+                    .then((res) => {
+                        return res;
+                    });
+
+                if (exUser) {
+                    const user = await axios
+                        .get(`${process.env.API_DOMAIN}/members/me`, {
+                            headers: {
+                                Authorization: `${exUser.data.responseObject.grantType} ${exUser.data.responseObject.accessToken}`
+                            }
+                        })
+                        .then((res) => {
+                            return res.data.responseObject;
+                        });
+                    return user;
+                }
+
+                return null;
             }
         })
     ],
@@ -84,8 +81,6 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         // Ref: https://authjs.dev/guides/basics/role-based-access-control#persisting-the-role
         async jwt({ token, user }) {
-            console.log('user: ', user);
-            console.log('token: ', token);
             if (user) token.email = user.email;
             return token;
         },

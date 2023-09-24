@@ -13,7 +13,7 @@ export default function OAuth({ providers, callbackUrl }: Props) {
             {Object.values(providers).map(({ id, name }) => (
                 <ColorButton
                     key={id}
-                    text={`Sign In with ${name}`}
+                    text={`${name}`}
                     size="md"
                     onClick={() => signIn(id, { callbackUrl })}
                 />
