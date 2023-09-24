@@ -1,29 +1,21 @@
-// Ref: https://next-auth.js.org/configuration/nextjs#advanced-usage
-import { withAuth } from 'next-auth/middleware';
-import { NextFetchEvent, NextRequest, NextResponse } from 'next/server';
+import type { NextRequest, NextFetchEvent } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
-export default withAuth({
-    callbacks: {
-        authorized: ({ token }) => !!token
-    }
-});
+const secret = process.env.SECRET;
 
-export function middleware(request: NextRequest, event: NextFetchEvent) {
-    console.log('??');
-    // const session = await getToken({ req, secret, raw: true });
-    // const { pathname } = req.nextUrl;
-    // console.log(request.nextUrl.pathname)
-    // console.log(request.nextauth.token)
-    console.log('request.nextUrl', request.nextUrl);
-    if (request.nextUrl.pathname.startsWith('/')) {
-        return NextResponse.rewrite(new URL('/auth/signin', request.url));
-    }
-    if (request.nextUrl.pathname.startsWith('/user/:path*')) {
-        return NextResponse.rewrite(new URL('/auth/signin', request.url));
+export async function middleware(req: NextRequest, event: NextFetchEvent) {
+    // 로그인 했을 경우에만 존재함 ( "next-auth.session-token" 쿠키가 존재할 때 )
+    const session = await getToken({ req, secret, raw: true });
+    const { pathname } = req.nextUrl;
+
+    if (pathname.startsWith('/auth/:path*')) {
+        if (session) {
+            return NextResponse.redirect(new URL('/', req.url));
+        }
     }
 }
-// Applies next-auth only to matching routes - can be regex
-// Ref: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-// export const config = { matcher: ['/auth/signin', '/auth/signin/email', '/auth/signup'] };
-export const config = { matcher: ['/'] };
+
+export const config = {
+    matcher: ['/auth/:path*']
+};
