@@ -14,7 +14,7 @@ export default function OAuth({ providers, callbackUrl }: Props) {
                 <ColorButton
                     key={id}
                     text={`Sign In with ${name}`}
-                    size="lg"
+                    size="md"
                     onClick={() => signIn(id, { callbackUrl })}
                 />
             ))}
