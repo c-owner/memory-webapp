@@ -17,5 +17,11 @@ export async function GET() {
         .then((res) => {
             return res.data;
         });
+
+    const { responseObject } = response;
+    if (!responseObject) {
+        return NextResponse.json({ message: 'Not Authorized' }, { status: 401 });
+    }
+
     return NextResponse.json(response, { status: 200 });
 }

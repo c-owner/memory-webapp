@@ -1,7 +1,6 @@
 import { AuthUser, OAuthUser, SignUser } from '@/model/user';
 import useSWR from 'swr';
 import { useCallback } from 'react';
-import { useSession } from 'next-auth/react';
 
 export function register(user: SignUser | OAuthUser) {
     return fetch('/api/users/signup', {
@@ -21,12 +20,14 @@ export function login(user: SignUser) {
 export default function useMe() {
     const { data: user, isLoading, error, mutate } = useSWR<AuthUser>(`/api/users/me`);
 
-    const addUser = (user: SignUser) => {
-        return mutate(register(user), {
-            revalidate: false,
-            rollbackOnError: true
-        });
-    };
+    const addUser = useCallback(
+        async (user: SignUser) => {
+            const data = await register(user);
+            mutate(data);
+            return { data, mutate, isLoading, error };
+        },
+        [user, mutate]
+    );
 
     const emailLogin = useCallback(
         async (user: SignUser) => {

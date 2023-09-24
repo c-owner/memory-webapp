@@ -3,6 +3,10 @@
 import { useState } from 'react';
 import DefaultButton from '@/components/ui/DefaultButton';
 import useMe from '@/hooks/me';
+import ModalPortal from '@/components/ui/ModalPortal';
+import DefaultAlert from '@/components/DefaultAlert';
+import { useRouter } from 'next/navigation';
+import GridSpinner from '@/components/ui/GridSpinner';
 
 export default function EmailRegister() {
     const [email, setEmail] = useState('');
@@ -11,21 +15,41 @@ export default function EmailRegister() {
 
     const { addUser } = useMe();
 
-    /* 6자리의 랜덤 번호 */
-    const randomNum = Math.floor(Math.random() * 1000000);
+    const [alert, setAlert] = useState(false);
+    const [message, setMessage] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const name = `익명 -${randomNum}`;
-    const loginSubmit = async (e: React.FormEvent) => {
+    const router = useRouter();
+
+    const registerSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (password !== passwordConfirm) {
-            alert('비밀번호가 일치하지 않습니다.');
+            setAlert(true);
+            setMessage('비밀번호가 일치하지 않습니다.');
         }
-        await addUser({ email, password }).then((data) => {
-            console.log(data);
+        await addUser({ email, password }).then(({ data, isLoading, mutate }) => {
+            setLoading(isLoading);
+            if (data) {
+                setAlert(true);
+                setMessage(
+                    data?.successMessage || data?.errorMessage || '회원가입에 실패했습니다.'
+                );
+                mutate();
+
+                if (data?.successMessage) {
+                    const timeHandler = setTimeout(() => {
+                        setAlert(false);
+                        router.push('/');
+                        return () => {
+                            clearTimeout(timeHandler);
+                        };
+                    }, 2000);
+                }
+            }
         });
     };
     return (
-        <form onSubmit={loginSubmit} className="flex flex-col gap-4 px-14 w-full">
+        <form onSubmit={registerSubmit} className="flex flex-col gap-4 px-14 w-full">
             <label htmlFor="email" className="text-xl font-semibold">
                 Email
             </label>
@@ -75,6 +99,23 @@ export default function EmailRegister() {
             />
 
             <DefaultButton text={`OK`} />
+            {alert && (
+                <ModalPortal>
+                    <DefaultAlert onClose={() => setAlert(false)}>
+                        {/* eslint-disable-next-line no-nested-ternary */}
+                        {loading ? (
+                            <div className="text-center">
+                                <GridSpinner />
+                            </div>
+                        ) : (
+                            <div className="text-xl font-semibold">
+                                <h1 className="text-xl font-bold">알림</h1>
+                                <p className="text-md text-emerald-700">{message}</p>
+                            </div>
+                        )}
+                    </DefaultAlert>
+                </ModalPortal>
+            )}
         </form>
     );
 }

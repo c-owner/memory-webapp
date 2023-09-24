@@ -6,6 +6,8 @@ import useMe from '@/hooks/me';
 import DefaultAlert from '@/components/DefaultAlert';
 import ModalPortal from '@/components/ui/ModalPortal';
 import { useRouter } from 'next/navigation';
+import GridSpinner from '@/components/ui/GridSpinner';
+import { signIn } from 'next-auth/react';
 
 export default function EmailLogin() {
     const [email, setEmail] = useState('');
@@ -16,8 +18,7 @@ export default function EmailLogin() {
     const [successType, setSuccessType] = useState(false);
     const [message, setMessage] = useState({
         title: '',
-        content: '',
-        status: ''
+        content: ''
     });
     const { emailLogin } = useMe();
     const router = useRouter();
@@ -27,14 +28,21 @@ export default function EmailLogin() {
         await emailLogin({ email, password }).then(({ data, isLoading, error, mutate }) => {
             setLoading(isLoading);
             setAlert(true);
-            if (data && data.accessToken) {
+            if (data && data.errorCode) {
+                setSuccessType(false);
+                setMessage({
+                    title: '로그인 실패',
+                    content: data.errorMessage
+                });
+            }
+            if (data && data.responseObject) {
                 setSuccessType(true);
                 setMessage({
                     title: '로그인 성공',
-                    content: '로그인에 성공했습니다.',
-                    status: data.status
+                    content: '로그인에 성공했습니다.'
                 });
                 mutate();
+                signIn(email, { callbackUrl: '/' });
                 const timeHandler = setTimeout(() => {
                     setAlert(false);
                     router.push('/');
@@ -46,8 +54,7 @@ export default function EmailLogin() {
                 setSuccessType(false);
                 setMessage({
                     title: '로그인 실패',
-                    content: error?.response?.data?.message || '로그인에 실패했습니다.',
-                    status: data.status
+                    content: '로그인에 실패했습니다.'
                 });
             }
         });
@@ -92,19 +99,21 @@ export default function EmailLogin() {
                     <DefaultAlert onClose={() => setAlert(false)}>
                         {/* eslint-disable-next-line no-nested-ternary */}
                         {loading ? (
-                            <p className="text-xl font-semibold">Loading...</p>
+                            <div className="text-center">
+                                <GridSpinner />
+                            </div>
                         ) : successType ? (
-                            <p className="text-xl font-semibold">
-                                <h1 className="text-xl font-bold">{message.title}</h1>
-                                <p className="text-md text-emerald-700">{message.content}</p>
-                                <span className="text-sm text-emerald-500">{message.status}</span>
-                            </p>
+                            <div className="flex items-center justify-center flex-col gap-3">
+                                <div className="text-2xl font-bold">{message.title}</div>
+                                <div className="pt-3 text-md text-emerald-700">
+                                    {message.content}
+                                </div>
+                            </div>
                         ) : (
-                            <p className="text-xl font-semibold">
-                                <h1 className="text-xl font-bold">{message.title}</h1>
-                                <p className="text-md text-red-500">{message.content}</p>
-                                <span className="text-sm text-red-800">{message.status}</span>
-                            </p>
+                            <div className="flex items-center justify-center flex-col gap-3">
+                                <div className="text-xl font-bold">{message.title}</div>
+                                <span className="pt-3 text-md text-red-500">{message.content}</span>
+                            </div>
                         )}
                     </DefaultAlert>
                 </ModalPortal>

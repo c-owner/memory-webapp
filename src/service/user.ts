@@ -10,7 +10,7 @@ export async function newUser({ id, email, image }: OAuthUser) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ memberEmail: email, memberPassword: id })
+        body: JSON.stringify({ email, id })
     }).then((res) => {
         return res.json();
     });

@@ -35,7 +35,7 @@ export const authOptions: NextAuthOptions = {
             if (user) {
                 session.user = {
                     ...user,
-                    memberName: user.email?.split('@')[0] || ''
+                    name: user.email?.split('@')[0] || ''
                 };
             }
             return session;
