@@ -25,7 +25,39 @@ export default function EmailLogin() {
 
     const loginSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await emailLogin({ email, password }).then(({ data, isLoading, error, mutate }) => {
+
+        const result = await signIn('credentials', {
+            // 로그인 실패 시 새로고침 여부
+            redirect: false,
+            email,
+            password
+        });
+
+        console.log(result);
+
+        if (result?.error) {
+            setAlert(true);
+            setSuccessType(false);
+            setMessage({
+                title: '로그인 실패',
+                content: result.error
+            });
+        } else {
+            setSuccessType(true);
+            setMessage({
+                title: '로그인 성공',
+                content: '로그인에 성공했습니다.'
+            });
+            const timeHandler = setTimeout(() => {
+                setAlert(false);
+                router.push('/');
+                return () => {
+                    clearTimeout(timeHandler);
+                };
+            }, 2000);
+        }
+
+        /* await emailLogin({ email, password }).then(({ data, isLoading, error, mutate }) => {
             setLoading(isLoading);
             setAlert(true);
             if (data && data.errorCode) {
@@ -56,7 +88,7 @@ export default function EmailLogin() {
                     content: '로그인에 실패했습니다.'
                 });
             }
-        });
+        }); */
     };
 
     return (

@@ -30,6 +30,8 @@ export default async function SignInPage({ searchParams: { callbackUrl } }: Prop
             <h1 className="text-4xl font-bold text-center">Sign In</h1>
 
             <OAuth providers={providers} callbackUrl={callbackUrl ?? '/'} />
+
+            <div className="border-b border-2 w-full"></div>
             <Link href="/auth/signin/email">
                 <ColorButton text={'Sign In With Email'} size="md" />
             </Link>
