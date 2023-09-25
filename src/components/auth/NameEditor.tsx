@@ -18,16 +18,30 @@ export default function NameEditor({ username, onClose }: Props) {
     const [password, setPassword] = useState('');
     const { changeName } = useMe();
     const [loading, setLoading] = useState(false);
+    const [errorMsg, setErrorMsg] = useState({
+        message: '',
+        status: 200
+    });
     const submitName = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setErrorMsg({
+            message: '',
+            status: 200
+        });
         setLoading(true);
 
-        const data = await changeName({
+        const { data, isLoading, error, mutate } = await changeName({
             name,
             image,
             password
         });
-        console.log('data...', data);
+        if (data.error) {
+            setErrorMsg(data.error);
+        }
+        if (data) {
+            console.log(data);
+        }
+
         setLoading(false);
     };
 
@@ -80,7 +94,13 @@ export default function NameEditor({ username, onClose }: Props) {
                             />
                         </div>
                     </div>
-
+                    {errorMsg && (
+                        <div className="text-center pb-3">
+                            <div className="text-lg">Oops!</div>
+                            <div className="text-sm text-red-400">{errorMsg.status}</div>
+                            <div className="text-md text-red-500">{errorMsg.message}</div>
+                        </div>
+                    )}
                     <DefaultButton text={'Save'} w_size={'w-full'} onClick={() => submitName} />
                 </form>
             </div>
