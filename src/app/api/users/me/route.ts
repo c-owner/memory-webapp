@@ -43,11 +43,18 @@ export async function PATCH(req: NextRequest) {
     }
 
     return axios
-        .patch(`${process.env.API_DOMAIN}/members/me}`, req.json(), {
-            headers: {
-                Authorization: user.accessToken
+        .patch(
+            `${process.env.API_DOMAIN}/members/me}`,
+            {
+                memberName: name
+            },
+            {
+                headers: {
+                    Authorization: user.accessToken,
+                    'Content-Type': 'application/json'
+                }
             }
-        })
+        )
         .then((res) => {
             return NextResponse.json(res, { status: 200 });
         })
