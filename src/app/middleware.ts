@@ -14,6 +14,8 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
             return NextResponse.redirect(new URL('/', req.url));
         }
     }
+
+    return NextResponse.next();
 }
 
 export const config = {

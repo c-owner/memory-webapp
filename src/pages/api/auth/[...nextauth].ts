@@ -55,6 +55,9 @@ export const authOptions: NextAuthOptions = {
                     })
                     .then((res) => {
                         return res;
+                    })
+                    .catch((err) => {
+                        throw new Error(err.response.data.errorMessage);
                     });
 
                 if (exUser) {
@@ -66,8 +69,18 @@ export const authOptions: NextAuthOptions = {
                         })
                         .then((res) => {
                             return res.data.responseObject;
+                        })
+                        .catch((err) => {
+                            throw new Error(err.response.data.errorMessage);
                         });
-                    return user;
+                    return {
+                        ...user,
+                        id: user.memberId,
+                        email: user.memberEmail,
+                        name: user.memberName,
+                        username: user.memberEmail?.split('@')[0] || '',
+                        image: user.memberImage
+                    };
                 }
 
                 return null;
@@ -81,7 +94,9 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         // Ref: https://authjs.dev/guides/basics/role-based-access-control#persisting-the-role
         async jwt({ token, user }) {
-            if (user) token.email = user.email;
+            if (user) {
+                token.email = user.email;
+            }
             return token;
         },
         // If you want to use the role in client components

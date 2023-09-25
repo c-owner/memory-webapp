@@ -7,7 +7,6 @@ import DefaultAlert from '@/components/DefaultAlert';
 import ModalPortal from '@/components/ui/ModalPortal';
 import { useRouter } from 'next/navigation';
 import GridSpinner from '@/components/ui/GridSpinner';
-import { signIn } from 'next-auth/react';
 
 export default function EmailLogin() {
     const [email, setEmail] = useState('');
@@ -25,37 +24,46 @@ export default function EmailLogin() {
 
     const loginSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        const result = await signIn('credentials', {
-            // 로그인 실패 시 새로고침 여부
-            redirect: false,
-            email,
-            password
-        });
-
-        console.log(result);
-
-        if (result?.error) {
-            setAlert(true);
-            setSuccessType(false);
-            setMessage({
-                title: '로그인 실패',
-                content: result.error
-            });
-        } else {
-            setSuccessType(true);
-            setMessage({
-                title: '로그인 성공',
-                content: '로그인에 성공했습니다.'
-            });
+        const result = await emailLogin(email, password).then(
+            ({ response: data, isLoading, error, mutate }) => {
+                setAlert(true);
+                setLoading(isLoading);
+                if (data && !data.ok) {
+                    setSuccessType(false);
+                    setMessage({
+                        title: '로그인 실패',
+                        content: data.error || '로그인에 실패했습니다.'
+                    });
+                    return false;
+                }
+                if (data && data.ok) {
+                    setSuccessType(true);
+                    setLoading(false);
+                    setMessage({
+                        title: '로그인 성공',
+                        content: '로그인에 성공했습니다.'
+                    });
+                    return true;
+                }
+            }
+        );
+        if (result) {
             const timeHandler = setTimeout(() => {
                 setAlert(false);
+                setLoading(false);
                 router.push('/');
                 return () => {
                     clearTimeout(timeHandler);
                 };
             }, 2000);
         }
+
+        /* const result = await signIn('credentials', {
+            // 로그인 실패 시 새로고침 여부
+            redirect: false,
+            email,
+            password
+        }); */
 
         /* await emailLogin({ email, password }).then(({ data, isLoading, error, mutate }) => {
             setLoading(isLoading);
