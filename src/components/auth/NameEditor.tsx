@@ -22,6 +22,7 @@ export default function NameEditor({ username, onClose }: Props) {
         message: '',
         status: 200
     });
+    const [isError, setIsError] = useState(false);
     const submitName = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setErrorMsg({
@@ -36,12 +37,13 @@ export default function NameEditor({ username, onClose }: Props) {
             password
         });
         if (data.error) {
+            setIsError(true);
             setErrorMsg(data.error);
         }
-        if (data) {
-            console.log(data);
+        if (isError) {
+            await mutate(data, false);
+            onClose();
         }
-
         setLoading(false);
     };
 
@@ -94,7 +96,7 @@ export default function NameEditor({ username, onClose }: Props) {
                             />
                         </div>
                     </div>
-                    {errorMsg && (
+                    {isError && (
                         <div className="text-center pb-3">
                             <div className="text-lg">Oops!</div>
                             <div className="text-sm text-red-400">{errorMsg.status}</div>
