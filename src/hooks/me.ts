@@ -1,4 +1,4 @@
-import { AuthUser, OAuthUser, SignUser } from '@/model/user';
+import { AuthUser, OAuthUser, SignUser, UpdateUser } from '@/model/user';
 import useSWR from 'swr';
 import { useCallback } from 'react';
 import { signIn } from 'next-auth/react';
@@ -18,6 +18,18 @@ export function login(user: SignUser) {
         return res.json();
     });
 }
+
+export function updateName(user: UpdateUser) {
+    return fetch('/api/users/me', {
+        method: 'PATCH',
+        body: JSON.stringify({
+            name: user?.name || '',
+            image: user?.image || '',
+            password: user?.password || ''
+        })
+    }).then((res) => res.json());
+}
+
 export default function useMe() {
     const { data: user, isLoading, error, mutate } = useSWR<AuthUser>(`/api/users/me`);
 
@@ -49,5 +61,14 @@ export default function useMe() {
         [user, mutate]
     );
 
-    return { user, isLoading, error, mutate, addUser, emailLogin };
+    const changeName = useCallback(
+        async (user: UpdateUser) => {
+            const data = await updateName(user);
+            mutate(data);
+            return { data, mutate, isLoading, error };
+        },
+        [user, mutate]
+    );
+
+    return { user, isLoading, error, mutate, addUser, emailLogin, changeName };
 }

@@ -15,18 +15,18 @@ declare module 'next-auth' {
             image?: string | null | undefined;
             following: string[];
             followers: string[];
+            accessToken: string;
         } & DefaultSession;
     }
 
     interface User extends AuthUser, DefaultUser {
-        email: string;
-        name: string;
         image?: string | undefined | null;
+        accessToken: string;
     }
 }
 
 declare module 'next-auth/jwt' {
     interface JWT extends DefaultJWT {
-        email: string;
+        accessType: string;
     }
 }
