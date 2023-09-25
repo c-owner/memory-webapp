@@ -104,7 +104,9 @@ export default function EmailLogin() {
                             </div>
                         ) : successType ? (
                             <div className="flex items-center justify-center flex-col gap-3">
-                                <div className="text-2xl font-bold">{message.title}</div>
+                                <div className="text-2xl font-bold absolute top-4">
+                                    {message.title}
+                                </div>
                                 <div className="pt-3 text-md text-emerald-700">
                                     {message.content}
                                 </div>
