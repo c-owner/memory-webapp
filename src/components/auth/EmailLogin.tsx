@@ -24,6 +24,7 @@ export default function EmailLogin() {
 
     const loginSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         const result = await emailLogin(email, password).then(
             ({ response: data, isLoading, error, mutate }) => {
                 setAlert(true);
@@ -48,55 +49,15 @@ export default function EmailLogin() {
             }
         );
         if (result) {
+            setLoading(true);
             const timeHandler = setTimeout(() => {
                 setAlert(false);
-                setLoading(false);
                 router.push('/');
                 return () => {
                     clearTimeout(timeHandler);
                 };
-            }, 2000);
+            }, 2200);
         }
-
-        /* const result = await signIn('credentials', {
-            // 로그인 실패 시 새로고침 여부
-            redirect: false,
-            email,
-            password
-        }); */
-
-        /* await emailLogin({ email, password }).then(({ data, isLoading, error, mutate }) => {
-            setLoading(isLoading);
-            setAlert(true);
-            if (data && data.errorCode) {
-                setSuccessType(false);
-                setMessage({
-                    title: '로그인 실패',
-                    content: data.errorMessage
-                });
-            }
-            if (data && data.responseObject) {
-                setSuccessType(true);
-                setMessage({
-                    title: '로그인 성공',
-                    content: '로그인에 성공했습니다.'
-                });
-                mutate();
-                const timeHandler = setTimeout(() => {
-                    setAlert(false);
-                    router.push('/');
-                    return () => {
-                        clearTimeout(timeHandler);
-                    };
-                }, 2000);
-            } else {
-                setSuccessType(false);
-                setMessage({
-                    title: '로그인 실패',
-                    content: '로그인에 실패했습니다.'
-                });
-            }
-        }); */
     };
 
     return (
@@ -149,9 +110,13 @@ export default function EmailLogin() {
                                 </div>
                             </div>
                         ) : (
-                            <div className="flex items-center justify-center flex-col gap-3">
-                                <div className="text-xl font-bold">{message.title}</div>
-                                <span className="pt-3 text-md text-red-500">{message.content}</span>
+                            <div className="flex items-center justify-center flex-col gap-3 w-full">
+                                <div className="text-xl font-bold absolute top-4">
+                                    {message.title}
+                                </div>
+                                <div className="px-3 text-md text-red-500 break-keep max-h-32 overflow-y-auto">
+                                    {message.content}
+                                </div>
                             </div>
                         )}
                     </DefaultAlert>

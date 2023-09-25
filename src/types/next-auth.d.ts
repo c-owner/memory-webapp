@@ -13,6 +13,8 @@ declare module 'next-auth' {
             name: string;
             username: string;
             image?: string | null | undefined;
+            following: string[];
+            followers: string[];
         } & DefaultSession;
     }
 

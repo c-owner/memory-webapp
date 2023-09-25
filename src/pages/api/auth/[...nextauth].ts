@@ -104,7 +104,11 @@ export const authOptions: NextAuthOptions = {
             if (session?.user) {
                 session.user = {
                     ...session?.user,
-                    username: session.user.email?.split('@')[0]
+                    id: session.user.id,
+                    username: session.user.email?.split('@')[0],
+                    image: session.user.image || '',
+                    following: session.user.following || [],
+                    followers: session.user.followers || []
                 };
             }
             return session;
