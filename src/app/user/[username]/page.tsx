@@ -7,7 +7,7 @@ export default async function UserDetailPage() {
     const user = session?.user;
 
     if (!session) {
-        redirect('/auth/signin?callbackUrl=/user/[username]');
+        redirect('/auth/signin');
     }
 
     return <>UserDetailPage</>;

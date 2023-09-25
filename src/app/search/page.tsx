@@ -8,7 +8,7 @@ export default async function SearchPage() {
     const user = session?.user;
 
     if (!session) {
-        redirect('/auth/signin?callbackUrl=/search');
+        redirect('/auth/signin');
     }
 
     return (

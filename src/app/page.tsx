@@ -8,7 +8,7 @@ export default async function Home() {
     const user = session?.user;
 
     if (!session) {
-        redirect('/auth/signin?callbackUrl=/');
+        redirect('/auth/signin');
     }
 
     return (
