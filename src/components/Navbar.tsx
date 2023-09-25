@@ -46,10 +46,13 @@ export default function Navbar() {
                     )}
                     <div>
                         {session ? (
-                            <ColorButton text={'Sign out'} onClick={() => signOut()} />
+                            <ColorButton
+                                text={'Sign out'}
+                                onClick={() => router.push('/api/auth/signout')}
+                            />
                         ) : (
                             <ColorButton
-                                text={'Sign in'}
+                                text={'Sign In'}
                                 onClick={() => router.push('/auth/signin')}
                             />
                         )}
