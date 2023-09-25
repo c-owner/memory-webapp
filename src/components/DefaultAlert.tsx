@@ -28,10 +28,13 @@ export default function DefaultAlert({ onClose, children }: Props) {
                     >
                         <CloseIcon />
                     </button>
-                    <div className="flex flex-col items-center justify-center h-3/5">
+                    <div className="flex flex-col items-center justify-center h-3/4 scrollbar-hide">
                         {children}
                     </div>
-                    <div className="flex gap-6 flex-row items-center justify-center w-full">
+                    <div
+                        className=" absolute bottom-0 left-0 p-3
+                    flex gap-6 flex-row items-center justify-center w-full"
+                    >
                         <DefaultButton text={`OK`} w_size="w-1/3" onClick={() => onClose()} />
                     </div>
                 </div>

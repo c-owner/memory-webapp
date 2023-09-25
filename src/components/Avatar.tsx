@@ -12,7 +12,7 @@ export default function Avatar({ image, size = 'large', highlight = false }: Pro
                 className={`bg-white object-cover rounded-full
         ${getImageSizeStyle(size).image}`}
                 alt="user profile"
-                src={image ?? undefined}
+                src={image && image !== '' ? image : '/default_profile.png'}
                 referrerPolicy="no-referrer"
             />
         </div>

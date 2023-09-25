@@ -16,6 +16,7 @@ export default function EmailRegister() {
     const { addUser } = useMe();
 
     const [alert, setAlert] = useState(false);
+    const [successType, setSuccessType] = useState(false);
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -108,9 +109,11 @@ export default function EmailRegister() {
                                 <GridSpinner />
                             </div>
                         ) : (
-                            <div className="text-xl font-semibold">
-                                <h1 className="text-xl font-bold">알림</h1>
-                                <p className="text-md text-emerald-700">{message}</p>
+                            <div className="text-xl font-semibold text-center flex items-center justify-center">
+                                <h1 className="text-2xl font-bold absolute top-4">알림</h1>
+                                <div className="pt-3 text-md text-neutral-600 dark:text-white">
+                                    {message}
+                                </div>
                             </div>
                         )}
                     </DefaultAlert>
