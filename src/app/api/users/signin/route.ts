@@ -26,11 +26,6 @@ export async function POST(req: NextRequest) {
     if (!responseObject) {
         return NextResponse.json({ message: 'Not Authorized' }, { status: 401 });
     }
-    const cookie = cookies().get('memory_token');
-    if (cookie) {
-        cookies().set('memory_token', '');
-    }
-    cookies().set('memory_token', `${responseObject.grantType} ${responseObject.accessToken}`, {});
 
     return new Response(JSON.stringify(response), { status: 200 });
 }

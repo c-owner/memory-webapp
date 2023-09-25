@@ -21,7 +21,9 @@ export const authOptions: NextAuthOptions = {
                     email: profile.email ?? '',
                     name: profile.id.toString(),
                     username: profile.email?.split('@')[0] || '',
-                    image: profile.avatar_url
+                    image: profile.avatar_url,
+                    grantType: '',
+                    accessToken: ''
                 };
             },
             clientId: process.env.GITHUB_ID as string,
@@ -79,7 +81,8 @@ export const authOptions: NextAuthOptions = {
                         email: user.memberEmail,
                         name: user.memberName,
                         username: user.memberEmail?.split('@')[0] || '',
-                        image: user.memberImage
+                        image: user.memberImage,
+                        accessToken: `${exUser.data.responseObject.grantType} ${exUser.data.responseObject.accessToken}`
                     };
                 }
 
@@ -95,7 +98,7 @@ export const authOptions: NextAuthOptions = {
         // Ref: https://authjs.dev/guides/basics/role-based-access-control#persisting-the-role
         async jwt({ token, user }) {
             if (user) {
-                token.email = user.email;
+                token.accessType = user.accessToken;
             }
             return token;
         },
@@ -108,7 +111,8 @@ export const authOptions: NextAuthOptions = {
                     username: session.user.email?.split('@')[0],
                     image: session.user.image || '',
                     following: session.user.following || [],
-                    followers: session.user.followers || []
+                    followers: session.user.followers || [],
+                    accessToken: token.accessType
                 };
             }
             return session;

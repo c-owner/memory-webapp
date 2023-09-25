@@ -49,15 +49,18 @@ export default function EmailLogin() {
             }
         );
         if (result) {
-            setLoading(true);
-            const timeHandler = setTimeout(() => {
-                setAlert(false);
-                router.push('/');
-                return () => {
-                    clearTimeout(timeHandler);
-                };
-            }, 2200);
+            submitAfter();
         }
+    };
+    const submitAfter = () => {
+        setLoading(true);
+        const timeHandler = setTimeout(() => {
+            setAlert(false);
+            router.push('/');
+            return () => {
+                clearTimeout(timeHandler);
+            };
+        }, 2200);
     };
 
     return (
@@ -96,7 +99,7 @@ export default function EmailLogin() {
             <DefaultButton text={`OK`} />
             {alert && (
                 <ModalPortal>
-                    <DefaultAlert onClose={() => setAlert(false)}>
+                    <DefaultAlert onClose={() => submitAfter()}>
                         {/* eslint-disable-next-line no-nested-ternary */}
                         {loading ? (
                             <div className="text-center">
