@@ -24,6 +24,7 @@
         "react-device-detect": "^2.2.3",
         "react-dom": "18.2.0",
         "react-icons": "^4.11.0",
+        "react-multi-carousel": "^2.8.4",
         "react-spinners": "^0.13.8",
         "swr": "^2.2.2",
         "tailwind-scrollbar-hide": "^1.1.7",
