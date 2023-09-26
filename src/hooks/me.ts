@@ -14,7 +14,7 @@ export function updateName(user: UpdateUser) {
     return fetch('/api/users/me', {
         method: 'PATCH',
         body: JSON.stringify({
-            name: user?.name || '',
+            name: user?.memberName || '',
             image: user?.image || '',
             password: user?.password || ''
         })

@@ -18,15 +18,15 @@ export default function FollowingBar() {
             )}
             {users && users.length > 0 && (
                 <ScrollableBar>
-                    {users.map(({ image, name }) => (
+                    {users.map(({ image, memberName }) => (
                         <Link
-                            key={name}
+                            key={memberName}
                             className="flex flex-col items-center w-20"
-                            href={`/user/${name}`}
+                            href={`/user/${memberName}`}
                         >
                             <Avatar image={image} highlight />
                             <p className="w-full text-sm text-center text-ellipsis overflow-hidden">
-                                {name}
+                                {memberName}
                             </p>
                         </Link>
                     ))}

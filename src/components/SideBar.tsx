@@ -10,7 +10,7 @@ import NameEditor from '@/components/auth/NameEditor';
 type Props = {
     user: AuthUser;
 };
-export default function SideBar({ user: { image, name, username } }: Props) {
+export default function SideBar({ user: { image, memberName, username } }: Props) {
     const [editor, setEditor] = useState(false);
 
     return (
@@ -18,7 +18,7 @@ export default function SideBar({ user: { image, name, username } }: Props) {
             <div className="flex items-center">
                 <Avatar image={image} />
                 <div className="flex flex-col gap-2 ml-4">
-                    <p className="font-bold">{name}</p>
+                    <p className="font-bold">{memberName}</p>
                     <p className="text-lg text-neutral-500 leading-4">@{username}</p>
                     <EditorButton
                         onClick={() => {

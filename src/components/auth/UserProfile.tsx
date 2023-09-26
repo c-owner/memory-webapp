@@ -6,7 +6,7 @@ type Props = {
     user: ProfileUser;
 };
 export default function UserProfile({ user }: Props) {
-    const { image, username, name, followers, following, posts } = user;
+    const { image, username, memberName, followers, following, posts } = user;
     const info = [
         { title: 'posts', data: posts },
         { title: 'followers', data: followers },
@@ -28,7 +28,7 @@ export default function UserProfile({ user }: Props) {
                         </li>
                     ))}
                 </ul>
-                <p className="text-xl font-bold text-center md:text-start">{name}</p>
+                <p className="text-xl font-bold text-center md:text-start">{memberName}</p>
             </div>
         </section>
     );
