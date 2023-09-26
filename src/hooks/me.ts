@@ -10,15 +10,6 @@ export function register(user: SignUser | OAuthUser) {
     }).then((res) => res.json());
 }
 
-export function login(user: SignUser) {
-    return fetch('/api/users/signin', {
-        method: 'POST',
-        body: JSON.stringify(user)
-    }).then((res) => {
-        return res.json();
-    });
-}
-
 export function updateName(user: UpdateUser) {
     return fetch('/api/users/me', {
         method: 'PATCH',

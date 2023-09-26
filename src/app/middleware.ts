@@ -13,6 +13,8 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
         if (session) {
             return NextResponse.redirect(new URL('/', req.url));
         }
+    } else if (!session) {
+        return NextResponse.redirect(new URL('/auth/signin', req.url));
     }
 
     return NextResponse.next();
