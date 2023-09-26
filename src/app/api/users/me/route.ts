@@ -1,29 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import axios from 'axios';
+import { getServerSession } from 'next-auth';
 
 const secret = process.env.NEXTAUTH_SECRET;
 export async function GET(req: Request) {
     const session = await getServerSession(authOptions);
     const accessToken = session?.user?.accessToken;
-
     if (!accessToken) {
         return NextResponse.json({ message: 'Not Authorized' }, { status: 401 });
     }
-
-    const response = await fetch(`${process.env.API_DOMAIN}/members/me`, {
-        headers: {
-            Authorization: accessToken
-        }
-    }).then((res) => {
+    const response = await fetch(`${process.env.API_DOMAIN}/members/me`, {}).then((res) => {
         return res.json();
     });
-
-    const { responseObject } = response;
-    if (!responseObject) {
-        return NextResponse.json({ message: 'Not Authorized' }, { status: 401 });
-    }
 
     return NextResponse.json(response, { status: 200 });
 }
