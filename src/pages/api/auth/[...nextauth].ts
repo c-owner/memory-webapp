@@ -77,11 +77,13 @@ export const authOptions: NextAuthOptions = {
                         });
                     return {
                         ...user,
-                        id: user.memberId,
+                        id: user.id,
                         email: user.memberEmail,
                         name: user.memberName,
                         username: user.memberEmail?.split('@')[0] || '',
                         image: user.memberImage,
+                        following: user.following || [],
+                        followers: user.followers || [],
                         accessToken: `${exUser.data.responseObject.grantType} ${exUser.data.responseObject.accessToken}`
                     };
                 }
@@ -98,21 +100,36 @@ export const authOptions: NextAuthOptions = {
         // Ref: https://authjs.dev/guides/basics/role-based-access-control#persisting-the-role
         async jwt({ token, user }) {
             if (user) {
-                token.accessType = user.accessToken;
+                token.id = user.id;
+                token.accessToken = user.accessToken;
             }
             return token;
         },
         // If you want to use the role in client components
         async session({ session, token }) {
             if (session?.user) {
+                const user = await axios
+                    .get(`${process.env.API_DOMAIN}/members/me`, {
+                        headers: {
+                            Authorization: token.accessToken
+                        }
+                    })
+                    .then((res) => {
+                        return res.data.responseObject;
+                    })
+                    .catch((err) => {
+                        throw new Error(err.response.data.errorMessage);
+                    });
                 session.user = {
-                    ...session?.user,
-                    id: session.user.id,
-                    username: session.user.email?.split('@')[0],
-                    image: session.user.image || '',
-                    following: session.user.following || [],
-                    followers: session.user.followers || [],
-                    accessToken: token.accessType
+                    ...user,
+                    id: user.id,
+                    email: user.memberEmail,
+                    name: user.memberName,
+                    username: user.memberEmail?.split('@')[0] || '',
+                    image: user.memberImage,
+                    following: user.following || [],
+                    followers: user.followers || [],
+                    accessToken: token.accessToken
                 };
             }
             return session;

@@ -21,12 +21,14 @@ declare module 'next-auth' {
 
     interface User extends AuthUser, DefaultUser {
         image?: string | undefined | null;
+        id: string;
         accessToken: string;
     }
 }
 
 declare module 'next-auth/jwt' {
     interface JWT extends DefaultJWT {
-        accessType: string;
+        id: string;
+        accessToken: string;
     }
 }
