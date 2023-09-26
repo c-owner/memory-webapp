@@ -11,15 +11,16 @@ type Props = {
     user: ProfileUser;
 };
 export default function FollowButton({ user }: Props) {
-    const { name } = user;
+    const { memberName } = user;
     const { user: loggedInUser, toggleFollow } = useMe();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [isFetching, setIsFetching] = useState(false);
     const isUpdating = isPending || isFetching;
 
-    const showButton = loggedInUser && loggedInUser.name !== name;
-    const following = loggedInUser && loggedInUser.following.find((item) => item.name === name);
+    const showButton = loggedInUser && loggedInUser.memberName !== memberName;
+    const following =
+        loggedInUser && loggedInUser.following.find((item) => item.memberName === memberName);
 
     const text = following ? 'Unfollow' : 'Follow';
 

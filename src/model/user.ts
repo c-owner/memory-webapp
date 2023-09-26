@@ -1,14 +1,14 @@
 export type AuthUser = {
     id: string;
     email: string;
-    name: string;
+    memberName: string;
     username: string;
     image?: string | null | undefined;
 };
 
 export type OAuthUser = {
     email: string;
-    name: string;
+    memberName: string;
     image?: string | null | undefined;
 };
 
@@ -18,12 +18,12 @@ export type SignUser = {
 };
 
 export type UpdateUser = {
-    name?: string;
+    memberName?: string;
     password?: string;
     image?: string | null | undefined;
 };
 
-export type SimpleUser = Pick<AuthUser, 'name' | 'image'>;
+export type SimpleUser = Pick<AuthUser, 'memberName' | 'image'>;
 
 export type HomeUser = AuthUser & {
     following: SimpleUser[];

@@ -10,11 +10,19 @@ export async function GET(req: Request) {
     if (!accessToken) {
         return NextResponse.json({ message: 'Not Authorized' }, { status: 401 });
     }
-    const response = await fetch(`${process.env.API_DOMAIN}/members/me`, {}).then((res) => {
+    const response = await fetch(`${process.env.API_DOMAIN}/members/me`, {
+        headers: {
+            Authorization: accessToken
+        }
+    }).then((res) => {
         return res.json();
     });
 
-    return NextResponse.json(response, { status: 200 });
+    if (response?.responseObject) {
+        return NextResponse.json(response.responseObject, { status: 200 });
+    }
+
+    return NextResponse.json({ message: 'Not Authorized' }, { status: 401 });
 }
 
 export async function PATCH(req: NextRequest) {
@@ -25,9 +33,9 @@ export async function PATCH(req: NextRequest) {
         return new Response('Authentication Error', { status: 401 });
     }
 
-    const { name } = await req.json();
+    const { memberName } = await req.json();
 
-    if (!name === undefined) {
+    if (!memberName === undefined) {
         return new Response('Bad Request', { status: 400 });
     }
 
@@ -35,7 +43,7 @@ export async function PATCH(req: NextRequest) {
         .patch(
             `${process.env.API_DOMAIN}/members/me}`,
             {
-                memberName: name
+                memberName
             },
             {
                 headers: {

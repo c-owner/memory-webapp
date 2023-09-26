@@ -13,7 +13,7 @@ type Props = {
     onClose: () => void;
 };
 export default function NameEditor({ username, onClose }: Props) {
-    const [name, setName] = useState('');
+    const [memberName, setMemberName] = useState('');
     const [image, setImage] = useState('');
     const [password, setPassword] = useState('');
     const { changeName } = useMe();
@@ -32,7 +32,7 @@ export default function NameEditor({ username, onClose }: Props) {
         setLoading(true);
 
         const { data, isLoading, error, mutate } = await changeName({
-            name,
+            memberName,
             image,
             password
         });
@@ -78,8 +78,8 @@ export default function NameEditor({ username, onClose }: Props) {
                                 id="name"
                                 name="name"
                                 placeholder="Name"
-                                value={name}
-                                onChange={(event) => setName(event.target.value)}
+                                value={memberName}
+                                onChange={(event) => setMemberName(event.target.value)}
                                 className="border border-gray-300 dark:text-black dark:border-neutral-700 rounded-md p-2"
                             />
                         </div>

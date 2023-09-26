@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
                     ...profile,
                     id: profile.id.toString(),
                     email: profile.email ?? '',
-                    name: profile.id.toString(),
+                    memberName: profile.id.toString(),
                     username: profile.email?.split('@')[0] || '',
                     image: profile.avatar_url,
                     grantType: '',
@@ -32,18 +32,6 @@ export const authOptions: NextAuthOptions = {
         // ...add more providers here
         CredentialsProvider({
             name: '다른 방법으로 로그인',
-            credentials: {
-                email: {
-                    label: 'Email',
-                    type: 'email',
-                    placeholder: 'your-cool-username'
-                },
-                password: {
-                    label: 'Password',
-                    type: 'password',
-                    placeholder: 'your-awesome-password'
-                }
-            },
             async authorize(credentials) {
                 if (!credentials) {
                     throw new Error(' 잘못된 입력입니다. ');
@@ -79,7 +67,7 @@ export const authOptions: NextAuthOptions = {
                         ...user,
                         id: user.id,
                         email: user.memberEmail,
-                        name: user.memberName,
+                        memberName: user.memberName,
                         username: user.memberEmail?.split('@')[0] || '',
                         image: user.memberImage,
                         following: user.following || [],
@@ -89,6 +77,18 @@ export const authOptions: NextAuthOptions = {
                 }
 
                 return null;
+            },
+            credentials: {
+                email: {
+                    label: 'Email',
+                    type: 'email',
+                    placeholder: 'your-cool-username'
+                },
+                password: {
+                    label: 'Password',
+                    type: 'password',
+                    placeholder: 'your-awesome-password'
+                }
             }
         })
     ],
@@ -124,7 +124,7 @@ export const authOptions: NextAuthOptions = {
                     ...user,
                     id: user.id,
                     email: user.memberEmail,
-                    name: user.memberName,
+                    memberName: user.memberName,
                     username: user.memberEmail?.split('@')[0] || '',
                     image: user.memberImage,
                     following: user.following || [],
