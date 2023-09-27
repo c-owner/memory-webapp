@@ -4,10 +4,16 @@ import GridSpinner from '@/components/ui/GridSpinner';
 import usePosts from '@/hooks/posts';
 import PostListCard from '@/components/PostListCard';
 import { SimplePost } from '@/model/post';
+import { AuthUser } from '@/model/user';
 
-export default function PostList() {
+type Props = {
+    user: AuthUser;
+};
+
+export default function PostList({ user }: Props) {
     const { data, isLoading: loading } = usePosts();
     const posts = data;
+
     return (
         <section>
             {loading && (
@@ -18,9 +24,10 @@ export default function PostList() {
             {posts && (
                 <ul>
                     {posts.length > 0 &&
-                        posts.map((post: SimplePost, index: number) => (
+                        Object.keys(posts).length > 0 &&
+                        posts?.map((post: SimplePost, index: number) => (
                             <li key={post.memoryId} className="mb-4">
-                                <PostListCard post={post} priority={index < 2} />
+                                <PostListCard post={post} priority={index < 2} user={user} />
                             </li>
                         ))}
                 </ul>

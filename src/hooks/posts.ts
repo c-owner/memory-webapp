@@ -10,6 +10,26 @@ async function addComment(id: string, content: string) {
     }).then((res) => res.json());
 }
 
+async function addPost(content: string) {
+    return fetch('/api/posts', {
+        method: 'POST',
+        body: JSON.stringify({ content })
+    }).then((res) => res.json());
+}
+
+async function updatePost(memoryId: string, content: string) {
+    return fetch(`/api/posts/${memoryId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ content })
+    }).then((res) => res.json());
+}
+
+async function removePost(memoryId: string) {
+    return fetch(`/api/posts/${memoryId}`, {
+        method: 'DELETE'
+    }).then((res) => res.json());
+}
+
 export default function usePosts() {
     const cacheKeys = useCacheKeys();
     const { data, isLoading, error, mutate } = useSWR<SimplePost[]>(cacheKeys.postsKey);
@@ -31,5 +51,27 @@ export default function usePosts() {
         },
         [data, mutate]
     );
-    return { data, isLoading, error, postComment };
+
+    const newPost = useCallback(
+        (content: string) => {
+            return mutate(addPost(content));
+        },
+        [data, mutate]
+    );
+
+    const modifyPost = useCallback(
+        (memoryId: string, content: string) => {
+            return mutate(updatePost(memoryId, content));
+        },
+        [data, mutate]
+    );
+
+    const deletePost = useCallback(
+        (memoryId: string) => {
+            return mutate(removePost(memoryId));
+        },
+        [data, mutate]
+    );
+
+    return { data, isLoading, error, postComment, newPost, modifyPost, deletePost };
 }
