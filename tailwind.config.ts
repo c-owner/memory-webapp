@@ -12,12 +12,12 @@ module.exports = {
     theme: {
         screens: {
             ...defaultTheme.screens,
-            xs: { max: '465px' }
+            xs: { max: '375px' }
         },
         extend: {
             screens: {
                 ...defaultTheme,
-                xs: { max: '465px' }
+                xs: { max: '375px' }
             }
         }
     },

@@ -62,6 +62,15 @@ export default function PostListCard({ post, priority = false, user }: Props) {
         });
     };
 
+    /*
+    const [conentHide, setContentHide] = useState([]);
+
+    const post_contents = document.getElementsByClassName(
+        'post_content'
+    ) as HTMLCollectionOf<Element>;
+    // post_content height 300px 이상 넘어가면 접기 버튼 생성
+*/
+
     return (
         <article className="rounded-lg shadow-md border border-gray-200">
             <div className="flex items-center justify-between px-5">
@@ -102,8 +111,8 @@ export default function PostListCard({ post, priority = false, user }: Props) {
                     </form>
                 </div>
             ) : (
-                <div className="relative prose lg:prose-xl max-w-none">
-                    <div className="px-5 py-3 whitespace-pre-wrap">
+                <div className="post_content relative max-h-40 overflow-y-auto">
+                    <div className="px-5 py-3 whitespace-pre-wrap overflow-auto">
                         <MarkdownViewer content={postContent} />
                     </div>
                 </div>
