@@ -24,7 +24,7 @@ export default function UserSearch() {
     };
     return (
         <section className="w-full max-w-2xl my-4 flex flex-col items-center mx-3">
-            <form onSubmit={onSubmit} className="w-full mb-4">
+            <form onSubmit={onSubmit} className="w-full mb-4 px-2">
                 <input
                     type="text"
                     className="w-full text-xl p-3 outline-none border border-gray-400 rounded-lg"
