@@ -1,20 +1,12 @@
-import SearchForm from '@/components/SearchForm';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { redirect } from 'next/navigation';
+import UserSearch from '@/components/UserSearch';
+import { Metadata } from 'next';
 
-export default async function SearchPage() {
-    const session = await getServerSession(authOptions);
-    const user = session?.user;
+export const dynamic = 'force-dynamic';
 
-    if (!user) {
-        redirect('/auth/signin');
-    }
-
-    return (
-        <div className="mt-5">
-            <h1>Search Page</h1>
-            <SearchForm />
-        </div>
-    );
+export const metadata: Metadata = {
+    title: 'User Search',
+    description: 'Search users to follow'
+};
+export default function SearchPage() {
+    return <UserSearch />;
 }

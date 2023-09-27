@@ -22,6 +22,10 @@ export default async function SignInPage({ searchParams: { callbackUrl } }: Prop
     const session = await getServerSession(authOptions);
     const providers = (await getProviders()) ?? {};
 
+    if (session) {
+        redirect(callbackUrl ?? '/');
+    }
+
     return (
         <section className="flex flex-col gap-10 justify-center mt-24">
             <h1 className="text-4xl font-bold text-center">Sign In</h1>

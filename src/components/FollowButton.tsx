@@ -1,17 +1,17 @@
 'use client';
 
 import useMe from '@/hooks/me';
-import { ProfileUser } from '@/model/user';
+import { ProfileUser, SearchUser } from '@/model/user';
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { PulseLoader } from 'react-spinners';
 import Button from './ui/Button';
 
 type Props = {
-    user: ProfileUser;
+    user: ProfileUser | SearchUser;
 };
 export default function FollowButton({ user }: Props) {
-    const { memberName } = user;
+    const { memberName, id: targetId } = user;
     const { user: loggedInUser, toggleFollow } = useMe();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
@@ -26,7 +26,7 @@ export default function FollowButton({ user }: Props) {
 
     const handleFollow = async () => {
         setIsFetching(true);
-        await toggleFollow(user.id, !following);
+        await toggleFollow(targetId);
         setIsFetching(false);
         startTransition(() => {
             router.refresh();
