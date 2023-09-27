@@ -19,7 +19,8 @@
             "options": {
                 "semi": false,
                 "bracketSpacing": true,
-                "trailingComma": "all"
+                "trailingComma": "none",
+                "singleQuote": false
             }
         }
     ]

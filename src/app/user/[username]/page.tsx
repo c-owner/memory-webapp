@@ -11,9 +11,5 @@ export default async function UserPage({ params: { username } }: Props) {
         notFound();
     }
 
-    if (!session) {
-        redirect('/auth/signin');
-    }
-
     return <>UserDetailPage</>;
 }

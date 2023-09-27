@@ -31,6 +31,7 @@ export default function EmailLogin() {
                 setLoading(isLoading);
                 if (data && !data.ok) {
                     setSuccessType(false);
+                    setLoading(false);
                     setMessage({
                         title: '로그인 실패',
                         content: data.error || '로그인에 실패했습니다.'
@@ -44,13 +45,11 @@ export default function EmailLogin() {
                         title: '로그인 성공',
                         content: '로그인에 성공했습니다.'
                     });
+                    submitAfter();
                     return true;
                 }
             }
         );
-        if (result) {
-            submitAfter();
-        }
     };
     const submitAfter = () => {
         setLoading(true);
@@ -99,7 +98,7 @@ export default function EmailLogin() {
             <DefaultButton text={`OK`} />
             {alert && (
                 <ModalPortal>
-                    <DefaultAlert onClose={() => submitAfter()}>
+                    <DefaultAlert onClose={() => setAlert(false)}>
                         {/* eslint-disable-next-line no-nested-ternary */}
                         {loading ? (
                             <div className="text-center">
