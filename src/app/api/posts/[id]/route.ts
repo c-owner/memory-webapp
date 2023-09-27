@@ -3,15 +3,22 @@ import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 
-export async function GET(req: NextRequest) {
+type Context = {
+    params: {
+        id: string;
+    };
+};
+export async function GET(req: NextRequest, context: Context) {
     const session = await getServerSession(authOptions);
     const accessToken = session?.user?.accessToken;
     if (!accessToken) {
         return NextResponse.json('Not Authorized', { status: 401 });
     }
 
+    const memoryId = context.params.id;
+
     return axios
-        .get(`${process.env.API_DOMAIN}/memories/${req.json()}`, {
+        .get(`${process.env.API_DOMAIN}/memories/${memoryId}`, {
             headers: {
                 Authorization: accessToken
             }
@@ -19,10 +26,6 @@ export async function GET(req: NextRequest) {
         .then((res) => NextResponse.json(res.data.responseObject.content || [], { status: 200 }))
         .catch((err) => NextResponse.json(err, { status: err.status }));
 }
-
-type Context = {
-    params: { id: string };
-};
 
 export async function PATCH(req: NextRequest, context: Context) {
     const session = await getServerSession(authOptions);

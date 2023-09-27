@@ -11,7 +11,7 @@ type Props = {
     user: ProfileUser | SearchUser;
 };
 export default function FollowButton({ user }: Props) {
-    const { memberName } = user;
+    const { memberName, id: targetId } = user;
     const { user: loggedInUser, toggleFollow } = useMe();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
@@ -26,7 +26,7 @@ export default function FollowButton({ user }: Props) {
 
     const handleFollow = async () => {
         setIsFetching(true);
-        await toggleFollow(user.id, !following);
+        await toggleFollow(targetId.toString());
         setIsFetching(false);
         startTransition(() => {
             router.refresh();

@@ -1,7 +1,7 @@
 'use client';
 
 import { Comment, SimplePost } from '@/model/post';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import ModalPortal from '@/components/ui/ModalPortal';
 import usePosts from '@/hooks/posts';
 import PostModal from '@/components/PostModal';
@@ -41,6 +41,7 @@ export default function PostListCard({ post, priority = false, user }: Props) {
         postComment(post, comment);
     };
     const [content, setContent] = useState(postContent);
+    const [isPending, startTransition] = useTransition();
     const submit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const data = await modifyPost(memoryId, `### **@${userName}**\n\n&nbsp;&nbsp; ${content}`);
@@ -49,10 +50,16 @@ export default function PostListCard({ post, priority = false, user }: Props) {
         }
         setContent(data.content);
         setModify(false);
+        startTransition(() => {
+            router.refresh();
+        });
     };
 
     const handlerDelete = async (memoryId: string) => {
         await deletePost(memoryId);
+        startTransition(() => {
+            router.refresh();
+        });
     };
 
     return (

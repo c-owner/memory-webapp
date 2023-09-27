@@ -21,10 +21,9 @@ export function updateName(user: UpdateUser) {
     }).then((res) => res.json());
 }
 
-async function updateFollow(targetId: string, follow: boolean) {
-    return fetch('/api/follow', {
-        method: 'POST',
-        body: JSON.stringify({ id: targetId, follow })
+async function updateFollow(targetId: string) {
+    return fetch(`/api/users/follow/${targetId}`, {
+        method: 'GET'
     }).then((res) => res.json());
 }
 export default function useMe() {
@@ -61,19 +60,18 @@ export default function useMe() {
     const changeName = useCallback(
         async (user: UpdateUser) => {
             const data = await updateName(user);
-            mutate(data);
-            return { data, mutate, isLoading, error };
+            return mutate(data);
         },
         [user, mutate]
     );
 
     const toggleFollow = useCallback(
-        (targetId: string, follow: boolean) => {
-            return mutate(updateFollow(targetId, follow), {
+        (targetId: string) => {
+            return mutate(updateFollow(targetId), {
                 populateCache: false
             });
         },
-        [mutate]
+        [user, mutate]
     );
     return { user, isLoading, error, mutate, addUser, emailLogin, changeName, toggleFollow };
 }

@@ -21,5 +21,5 @@ export async function GET(req: NextRequest, context: Context) {
             }
         })
         .then((res) => NextResponse.json(res.data.responseObject, { status: 200 }))
-        .catch((err) => NextResponse.json(err, { status: 401 }));
+        .catch((err) => NextResponse.json({ err }, { status: 401 }));
 }
