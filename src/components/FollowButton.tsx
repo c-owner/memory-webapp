@@ -26,7 +26,7 @@ export default function FollowButton({ user }: Props) {
 
     const handleFollow = async () => {
         setIsFetching(true);
-        await toggleFollow(targetId.toString());
+        await toggleFollow(targetId);
         setIsFetching(false);
         startTransition(() => {
             router.refresh();

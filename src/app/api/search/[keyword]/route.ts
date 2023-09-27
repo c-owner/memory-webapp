@@ -14,8 +14,11 @@ export async function GET(req: NextRequest, context: Context) {
     if (!accessToken) {
         return NextResponse.json({ message: 'Not Authorized' }, { status: 401 });
     }
+
+    const { keyword } = context.params;
+
     return axios
-        .get(`${process.env.API_DOMAIN}/members`, {
+        .get(`${process.env.API_DOMAIN}/members/${keyword}`, {
             headers: {
                 Authorization: accessToken
             }
