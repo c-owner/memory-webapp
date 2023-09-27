@@ -20,22 +20,12 @@ export default function Navbar() {
                 <h1 className="text-indigo-900 dark:text-indigo-300 text-2xl">
                     <Link href="/">Memory</Link>
                 </h1>
-                <div className="hidden items-center justify-center md:flex gap-2">
-                    <SearchForm />
-                    <Link className="mr-2" href="/search">
-                        <SearchIcon />
-                    </Link>
-                </div>
                 <div className="flex items-center justify-center gap-4">
-                    <div className="flex items-center justify-center md:hidden">
+                    <div className="flex items-center justify-center">
                         <Link className="mr-2" href={`/search`}>
                             <SearchIcon />
                         </Link>
                     </div>
-
-                    <button type="button" onClick={() => {}} className="block sm:hidden">
-                        <BottomArrowIcon />
-                    </button>
 
                     {user && (
                         <li>

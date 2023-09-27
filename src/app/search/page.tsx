@@ -7,6 +7,10 @@ export default async function SearchPage() {
     const session = await getServerSession(authOptions);
     const user = session?.user;
 
+    if (!user) {
+        redirect('/auth/signin');
+    }
+
     return (
         <div className="mt-5">
             <h1>Search Page</h1>
