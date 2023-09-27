@@ -1,6 +1,5 @@
 'use client';
 
-import SmileIcon from '@/components/ui/icons/SmileIcon';
 import { useState } from 'react';
 import { Comment } from '@/model/post';
 
@@ -22,7 +21,7 @@ export default function CommentForm({ onPostComment }: Props) {
             onSubmit={handleSubmit}
             className="flex items-center px-3 border-t border-neutral-300"
         >
-            <SmileIcon />
+            {/* Smile Icon */}
             <input
                 className="w-full ml-2 border-none outline-none p-3"
                 type="text"

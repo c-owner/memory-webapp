@@ -21,7 +21,7 @@ export default function useFullPost(postId: string) {
                 comments: [...post.comments, comment]
             };
 
-            return mutate(addComment(post.memoryId, comment.comment), {
+            return mutate(addComment(post.memoryId, comment.content), {
                 optimisticData: newPost,
                 populateCache: false,
                 revalidate: false,

@@ -32,7 +32,7 @@ export default function PostDetail({ post }: Props) {
                 <ul className="border-t border-gray-200 h-full overflow-y-auto p-4 mb-1">
                     {isLoading && <GridSpinner />}
                     {comments &&
-                        comments.map(({ image, memberName: commentUsername, comment }, index) => (
+                        comments.map(({ image, memberName: commentUsername, content }, index) => (
                             <li key={index} className="flex items-center mb-1">
                                 <Avatar
                                     image={image}
@@ -41,7 +41,7 @@ export default function PostDetail({ post }: Props) {
                                 />
                                 <div className="ml-2">
                                     <span className="font-bold mr-1">{commentUsername}</span>
-                                    <span>{comment}</span>
+                                    <span>{content}</span>
                                 </div>
                             </li>
                         ))}
