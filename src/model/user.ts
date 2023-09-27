@@ -31,8 +31,11 @@ export type HomeUser = AuthUser & {
 };
 
 export type SearchUser = AuthUser & {
-    following: number;
-    followers: number;
+    memberEmail: string;
+    following: [];
+    followers: [];
+    followersCnt: number;
+    followingCnt: number;
 };
 
 export type ProfileUser = SearchUser & {

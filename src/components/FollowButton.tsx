@@ -1,14 +1,14 @@
 'use client';
 
 import useMe from '@/hooks/me';
-import { ProfileUser } from '@/model/user';
+import { ProfileUser, SearchUser } from '@/model/user';
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { PulseLoader } from 'react-spinners';
 import Button from './ui/Button';
 
 type Props = {
-    user: ProfileUser;
+    user: ProfileUser | SearchUser;
 };
 export default function FollowButton({ user }: Props) {
     const { memberName } = user;
