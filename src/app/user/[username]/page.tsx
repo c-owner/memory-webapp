@@ -1,13 +1,14 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
-export default async function UserDetailPage() {
+type Props = { params: { username: string } };
+export default async function UserPage({ params: { username } }: Props) {
     const session = await getServerSession(authOptions);
     const user = session?.user;
 
-    if (!session) {
-        redirect('/auth/signin');
+    if (!user) {
+        notFound();
     }
 
     return <>UserDetailPage</>;

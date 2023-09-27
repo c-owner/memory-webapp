@@ -9,17 +9,22 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
     const session = await getToken({ req, secret, raw: true });
     const { pathname } = req.nextUrl;
 
-    if (pathname.startsWith('/auth/:path*')) {
-        if (session) {
-            return NextResponse.redirect(new URL('/', req.url));
+    console.log('middleware working');
+    console.log('pathname', pathname);
+    console.log('session', session);
+    if (!session && pathname !== '/auth/:path*') {
+        if (pathname === '/api/auth/:path*') {
+            return NextResponse.next();
         }
-    } else if (!session) {
         return NextResponse.redirect(new URL('/auth/signin', req.url));
+    }
+    if (session && (pathname === '/auth/:path*' || pathname === '/api/auth/:path*')) {
+        return NextResponse.redirect(new URL('/', req.url));
     }
 
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/auth/:path*']
+    matcher: ['/auth/:path*', '/api/auth/:path*']
 };

@@ -7,7 +7,7 @@ export default async function SearchPage() {
     const session = await getServerSession(authOptions);
     const user = session?.user;
 
-    if (!session) {
+    if (!user) {
         redirect('/auth/signin');
     }
 

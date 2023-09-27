@@ -7,35 +7,30 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import Avatar from '@/components/Avatar';
 import BottomArrowIcon from '@/components/ui/icon/BottomArrowIcon';
 import SearchForm from '@/components/SearchForm';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import NewIcon from '@/components/ui/icon/NewIcon';
+import NewFillIcon from '@/components/ui/icon/NewFillIcon';
 
 export default function Navbar() {
     const { data: session } = useSession();
     const user = session?.user;
     const router = useRouter();
-
+    const pathName = usePathname();
     return (
         <div className="flex justify-between items-center p-4">
             <nav className="w-full flex gap-2 items-center justify-between">
                 <h1 className="text-indigo-900 dark:text-indigo-300 text-2xl">
                     <Link href="/">Memory</Link>
                 </h1>
-                <div className="hidden items-center justify-center md:flex gap-2">
-                    <SearchForm />
-                    <Link className="mr-2" href="/search">
-                        <SearchIcon />
-                    </Link>
-                </div>
                 <div className="flex items-center justify-center gap-4">
-                    <div className="flex items-center justify-center md:hidden">
+                    <div className="flex items-center justify-center">
+                        <Link className="mr-2" href={`/new`}>
+                            {pathName === '/new' ? <NewFillIcon /> : <NewIcon />}
+                        </Link>
                         <Link className="mr-2" href={`/search`}>
                             <SearchIcon />
                         </Link>
                     </div>
-
-                    <button type="button" onClick={() => {}} className="block sm:hidden">
-                        <BottomArrowIcon />
-                    </button>
 
                     {user && (
                         <li>

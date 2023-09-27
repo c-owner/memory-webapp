@@ -38,6 +38,10 @@ export const authOptions: NextAuthOptions = {
                 }
 
                 const { email, password } = credentials;
+
+                if (!email || !password) {
+                    throw new Error(' 잘못된 입력입니다. ');
+                }
                 const exUser = await axios
                     .post(`${process.env.API_DOMAIN}/members/sign-in`, {
                         memberEmail: email,
