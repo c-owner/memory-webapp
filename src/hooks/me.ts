@@ -10,14 +10,10 @@ export function register(user: SignUser | OAuthUser) {
     }).then((res) => res.json());
 }
 
-export function updateName(user: UpdateUser) {
+export function modifyUser(user: UpdateUser) {
     return fetch('/api/users/me', {
         method: 'PATCH',
-        body: JSON.stringify({
-            name: user?.memberName || '',
-            image: user?.image || '',
-            password: user?.password || ''
-        })
+        body: JSON.stringify(user)
     }).then((res) => res.json());
 }
 
@@ -64,9 +60,9 @@ export default function useMe() {
         [user, mutate]
     );
 
-    const changeName = useCallback(
+    const updateUser = useCallback(
         async (user: UpdateUser) => {
-            const data = await updateName(user);
+            const data = await modifyUser(user);
             return mutate(data);
         },
         [user, mutate]
@@ -97,7 +93,7 @@ export default function useMe() {
         mutate,
         addUser,
         emailLogin,
-        changeName,
+        updateUser,
         toggleFollow,
         setBookmark
     };

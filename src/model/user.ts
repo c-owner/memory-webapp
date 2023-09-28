@@ -19,8 +19,7 @@ export type SignUser = {
 
 export type UpdateUser = {
     memberName?: string;
-    password?: string;
-    image?: string | null | undefined;
+    memberPassword?: string;
 };
 
 export type SimpleUser = Pick<AuthUser, 'id' | 'memberName' | 'image'>;

@@ -20,3 +20,13 @@ export async function getUserForProfile(memberId: string) {
         .then((res) => res.data.responseObject || {})
         .catch((err) => err);
 }
+
+export async function registerUserProfile(email: string, password: string) {
+    return axios
+        .post(`${process.env.API_DOMAIN}/members/new`, {
+            memberEmail: email,
+            memberPassword: password
+        })
+        .then((res) => res.data)
+        .catch((err) => err);
+}
