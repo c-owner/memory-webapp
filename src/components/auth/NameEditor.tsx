@@ -14,9 +14,11 @@ type Props = {
 };
 export default function NameEditor({ username, onClose }: Props) {
     const [memberName, setMemberName] = useState('');
-    const [image, setImage] = useState('');
+    const [nameChange, setNameChange] = useState(false);
     const [password, setPassword] = useState('');
-    const { changeName } = useMe();
+    const [passwordChange, setPasswordChange] = useState(false);
+
+    const { updateUser } = useMe();
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState({
         message: '',
@@ -31,10 +33,9 @@ export default function NameEditor({ username, onClose }: Props) {
         });
         setLoading(true);
 
-        const { data, isLoading, error, mutate } = await changeName({
+        const { data, isLoading, error, mutate } = await updateUser({
             memberName,
-            image,
-            password
+            memberPassword: password
         });
         if (data.error) {
             setIsError(true);
@@ -64,36 +65,57 @@ export default function NameEditor({ username, onClose }: Props) {
                 </div>
             )}
             <div
-                className={`bg-white fixed top-1/3 dark:bg-apple-dark-2 rounded-lg shadow-2xl p-3 dark:text-white px-40 py-14
+                className={`bg-white relative sm:fixed top-8 sm:top-1/4 overflow-y-auto
+                dark:bg-apple-dark-2 rounded-lg shadow-2xl p-3 dark:text-white sm:px-40 sm:py-14
                     ${loading && 'opacity-10'}
                 `}
             >
-                <h1 className="dark:text-emerald-200 text-center text-2xl ">닉네임 변경</h1>
+                <h1 className="dark:text-emerald-200 text-center text-2xl ">Update My Info</h1>
                 <form onSubmit={submitName} className="w-full h-full text-left pt-3">
                     <div className="flex flex-col gap-4 pb-5">
                         <div className="flex flex-col gap-2">
                             <label htmlFor="name">Name</label>
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                placeholder="Name"
-                                value={memberName}
-                                onChange={(event) => setMemberName(event.target.value)}
-                                className="border border-gray-300 dark:text-black dark:border-neutral-700 rounded-md p-2"
-                            />
+                            <div className="flex items-center justify-center gap-4">
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    placeholder="Name"
+                                    disabled={nameChange}
+                                    value={memberName}
+                                    onChange={(event) => setMemberName(event.target.value)}
+                                    className="border border-gray-300 dark:text-black dark:border-neutral-700 rounded-md p-2"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setNameChange(!nameChange)}
+                                    className="text-sm text-sky-500 border border-sky-500 rounded-md p-2 bg-white dark:bg-apple-dark-2 dark:text-white shadow-md"
+                                >
+                                    Change Username
+                                </button>
+                            </div>
                         </div>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="password">Password Change</label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                placeholder="Password"
-                                value={password}
-                                onChange={(event) => setPassword(event.target.value)}
-                                className="border border-gray-300 dark:text-black dark:border-neutral-700 rounded-md p-2"
-                            />
+                            <div className="flex items-center justify-center gap-4">
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Password"
+                                    disabled={passwordChange}
+                                    value={password}
+                                    onChange={(event) => setPassword(event.target.value)}
+                                    className="border border-gray-300 dark:text-black dark:border-neutral-700 rounded-md p-2"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setPasswordChange(!passwordChange)}
+                                    className="text-sm text-sky-500 border border-sky-500 rounded-md p-2 bg-white dark:bg-apple-dark-2 dark:text-white shadow-md"
+                                >
+                                    Change Password
+                                </button>
+                            </div>
                         </div>
                     </div>
                     {isError && (

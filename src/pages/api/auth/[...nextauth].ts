@@ -40,44 +40,49 @@ export const authOptions: NextAuthOptions = {
                 const { email, password } = credentials;
 
                 if (!email || !password) {
-                    throw new Error(' 잘못된 입력입니다. ');
-                }
-                const exUser = await axios
-                    .post(`${process.env.API_DOMAIN}/members/sign-in`, {
-                        memberEmail: email,
-                        memberPassword: password
-                    })
-                    .then((res) => {
-                        return res;
-                    })
-                    .catch((err) => {
-                        throw new Error(err.response.data.errorMessage);
-                    });
-
-                if (exUser) {
-                    const user = await axios
-                        .get(`${process.env.API_DOMAIN}/members/me`, {
-                            headers: {
-                                Authorization: `${exUser.data.responseObject.grantType} ${exUser.data.responseObject.accessToken}`
-                            }
+                    return null;
+                } else {
+                    const exUser = await axios
+                        .post(`${process.env.API_DOMAIN}/members/sign-in`, {
+                            memberEmail: email,
+                            memberPassword: password
                         })
                         .then((res) => {
-                            return res.data.responseObject;
+                            return res;
                         })
                         .catch((err) => {
                             throw new Error(err.response.data.errorMessage);
                         });
-                    return {
-                        ...user,
-                        id: user.id,
-                        email: user.memberEmail,
-                        memberName: user.memberName,
-                        username: user.memberEmail?.split('@')[0] || '',
-                        image: user.memberImage,
-                        following: user.following || [],
-                        followers: user.followers || [],
-                        accessToken: `${exUser.data.responseObject.grantType} ${exUser.data.responseObject.accessToken}`
-                    };
+
+                    if (exUser) {
+                        const user = await axios
+                            .get(`${process.env.API_DOMAIN}/members/me`, {
+                                headers: {
+                                    Authorization: `${exUser.data.responseObject.grantType} ${exUser.data.responseObject.accessToken}`
+                                }
+                            })
+                            .then((res) => {
+                                return res.data.responseObject;
+                            })
+                            .catch((err) => {
+                                throw new Error(err.response.data.errorMessage);
+                            });
+                        return {
+                            ...user,
+                            id: user.id,
+                            email: user.memberEmail,
+                            memberName: user.memberName,
+                            username: user.memberEmail?.split('@')[0] || '',
+                            image: user.memberImage,
+                            following: user.following || [],
+                            followers: user.followers || [],
+                            accessToken: `${exUser.data.responseObject.grantType} ${exUser.data.responseObject.accessToken}`
+                        };
+                    } else {
+                        // 회원가입 로직
+                        console.log('credentials !!!!!!!!!!');
+                        console.log(credentials);
+                    }
                 }
 
                 return null;
@@ -97,10 +102,26 @@ export const authOptions: NextAuthOptions = {
         })
     ],
     secret: process.env.NEXTAUTH_SECRET,
-    pages: {
+    /* pages: {
         signIn: '/api/auth/signin'
+    }, */
+    session: {
+        strategy: 'jwt',
+        // 7days
+        maxAge: 7 * 24 * 60 * 60,
+        // 24 hours in seconds
+        updateAge: 24 * 60 * 60
     },
     callbacks: {
+        async signIn({ user, account, profile }) {
+            if (account?.type === 'oauth' && profile) {
+                const { email, name } = profile;
+                // const res = await registerUserProfile(email, 'a12345678');
+                // console.log(res);
+                return true;
+            }
+            return true;
+        },
         // Ref: https://authjs.dev/guides/basics/role-based-access-control#persisting-the-role
         async jwt({ token, user }) {
             if (user) {
@@ -122,7 +143,8 @@ export const authOptions: NextAuthOptions = {
                         return res.data.responseObject;
                     })
                     .catch((err) => {
-                        throw new Error(err.response.data.errorMessage);
+                        // console.log('session error', err);
+                        return null;
                     });
                 session.user = {
                     ...user,

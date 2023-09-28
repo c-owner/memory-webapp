@@ -33,25 +33,20 @@ export async function PATCH(req: NextRequest) {
         return new Response('Authentication Error', { status: 401 });
     }
 
-    const { memberName } = await req.json();
+    const { memberName, memberPassword } = await req.json();
 
-    if (!memberName === undefined) {
-        return new Response('Bad Request', { status: 400 });
-    }
+    const bodyData = {
+        ...(memberName && { memberName }),
+        ...(memberPassword && { memberPassword })
+    };
 
     return axios
-        .patch(
-            `${process.env.API_DOMAIN}/members/me}`,
-            {
-                memberName
-            },
-            {
-                headers: {
-                    Authorization: user.accessToken,
-                    'Content-Type': 'application/json'
-                }
+        .patch(`${process.env.API_DOMAIN}/members/me}`, bodyData, {
+            headers: {
+                Authorization: user.accessToken,
+                'Content-Type': 'application/json'
             }
-        )
+        })
         .then((res) => {
             return NextResponse.json(res, { status: 200 });
         })
