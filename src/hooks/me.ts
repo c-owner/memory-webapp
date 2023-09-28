@@ -28,6 +28,13 @@ async function updateBookmark(id: string) {
         method: 'POST'
     }).then((res) => res.json());
 }
+
+async function removeBookmark(id: string) {
+    return fetch(`/api/bookmarks/${id}`, {
+        method: 'DELETE'
+    }).then((res) => res.json());
+}
+
 export default function useMe() {
     const { data: user, isLoading, error, mutate } = useSWR<HomeUser>(`/api/users/me`);
 
@@ -86,6 +93,15 @@ export default function useMe() {
         [user, mutate]
     );
 
+    const deleteBookmark = useCallback(
+        (memoryId: string) => {
+            return mutate(removeBookmark(memoryId), {
+                populateCache: false
+            });
+        },
+        [user, mutate]
+    );
+
     return {
         user,
         isLoading,
@@ -95,6 +111,7 @@ export default function useMe() {
         emailLogin,
         updateUser,
         toggleFollow,
-        setBookmark
+        setBookmark,
+        deleteBookmark
     };
 }
