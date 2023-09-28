@@ -18,7 +18,7 @@ export default function UserCard({ user }: Props) {
         >
             <Link className="flex items-center" href={`/user/${id}`}>
                 <Avatar image={image} />
-                <div className="text-neutral-500 min-w-[170px]">
+                <div className="text-neutral-500 min-w-[170px] pl-3">
                     <p className="dark:text-neutral-300 text-black font-bold leading-4">
                         {memberName}
                     </p>

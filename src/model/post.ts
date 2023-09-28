@@ -1,11 +1,23 @@
 export type Comment = {
+    memoryId: string;
+    commentId: string;
+    memberId: string;
     content: string;
-    memberName: string;
-    image?: string | undefined;
 };
 
 export type SimplePost = Omit<FullPost, 'comments'> & {
     comments: number;
+};
+
+export type BookmarkPost = {
+    memoryId: string;
+    memberId: string;
+    content: string;
+    likeCnt: number;
+    angryCnt: number;
+    sadCnt: number;
+    reactions: [];
+    comments: Comment[];
 };
 
 export type FullPost = {
