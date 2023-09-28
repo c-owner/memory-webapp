@@ -7,6 +7,8 @@ import GridSpinner from '@/components/ui/GridSpinner';
 import useDebounce from '@/hooks/debounce';
 import UserCard from '@/components/auth/UserCard';
 import useMe from '@/hooks/me';
+import { useSession } from 'next-auth/react';
+import AccessDenied from '@/components/ui/AccessDenied';
 
 export default function UserSearch() {
     const [keyword, setKeyword] = useState('');
@@ -19,6 +21,13 @@ export default function UserSearch() {
 
     const myInfoData = useMe();
     const myInfo = myInfoData.user;
+
+    const { data: mySession } = useSession();
+
+    if (!mySession) {
+        return <AccessDenied />;
+    }
+
     const onSubmit = (e: FormEvent) => {
         e.preventDefault();
     };
@@ -43,6 +52,7 @@ export default function UserSearch() {
             )}
             <ul className="w-full p-4">
                 {users &&
+                    !loading &&
                     users?.map(
                         (user) =>
                             user.memberName !== myInfo?.memberName && (
