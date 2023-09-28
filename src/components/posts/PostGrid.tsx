@@ -2,9 +2,13 @@
 
 import GridSpinner from '@/components/ui/GridSpinner';
 import usePosts from '@/hooks/posts';
-import PostGridCard from '@/components/posts/PostGridCard';
+import PostListCard from '@/components/PostListCard';
+import { AuthUser } from '@/model/user';
 
-export default function PostGrid() {
+type Props = {
+    user: AuthUser;
+};
+export default function PostGrid({ user }: Props) {
     const { data: posts, isLoading } = usePosts();
 
     return (
@@ -14,7 +18,7 @@ export default function PostGrid() {
                 {posts &&
                     posts.map((post, index) => (
                         <li key={post.memoryId}>
-                            <PostGridCard post={post} priority={index < 6} />
+                            <PostListCard user={user} post={post} priority={index < 6} />
                         </li>
                     ))}
             </ul>

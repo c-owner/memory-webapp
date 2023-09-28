@@ -19,11 +19,11 @@ export default function CommentForm({ onPostComment }: Props) {
     return (
         <form
             onSubmit={handleSubmit}
-            className="flex items-center px-3 border-t border-neutral-300"
+            className="flex items-center px-3 border-t border-neutral-300 dark:border-neutral-800"
         >
             <SmileIcon />
             <input
-                className="w-full ml-2 border-none outline-none p-3"
+                className="w-full ml-2 border-none outline-none p-3 dark:bg-apple-dark-2 dark:text-neutral-200"
                 type="text"
                 placeholder="Add a comment..."
                 required
