@@ -74,7 +74,7 @@ export default function PostListCard({ post, priority = false, user }: Props) {
     };
 
     return (
-        <article className="rounded-lg shadow-md border border-gray-200">
+        <article className="rounded-lg shadow-md border border-gray-200 dark:border-gray-600">
             <div className="flex items-center justify-between px-5">
                 <div className="flex items-center">
                     <PostUserAvatar image={userImage} memberName={memberName} />

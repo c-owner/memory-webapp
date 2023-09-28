@@ -4,12 +4,12 @@ import { parseDate } from '@/util/date';
 import { Comment, SimplePost } from '@/model/post';
 import usePosts from '@/hooks/posts';
 import useMe from '@/hooks/me';
-import CommentForm from '@/components/CommentForm';
 import HeartIcon from '@/components/ui/icon/HeartIcon';
 import HeartFillIcon from '@/components/ui/icon/HeartFillIcon';
 import BookmarkFillIcon from '@/components/ui/icon/BookmarkFillIcon';
 import BookmarkIcon from '@/components/ui/icon/BookmarkIcon';
 import ToggleButton from '@/components/ui/ToggleButton';
+import CommentForm from '@/components/posts/CommentForm';
 
 type Props = {
     post: SimplePost;
