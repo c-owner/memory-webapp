@@ -17,7 +17,6 @@ export async function POST(req: NextRequest, context: Context) {
 
     const { content } = await req.json();
 
-    console.log(content);
     return axios
         .post(
             `${process.env.API_DOMAIN}/memories/${context.params.id}/comments/new`,

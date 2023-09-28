@@ -27,7 +27,6 @@ export async function GET(req: NextRequest, context: Context) {
             return NextResponse.json([{ ...res.data.responseObject }], { status: res.status });
         })
         .catch((err) => {
-            console.log(err.message);
             return NextResponse.json([err.message.toString()], { status: 200 });
         });
 }
