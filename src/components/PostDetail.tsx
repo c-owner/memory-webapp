@@ -1,14 +1,13 @@
 import { BookmarkPost, Comment, FullPost, SimplePost } from '@/model/post';
-import Image from 'next/image';
-import userSWR from 'swr';
-import useMe from '@/hooks/me';
 import GridSpinner from '@/components/ui/GridSpinner';
 import useFullPost from '@/hooks/post';
-import Avatar from './Avatar';
-import PostUserAvatar from './PostUserAvatar';
+import MarkdownViewer from '@/components/MarkdownViewer';
+import ActionBar from '@/components/ActionBar';
+import PostUserAvatar from '@/components/PostUserAvatar';
+import Avatar from '@/components/Avatar';
 
 type Props = {
-    post: BookmarkPost;
+    post: BookmarkPost | SimplePost;
 };
 export default function PostDetail({ post }: Props) {
     const {
@@ -23,18 +22,26 @@ export default function PostDetail({ post }: Props) {
     } = post;
     const { post: data, postComment, isLoading, error } = useFullPost(memoryId);
     const comments = data?.comments;
+    const handlePostComment = (memoryId: string, content: string) => {
+        return postComment({ memoryId, content });
+    };
 
     return (
-        <section className="flex w-full h-full">
-            <div className="relative basis-3/5">
-                <div>{content}</div>
-                {reactions?.map((reaction, index) => <div key={index}>{reaction}</div>)}
-                <div>
-                    <span>{likeCnt}</span>
-                    <span>{sadCnt}</span>
-                    <span>{angryCnt}</span>
+        <section className="flex w-full h-full dark:bg-apple-dark-2 dark:text-neutral-100">
+            <div className="relative basis-3/5 p-4 grid">
+                <div className="flex justify-center items-start">
+                    <MarkdownViewer content={content} />
                 </div>
-                <div>{comment.length < 1 ?? 0}</div>
+                {reactions?.map((reaction, index) => (
+                    <div className="flex justify-center items-center" key={index}>
+                        {reaction}
+                    </div>
+                ))}
+                <div className="flex justify-center items-end gap-x-12">
+                    <span> 😊: {likeCnt}</span>
+                    <span> 😢: {sadCnt}</span>
+                    <span> 😡: {angryCnt}</span>
+                </div>
             </div>
             <div className="w-full basis-2/5 flex flex-col">
                 <PostUserAvatar image={''} memberName={memberId} />
@@ -55,6 +62,7 @@ export default function PostDetail({ post }: Props) {
                             </li>
                         ))}
                 </ul>
+                <ActionBar post={post} onComment={postComment} />
             </div>
         </section>
     );

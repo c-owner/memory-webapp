@@ -10,7 +10,7 @@ import { signIn, useSession } from 'next-auth/react';
 import MarkdownViewer from '@/components/MarkdownViewer';
 
 type Props = {
-    post: BookmarkPost;
+    post: BookmarkPost | SimplePost;
 };
 export default function PostGridCard({ post }: Props) {
     const [openModal, setOpenModal] = useState(false);
@@ -26,7 +26,7 @@ export default function PostGridCard({ post }: Props) {
     return (
         <div className="relative w-full aspect-square">
             <button
-                className="max-h-full shadow-2xl rounded-md p-3 bg-neutral-200 dark:bg-apple-dark-2 cursor-pointer"
+                className="w-full aspect-square max-h-full shadow-2xl rounded-md p-3 bg-neutral-200 dark:bg-apple-dark-2 cursor-pointer"
                 onClick={handleOpenPost}
             >
                 <div className="">

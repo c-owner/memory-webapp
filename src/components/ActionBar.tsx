@@ -1,7 +1,7 @@
 'use client';
 
 import { parseDate } from '@/util/date';
-import { Comment, SimplePost } from '@/model/post';
+import { BookmarkPost, Comment, SimplePost } from '@/model/post';
 import usePosts from '@/hooks/posts';
 import useMe from '@/hooks/me';
 import HeartIcon from '@/components/ui/icon/HeartIcon';
@@ -12,12 +12,12 @@ import ToggleButton from '@/components/ui/ToggleButton';
 import CommentForm from '@/components/posts/CommentForm';
 
 type Props = {
-    post: SimplePost;
+    post: SimplePost | BookmarkPost;
     children?: React.ReactNode;
     onComment: (comment: Comment) => void;
 };
 export default function ActionBar({ post, children, onComment }: Props) {
-    const { memberName, memberId, content, likeCnt, memoryId, createdAt } = post;
+    const { memberId, content, likeCnt, memoryId, angryCnt, sadCnt, comments, reactions } = post;
     const { user, setBookmark } = useMe();
 
     // const bookmarked = user?.bookmarks.includes(memberId) ?? false;
@@ -27,7 +27,7 @@ export default function ActionBar({ post, children, onComment }: Props) {
     };
 
     const handleComment = (content: string) => {
-        return user && onComment({ content, memberName });
+        return user && onComment({ memoryId, content });
     };
     return (
         <>
@@ -44,7 +44,7 @@ export default function ActionBar({ post, children, onComment }: Props) {
                     likeCnt > 1 ? 'likes' : 'like'
                 }`}</p>
                 {children}
-                <p className="text-xs text-neutral-500 uppercase my-2">{parseDate(createdAt)}</p>
+                <p className="text-xs text-neutral-500 uppercase my-2">{parseDate('')}</p>
             </div>
             <CommentForm onPostComment={handleComment} />
         </>

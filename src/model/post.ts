@@ -1,7 +1,7 @@
 export type Comment = {
     memoryId: string;
-    commentId: string;
-    memberId: string;
+    memberId?: string;
+    commentId?: string;
     content: string;
 };
 
