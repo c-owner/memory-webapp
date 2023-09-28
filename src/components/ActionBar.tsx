@@ -20,8 +20,6 @@ export default function ActionBar({ post, children, onComment }: Props) {
     const { memberName, memberId, content, likeCnt, memoryId, createdAt } = post;
     const { user, setBookmark } = useMe();
 
-    console.log('user', user);
-
     // const bookmarked = user?.bookmarks.includes(memberId) ?? false;
 
     const handleBookmark = (bookmarked: boolean) => {
