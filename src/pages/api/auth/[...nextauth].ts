@@ -78,10 +78,6 @@ export const authOptions: NextAuthOptions = {
                             followers: user.followers || [],
                             accessToken: `${exUser.data.responseObject.grantType} ${exUser.data.responseObject.accessToken}`
                         };
-                    } else {
-                        // 회원가입 로직
-                        console.log('credentials !!!!!!!!!!');
-                        console.log(credentials);
                     }
                 }
 

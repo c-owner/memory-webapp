@@ -34,7 +34,11 @@ export default function UserPosts({ user }: Props) {
                     </li>
                 ))}
             </ul>
-            <CacheKeysContext.Provider value={{ postsKey: `/api/posts/self` }}>
+            <CacheKeysContext.Provider
+                value={{
+                    postsKey: query === 'posts' ? `/api/posts/self` : `/api/bookmarks`
+                }}
+            >
                 <PostGrid user={user} />
             </CacheKeysContext.Provider>
         </section>

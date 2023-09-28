@@ -40,7 +40,7 @@ export default function ActionBar({ post, children, onComment }: Props) {
                 />
             </div>
             <div className="px-4 py-1">
-                <p className="text-sm font-bold mb-2">{`${likeCnt < 1 ?? 0} ${
+                <p className="text-sm font-bold mb-2">{`${likeCnt < 1 && 0} ${
                     likeCnt > 1 ? 'likes' : 'like'
                 }`}</p>
                 {children}

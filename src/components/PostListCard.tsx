@@ -18,10 +18,9 @@ import ActionBar from '@/components/ActionBar';
 
 type Props = {
     post: SimplePost;
-    priority?: boolean;
     user: AuthUser;
 };
-export default function PostListCard({ post, priority = false, user }: Props) {
+export default function PostListCard({ post, user }: Props) {
     const {
         memoryId,
         memberId,
@@ -75,7 +74,7 @@ export default function PostListCard({ post, priority = false, user }: Props) {
 
     return (
         <article className="rounded-lg shadow-md border border-gray-200 dark:border-gray-600">
-            <div className="flex items-center justify-between px-5">
+            <div className="flex items-center justify-between">
                 <div className="flex items-center">
                     <PostUserAvatar image={userImage} memberName={memberName} />
                     <span className="text-neutral-400 text-sm mr-1">No.{memoryId}</span>
@@ -115,7 +114,7 @@ export default function PostListCard({ post, priority = false, user }: Props) {
                     </div>
                 ) : (
                     <div className="post_content relative max-h-40 overflow-y-auto">
-                        <div className="px-5 py-3 whitespace-pre-wrap overflow-auto">
+                        <div className="py-3 whitespace-pre-wrap overflow-auto">
                             <MarkdownViewer content={postContent} />
                         </div>
                     </div>

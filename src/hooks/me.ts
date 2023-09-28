@@ -23,10 +23,9 @@ async function updateFollow(targetId: string) {
     }).then((res) => res.json());
 }
 
-async function updateBookmark(memoryId: string) {
-    return fetch('/api/bookmarks', {
-        method: 'POST',
-        body: JSON.stringify(memoryId)
+async function updateBookmark(id: string) {
+    return fetch(`/api/bookmarks/${id}`, {
+        method: 'POST'
     }).then((res) => res.json());
 }
 export default function useMe() {
