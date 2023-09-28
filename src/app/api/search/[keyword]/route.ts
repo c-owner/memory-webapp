@@ -23,6 +23,11 @@ export async function GET(req: NextRequest, context: Context) {
                 Authorization: accessToken
             }
         })
-        .then((res) => NextResponse.json(res.data.responseObject, { status: 200 }))
-        .catch((err) => NextResponse.json({ err }, { status: 401 }));
+        .then((res) => {
+            return NextResponse.json([{ ...res.data.responseObject }], { status: res.status });
+        })
+        .catch((err) => {
+            console.log(err.message);
+            return NextResponse.json([err.message.toString()], { status: 200 });
+        });
 }
