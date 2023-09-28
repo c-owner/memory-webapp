@@ -6,7 +6,7 @@ export type Comment = {
 };
 
 export type SimplePost = Omit<FullPost, 'comments'> & {
-    comments: number;
+    comments: Comment[];
 };
 
 export type BookmarkPost = {

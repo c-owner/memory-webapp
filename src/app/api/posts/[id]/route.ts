@@ -18,12 +18,18 @@ export async function GET(req: NextRequest, context: Context) {
     const memoryId = context.params.id;
 
     return axios
-        .get(`${process.env.API_DOMAIN}/memories/${memoryId}`, {
+        .get(`${process.env.API_DOMAIN}/memories`, {
             headers: {
                 Authorization: accessToken
             }
         })
-        .then((res) => NextResponse.json(res.data.responseObject.content || [], { status: 200 }))
+        .then((res) => {
+            const obj = res.data.responseObject.content;
+            const findMemory = obj.find((memory: { memoryId: string }) => {
+                return memory.memoryId.toString() === memoryId;
+            });
+            return NextResponse.json(findMemory, { status: 200 });
+        })
         .catch((err) => NextResponse.json(err, { status: err.status }));
 }
 

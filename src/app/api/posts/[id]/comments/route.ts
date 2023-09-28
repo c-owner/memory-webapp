@@ -16,6 +16,8 @@ export async function POST(req: NextRequest, context: Context) {
     }
 
     const { content } = await req.json();
+
+    console.log(content);
     return axios
         .post(
             `${process.env.API_DOMAIN}/memories/${context.params.id}/comments/new`,
@@ -23,10 +25,47 @@ export async function POST(req: NextRequest, context: Context) {
             {
                 headers: {
                     Authorization: accessToken,
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
                 }
             }
         )
-        .then((res) => NextResponse.json(res.data, { status: 200 }))
-        .catch((err) => NextResponse.json(err, { status: err.status }));
+        .then((res) => {
+            return NextResponse.json(res.data || {}, { status: 200 });
+        })
+        .catch((err) => {
+            return NextResponse.json(
+                { message: err.message, data: err.response.data },
+                { status: err.status }
+            );
+        });
+}
+
+export async function DELETE(req: NextRequest, context: Context) {
+    const session = await getServerSession(authOptions);
+    const accessToken = session?.user?.accessToken;
+    if (!accessToken) {
+        return NextResponse.json('Not Authorized', { status: 401 });
+    }
+
+    const { id: memoryId } = context.params;
+    const { commentId } = await req.json();
+
+    return axios
+        .delete(`${process.env.API_DOMAIN}/memories/${memoryId}/comments/${commentId}`, {
+            headers: {
+                Authorization: accessToken,
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            }
+        })
+        .then((res) => {
+            return NextResponse.json(res.data || {}, { status: 200 });
+        })
+        .catch((err) => {
+            return NextResponse.json(
+                { message: err.message, data: err.response.data },
+                { status: err.status }
+            );
+        });
 }

@@ -26,8 +26,8 @@ export default function ActionBar({ post, children, onComment }: Props) {
         if (user) setBookmark(memoryId);
     };
 
-    const handleComment = (content: string) => {
-        return user && onComment({ memoryId, content });
+    const handleComment = (comment: string) => {
+        return user && onComment({ content: comment, memoryId });
     };
     return (
         <>
