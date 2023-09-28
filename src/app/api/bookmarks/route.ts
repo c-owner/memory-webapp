@@ -17,29 +17,6 @@ export async function GET(req: NextRequest) {
                 'Content-Type': 'application/json'
             }
         })
-        .then((res) => NextResponse.json(res.data.responseObject || [], { status: 200 }))
-        .catch((err) => NextResponse.json(err, { status: err.status }));
-}
-
-export async function POST(req: NextRequest) {
-    const session = await getServerSession(authOptions);
-    const accessToken = session?.user?.accessToken;
-    if (!accessToken) {
-        return NextResponse.json('Not Authorized', { status: 401 });
-    }
-
-    const { memoryId } = await req.json();
-
-    return axios
-        .get(`${process.env.API_DOMAIN}/saved-memories`, {
-            headers: {
-                Authorization: accessToken,
-                'Content-Type': 'application/json'
-            },
-            params: {
-                memoryId
-            }
-        })
         .then((res) => NextResponse.json(res.data.responseObject.content || [], { status: 200 }))
         .catch((err) => NextResponse.json(err, { status: err.status }));
 }

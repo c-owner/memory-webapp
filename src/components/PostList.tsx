@@ -27,7 +27,7 @@ export default function PostList({ user }: Props) {
                         Object.keys(posts).length > 0 &&
                         posts?.map((post: SimplePost, index: number) => (
                             <li key={post.memoryId} className="mb-4">
-                                <PostListCard post={post} priority={index < 2} user={user} />
+                                <PostListCard post={post} user={user} />
                             </li>
                         ))}
                 </ul>

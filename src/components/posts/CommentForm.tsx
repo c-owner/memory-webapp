@@ -32,7 +32,9 @@ export default function CommentForm({ onPostComment }: Props) {
             />
             <button
                 disabled={buttonDisabled}
-                className={`font-bold ml-2 ${buttonDisabled ? 'text-sky-300' : 'text-sky-500'}`}
+                className={`font-bold ml-2 ${
+                    buttonDisabled ? 'text-sky-300 cursor-not-allowed' : 'text-sky-500'
+                }`}
             >
                 Post
             </button>

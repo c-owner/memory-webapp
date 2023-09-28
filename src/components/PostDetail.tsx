@@ -22,7 +22,6 @@ export default function PostDetail({ post }: Props) {
                     className="object-cover"
                     src={image}
                     alt={`photo by ${memberName}`}
-                    priority
                     fill
                     sizes="650px"
                 />
