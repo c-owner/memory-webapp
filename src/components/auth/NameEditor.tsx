@@ -14,8 +14,8 @@ type Props = {
 };
 export default function NameEditor({ username, onClose }: Props) {
     const [memberName, setMemberName] = useState('');
-    const [nameChange, setNameChange] = useState(false);
     const [password, setPassword] = useState('');
+    const [nameChange, setNameChange] = useState(false);
     const [passwordChange, setPasswordChange] = useState(false);
 
     const { updateUser } = useMe();
@@ -27,25 +27,28 @@ export default function NameEditor({ username, onClose }: Props) {
     const [isError, setIsError] = useState(false);
     const submitName = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setLoading(true);
         setErrorMsg({
             message: '',
             status: 200
         });
-        setLoading(true);
 
         const { data, isLoading, error, mutate } = await updateUser({
             memberName,
             memberPassword: password
         });
-        if (data.error) {
-            setIsError(true);
-            setErrorMsg(data.error);
+        if (data) {
+            if (data.status !== 200) {
+                setLoading(false);
+                setIsError(true);
+                setErrorMsg({
+                    message: data.message,
+                    status: data.status
+                });
+            } else {
+                onClose();
+            }
         }
-        if (isError) {
-            await mutate(data, false);
-            onClose();
-        }
-        setLoading(false);
     };
 
     return (
@@ -81,7 +84,7 @@ export default function NameEditor({ username, onClose }: Props) {
                                     id="name"
                                     name="name"
                                     placeholder="Name"
-                                    disabled={nameChange}
+                                    disabled={!nameChange}
                                     value={memberName}
                                     onChange={(event) => setMemberName(event.target.value)}
                                     className="border border-gray-300 dark:text-black dark:border-neutral-700 rounded-md p-2"
@@ -103,7 +106,7 @@ export default function NameEditor({ username, onClose }: Props) {
                                     id="password"
                                     name="password"
                                     placeholder="Password"
-                                    disabled={passwordChange}
+                                    disabled={!passwordChange}
                                     value={password}
                                     onChange={(event) => setPassword(event.target.value)}
                                     className="border border-gray-300 dark:text-black dark:border-neutral-700 rounded-md p-2"

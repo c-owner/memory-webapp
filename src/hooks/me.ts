@@ -61,9 +61,10 @@ export default function useMe() {
     );
 
     const updateUser = useCallback(
-        async (user: UpdateUser) => {
-            const data = await modifyUser(user);
-            return mutate(data);
+        async (users: UpdateUser) => {
+            const data = await modifyUser(users);
+            await mutate(data);
+            return { data, mutate, isLoading, error };
         },
         [user, mutate]
     );

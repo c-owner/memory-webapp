@@ -27,34 +27,50 @@ export async function GET(req: Request) {
 
 export async function PATCH(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    const user = session?.user;
-
-    if (!user) {
-        return new Response('Authentication Error', { status: 401 });
+    const accessToken = session?.user?.accessToken;
+    if (!accessToken) {
+        return NextResponse.json('Not Authorized', { status: 401 });
     }
 
     const { memberName, memberPassword } = await req.json();
 
-    const bodyData = {
-        ...(memberName && { memberName }),
-        ...(memberPassword && { memberPassword })
-    };
+    if (!memberName && !memberPassword) {
+        return NextResponse.json('Bad Request! Please check your api spec', { status: 400 });
+    }
 
     return axios
-        .patch(`${process.env.API_DOMAIN}/members/me}`, bodyData, {
-            headers: {
-                Authorization: user.accessToken,
-                'Content-Type': 'application/json'
+        .patch(
+            `${process.env.API_DOMAIN}/members/me`,
+            {
+                ...(memberName && { memberName }),
+                ...(memberPassword && { memberPassword })
+            },
+            {
+                headers: {
+                    Authorization: accessToken,
+                    'Content-Type': 'application/json'
+                }
             }
-        })
+        )
         .then((res) => {
-            return NextResponse.json(res, { status: 200 });
+            const resData = {
+                message: res.data.successMessage,
+                data: {
+                    responseObject: res.data.responseObject
+                },
+                status: 200
+            };
+
+            return NextResponse.json(resData, { status: res.status });
         })
         .catch((err) => {
-            const responseErr = {
-                errorMessage: 'Bad Request',
-                error: err
+            const errData = {
+                message: 'Something went wrong',
+                data: {
+                    responseObject: {}
+                },
+                status: err.response.status
             };
-            return new NextResponse(JSON.stringify(responseErr), { status: 400 });
+            return NextResponse.json(errData, { status: 200 });
         });
 }
