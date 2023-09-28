@@ -7,14 +7,14 @@ type Props = {
     user: SearchUser;
 };
 export default function UserCard({ user }: Props) {
-    const { memberName, image, memberEmail, followersCnt, followingCnt } = user;
+    const { id, memberName, image, memberEmail, followersCnt, followingCnt } = user;
 
     return (
         <div
             className="items-center justify-between flex max-sm:flex-wrap
         w-full rounded-sm border border-neutral-300 mb-2 p-4 bg-white hover:bg-neutral-50"
         >
-            <Link className="flex items-center" href={`/user/${memberName}`}>
+            <Link className="flex items-center" href={`/user/${id}`}>
                 <Avatar image={image} />
                 <div className="text-neutral-500 min-w-[170px]">
                     <p className="text-black font-bold leading-4">{memberName}</p>

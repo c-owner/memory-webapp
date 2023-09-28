@@ -26,6 +26,13 @@ async function updateFollow(targetId: string) {
         method: 'GET'
     }).then((res) => res.json());
 }
+
+async function updateBookmark(memoryId: string) {
+    return fetch('/api/bookmarks', {
+        method: 'POST',
+        body: JSON.stringify(memoryId)
+    }).then((res) => res.json());
+}
 export default function useMe() {
     const { data: user, isLoading, error, mutate } = useSWR<HomeUser>(`/api/users/me`);
 
@@ -73,5 +80,25 @@ export default function useMe() {
         },
         [user, mutate]
     );
-    return { user, isLoading, error, mutate, addUser, emailLogin, changeName, toggleFollow };
+
+    const setBookmark = useCallback(
+        (memoryId: string) => {
+            return mutate(updateBookmark(memoryId), {
+                populateCache: false
+            });
+        },
+        [user, mutate]
+    );
+
+    return {
+        user,
+        isLoading,
+        error,
+        mutate,
+        addUser,
+        emailLogin,
+        changeName,
+        toggleFollow,
+        setBookmark
+    };
 }

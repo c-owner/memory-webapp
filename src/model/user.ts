@@ -23,7 +23,7 @@ export type UpdateUser = {
     image?: string | null | undefined;
 };
 
-export type SimpleUser = Pick<AuthUser, 'memberName' | 'image'>;
+export type SimpleUser = Pick<AuthUser, 'id' | 'memberName' | 'image'>;
 
 export type HomeUser = AuthUser & {
     following: SimpleUser[];
