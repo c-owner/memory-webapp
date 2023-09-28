@@ -44,7 +44,7 @@ export default function usePosts() {
         (post: SimplePost, comment: Comment) => {
             const newPost = {
                 ...post,
-                comments: post.comments === 0 ? 1 : +1
+                comments: [...post.comments, comment]
             };
             const newPosts = data?.map((p) => (p.memoryId === post.memoryId ? newPost : p));
             const content = comment?.content;

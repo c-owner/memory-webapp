@@ -5,6 +5,11 @@ import MarkdownViewer from '@/components/MarkdownViewer';
 import ActionBar from '@/components/ActionBar';
 import PostUserAvatar from '@/components/PostUserAvatar';
 import Avatar from '@/components/Avatar';
+import EditorButton from '@/components/EditorButton';
+import DeleteButton from '@/components/DeleteButton';
+import { useSession } from 'next-auth/react';
+import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 
 type Props = {
     post: BookmarkPost | SimplePost;
@@ -20,10 +25,18 @@ export default function PostDetail({ post }: Props) {
         angryCnt,
         reactions
     } = post;
-    const { post: data, postComment, isLoading, error } = useFullPost(memoryId);
+    const { post: data, deleteComment, postComment, isLoading, error } = useFullPost(memoryId);
     const comments = data?.comments;
-    const handlePostComment = (memoryId: string, content: string) => {
-        return postComment({ memoryId, content });
+    const session = useSession();
+    const { id: userId } = session?.data?.user ?? { id: '' };
+    const [modify, setModify] = useState(false);
+    const [isPending, startTransition] = useTransition();
+    const router = useRouter();
+    const handlerDelete = async (commentId: string) => {
+        await deleteComment(commentId);
+        startTransition(() => {
+            router.refresh();
+        });
     };
 
     return (
@@ -48,16 +61,26 @@ export default function PostDetail({ post }: Props) {
                 <ul className="border-t border-gray-200 h-full overflow-y-auto p-4 mb-1">
                     {isLoading && <GridSpinner />}
                     {comments &&
-                        comments.map(({ memberId, commentId, content, memoryId }, index) => (
+                        comments.map(({ commentId, content, memberId }, index) => (
                             <li key={index} className="flex items-center mb-1">
-                                <Avatar
-                                    image={''}
-                                    size="small"
-                                    highlight={memberId === commentId}
-                                />
+                                {userId === memberId && (
+                                    <div className="flex items-center justify-center gap-4">
+                                        <EditorButton onClick={() => setModify(!modify)} />
+                                        <DeleteButton
+                                            onClick={() => handlerDelete(commentId || '')}
+                                        />
+                                    </div>
+                                )}
+                                <div className="basis-1/12">
+                                    <Avatar
+                                        image={''}
+                                        size="small"
+                                        highlight={memberId === commentId}
+                                    />
+                                </div>
                                 <div className="ml-2">
-                                    <span className="font-bold mr-1">{commentId}</span>
-                                    <span>{content}</span>
+                                    <span className="font-bold mr-1">{memberId} - </span>
+                                    <p className="font-normal break-words">{content}</p>
                                 </div>
                             </li>
                         ))}
