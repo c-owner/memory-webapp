@@ -8,6 +8,7 @@ async function addComment(id: string, comment: string) {
         body: JSON.stringify({ id, comment })
     }).then((res) => res.json());
 }
+
 export default function useFullPost(postId: string) {
     const { data: post, isLoading, error, mutate } = useSWR<FullPost>(`/api/posts/${postId}`);
 

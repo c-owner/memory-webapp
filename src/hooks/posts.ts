@@ -4,9 +4,9 @@ import { Comment, SimplePost } from '@/model/post';
 import { useCallback } from 'react';
 
 async function addComment(id: string, content: string) {
-    return fetch('/api/comments', {
+    return fetch(`/api/posts/${id}/comments`, {
         method: 'POST',
-        body: JSON.stringify({ id, content })
+        body: JSON.stringify({ content })
     }).then((res) => res.json());
 }
 
@@ -27,6 +27,12 @@ async function updatePost(memoryId: string, content: string) {
 async function removePost(memoryId: string) {
     return fetch(`/api/posts/${memoryId}`, {
         method: 'DELETE'
+    }).then((res) => res.json());
+}
+
+async function getBookmark() {
+    return fetch(`/api/bookmarks`, {
+        method: 'GET'
     }).then((res) => res.json());
 }
 
@@ -73,5 +79,9 @@ export default function usePosts() {
         [data, mutate]
     );
 
-    return { data, isLoading, error, postComment, newPost, modifyPost, deletePost };
+    const bookmarkPost = useCallback(() => {
+        return mutate(getBookmark());
+    }, [data, mutate]);
+
+    return { data, isLoading, error, postComment, newPost, modifyPost, deletePost, bookmarkPost };
 }

@@ -14,6 +14,7 @@ import { PulseLoader } from 'react-spinners';
 import { AuthUser } from '@/model/user';
 import MarkdownViewer from '@/components/MarkdownViewer';
 import DeleteButton from '@/components/DeleteButton';
+import ActionBar from '@/components/ActionBar';
 
 type Props = {
     post: SimplePost;
@@ -37,9 +38,6 @@ export default function PostListCard({ post, priority = false, user }: Props) {
 
     const { postComment, isLoading, modifyPost, deletePost } = usePosts();
     const router = useRouter();
-    const handlePostComment = (comment: Comment) => {
-        postComment(post, comment);
-    };
     const [content, setContent] = useState(postContent);
     const [isPending, startTransition] = useTransition();
     const submit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -71,6 +69,10 @@ export default function PostListCard({ post, priority = false, user }: Props) {
     // post_content height 300px 이상 넘어가면 접기 버튼 생성
 */
 
+    const handlePostComment = (comment: Comment) => {
+        return postComment(post, comment);
+    };
+
     return (
         <article className="rounded-lg shadow-md border border-gray-200">
             <div className="flex items-center justify-between px-5">
@@ -86,37 +88,39 @@ export default function PostListCard({ post, priority = false, user }: Props) {
                 )}
             </div>
 
-            {modify ? (
-                <div className="py-5 px-5 w-full flex flex-col gap-3">
-                    <form onSubmit={submit} className="flex flex-col gap-4 w-full">
-                        <div className="flex flex-col gap-2 relative">
-                            <label htmlFor="content">Content</label>
-                            <textarea
-                                className="border border-gray-300 dark:border-gray-700 rounded-md p-2 resize-none"
-                                name="content"
-                                id="content"
-                                cols={30}
-                                rows={10}
-                                value={content}
-                                onChange={(e) => setContent(e.target.value)}
-                                disabled={isLoading}
-                            ></textarea>
-                            {isLoading && (
-                                <div className="mx-auto absolute top-1/2 right-1/3">
-                                    <PulseLoader />
-                                </div>
-                            )}
-                        </div>
-                        <DefaultButton text={'Update'} />
-                    </form>
-                </div>
-            ) : (
-                <div className="post_content relative max-h-40 overflow-y-auto">
-                    <div className="px-5 py-3 whitespace-pre-wrap overflow-auto">
-                        <MarkdownViewer content={postContent} />
+            <ActionBar post={post} onComment={handlePostComment}>
+                {modify ? (
+                    <div className="py-5 px-5 w-full flex flex-col gap-3">
+                        <form onSubmit={submit} className="flex flex-col gap-4 w-full">
+                            <div className="flex flex-col gap-2 relative">
+                                <label htmlFor="content">Content</label>
+                                <textarea
+                                    className="border border-gray-300 dark:border-gray-700 rounded-md p-2 resize-none"
+                                    name="content"
+                                    id="content"
+                                    cols={30}
+                                    rows={10}
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
+                                    disabled={isLoading}
+                                ></textarea>
+                                {isLoading && (
+                                    <div className="mx-auto absolute top-1/2 right-1/3">
+                                        <PulseLoader />
+                                    </div>
+                                )}
+                            </div>
+                            <DefaultButton text={'Update'} />
+                        </form>
                     </div>
-                </div>
-            )}
+                ) : (
+                    <div className="post_content relative max-h-40 overflow-y-auto">
+                        <div className="px-5 py-3 whitespace-pre-wrap overflow-auto">
+                            <MarkdownViewer content={postContent} />
+                        </div>
+                    </div>
+                )}
+            </ActionBar>
 
             {openModal && (
                 <ModalPortal>
