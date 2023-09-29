@@ -31,21 +31,19 @@ export default function ActionBar({ post, children, onComment }: Props) {
     };
     return (
         <>
-            <div className="flex justify-between my-2 px-4">
-                <ToggleButton
-                    toggled={false}
-                    onToggle={handleBookmark}
-                    onIcon={<BookmarkFillIcon />}
-                    offIcon={<BookmarkIcon />}
-                />
-            </div>
-            <div className="px-4 py-1">
-                <p className="text-sm font-bold mb-2">{`${likeCnt < 1 && 0} ${
-                    likeCnt > 1 ? 'likes' : 'like'
-                }`}</p>
-                {children}
+            <div className="px-4">
+                <div className="flex justify-between my-2">
+                    <ToggleButton
+                        toggled={false}
+                        onToggle={handleBookmark}
+                        onIcon={<BookmarkFillIcon />}
+                        offIcon={<BookmarkIcon />}
+                    />
+                </div>
+                <div className="py-1">{children}</div>
                 <p className="text-xs text-neutral-500 uppercase my-2">{parseDate('')}</p>
             </div>
+
             <CommentForm onPostComment={handleComment} />
         </>
     );

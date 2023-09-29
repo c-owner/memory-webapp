@@ -87,37 +87,43 @@ export default function PostListCard({ post, user }: Props) {
                 )}
             </div>
 
-            <ActionBar post={post} onComment={handlePostComment}>
-                {modify ? (
-                    <div className="py-5 px-5 w-full flex flex-col gap-3">
-                        <form onSubmit={submit} className="flex flex-col gap-4 w-full">
-                            <div className="flex flex-col gap-2 relative">
-                                <label htmlFor="content">Content</label>
-                                <textarea
-                                    className="border border-gray-300 dark:border-gray-700 rounded-md p-2 resize-none"
-                                    name="content"
-                                    id="content"
-                                    cols={30}
-                                    rows={10}
-                                    value={content}
-                                    onChange={(e) => setContent(e.target.value)}
-                                    disabled={isLoading}
-                                ></textarea>
-                                {isLoading && (
-                                    <div className="mx-auto absolute top-1/2 right-1/3">
-                                        <PulseLoader />
-                                    </div>
-                                )}
-                            </div>
-                            <DefaultButton text={'Update'} />
-                        </form>
-                    </div>
-                ) : (
-                    <div className="post_content relative max-h-40 overflow-y-auto">
-                        <div className="py-3 whitespace-pre-wrap overflow-auto">
-                            <MarkdownViewer content={postContent} />
+            {modify ? (
+                <div className="py-5 px-5 w-full flex flex-col gap-3">
+                    <form onSubmit={submit} className="flex flex-col gap-4 w-full">
+                        <div className="flex flex-col gap-2 relative">
+                            <label htmlFor="content">Content</label>
+                            <textarea
+                                className="border border-gray-300 dark:border-gray-700 rounded-md p-2 resize-none"
+                                name="content"
+                                id="content"
+                                cols={30}
+                                rows={10}
+                                value={content}
+                                onChange={(e) => setContent(e.target.value)}
+                                disabled={isLoading}
+                            ></textarea>
+                            {isLoading && (
+                                <div className="mx-auto absolute top-1/2 right-1/3">
+                                    <PulseLoader />
+                                </div>
+                            )}
                         </div>
+                        <DefaultButton text={'Update'} />
+                    </form>
+                </div>
+            ) : (
+                <div className="post_content relative max-h-40 overflow-y-auto px-4">
+                    <div className="py-3 whitespace-pre-wrap overflow-auto">
+                        <MarkdownViewer content={postContent} />
                     </div>
+                </div>
+            )}
+            <ActionBar post={post} onComment={handlePostComment}>
+                {comments.length > 1 && (
+                    <button
+                        className="font-bold my-2 text-sky-500"
+                        onClick={() => setOpenModal(true)}
+                    >{`View all ${comments.length} comments`}</button>
                 )}
             </ActionBar>
 

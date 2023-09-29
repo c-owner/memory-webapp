@@ -63,14 +63,6 @@ export default function PostDetail({ post }: Props) {
                     {comments &&
                         comments.map(({ commentId, content, memberId }, index) => (
                             <li key={index} className="flex items-center mb-1">
-                                {userId === memberId && (
-                                    <div className="flex items-center justify-center gap-4">
-                                        <EditorButton onClick={() => setModify(!modify)} />
-                                        <DeleteButton
-                                            onClick={() => handlerDelete(commentId || '')}
-                                        />
-                                    </div>
-                                )}
                                 <div className="basis-1/12">
                                     <Avatar
                                         image={''}
@@ -78,9 +70,23 @@ export default function PostDetail({ post }: Props) {
                                         highlight={memberId === commentId}
                                     />
                                 </div>
-                                <div className="ml-2">
-                                    <span className="font-bold mr-1">{memberId} - </span>
+                                <div className="ml-2 w-full">
+                                    <span className="font-bold mr-1">id: {memberId} - </span>
                                     <p className="font-normal break-words">{content}</p>
+                                    {userId === memberId && (
+                                        <div className="flex items-center justify-end ">
+                                            <EditorButton
+                                                size={'w-4 h-4 text-sm'}
+                                                text={''}
+                                                onClick={() => setModify(!modify)}
+                                            />
+                                            <DeleteButton
+                                                size={'w-4 h-4 text-sm'}
+                                                text={''}
+                                                onClick={() => handlerDelete(commentId || '')}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             </li>
                         ))}
