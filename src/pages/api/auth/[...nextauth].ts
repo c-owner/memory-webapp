@@ -7,7 +7,7 @@ import axios from 'axios';
 export const authOptions: NextAuthOptions = {
     // Configure one or more authentication providers
     providers: [
-        GoogleProvider({
+        /* GoogleProvider({
             name: 'Google',
             clientId: process.env.GOOGLE_OAUTH_ID || '',
             clientSecret: process.env.GOOGLE_OAUTH_SECRET || ''
@@ -28,7 +28,7 @@ export const authOptions: NextAuthOptions = {
             },
             clientId: process.env.GITHUB_ID as string,
             clientSecret: process.env.GITHUB_SECRET as string
-        }),
+        }), */
         // ...add more providers here
         CredentialsProvider({
             name: '다른 방법으로 로그인',
