@@ -17,7 +17,7 @@ const tabs = [
 ];
 export default function UserPosts({ user }: Props) {
     const [query, setQuery] = useState(tabs[0].type);
-
+    // 나의 멤버아이디와
     return (
         <section>
             <ul className="flex justify-center uppercase">

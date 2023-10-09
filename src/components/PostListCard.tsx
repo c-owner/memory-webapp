@@ -93,7 +93,8 @@ export default function PostListCard({ post, user }: Props) {
                         <div className="flex flex-col gap-2 relative">
                             <label htmlFor="content">Content</label>
                             <textarea
-                                className="border border-gray-300 dark:border-gray-700 rounded-md p-2 resize-none"
+                                className="border border-gray-300 dark:border-gray-700 dark:text-black
+                                rounded-md p-2 resize-none"
                                 name="content"
                                 id="content"
                                 cols={30}

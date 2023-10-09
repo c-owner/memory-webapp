@@ -16,7 +16,9 @@ export async function GET() {
                 Authorization: accessToken
             }
         })
-        .then((res) => NextResponse.json(res.data.responseObject.content || [], { status: 200 }))
+        .then((res) => {
+            return NextResponse.json(res.data.responseObject.content || [], { status: 200 });
+        })
         .catch((err) => NextResponse.json(err, { status: err.status }));
 }
 
