@@ -2,11 +2,8 @@
 
 import { Comment, SimplePost } from '@/model/post';
 import { useState, useTransition } from 'react';
-import ModalPortal from '@/components/ui/ModalPortal';
 import usePosts from '@/hooks/posts';
-import PostModal from '@/components/PostModal';
 import PostUserAvatar from '@/components/PostUserAvatar';
-import PostDetail from '@/components/PostDetail';
 import EditorButton from '@/components/EditorButton';
 import { useRouter } from 'next/navigation';
 import DefaultButton from '@/components/ui/DefaultButton';
@@ -15,8 +12,6 @@ import { AuthUser } from '@/model/user';
 import MarkdownViewer from '@/components/MarkdownViewer';
 import DeleteButton from '@/components/DeleteButton';
 import ActionBar from '@/components/ActionBar';
-import CommentForm from '@/components/posts/CommentForm';
-import { GiCancel } from 'react-icons/gi';
 
 type Props = {
     post: SimplePost;
@@ -159,11 +154,11 @@ export default function PostListCard({ post, user }: Props) {
                 )}
                 {moreComment && (
                     <div className="post_content relative max-h-40 overflow-y-auto">
-                        <div className="py-3 whitespace-pre-wrap overflow-auto">
+                        <div className="py-3 whitespace-pre-wrap overflow-auto flex flex-col-reverse">
                             {comments.map(
                                 ({ content, memberId, commentId, memoryId, isDeleted }, index) => (
                                     <div key={index}>
-                                        {index === 0 && (
+                                        {index === comments.length - 1 && (
                                             <div>
                                                 <button
                                                     className="font-bold my-2 text-sky-500"
@@ -173,18 +168,18 @@ export default function PostListCard({ post, user }: Props) {
                                                 </button>
                                             </div>
                                         )}
-                                        <div className="flex flex-row justify-between">
-                                            <div className="flex items-center">
+                                        <div className="flex justify-between">
+                                            <div className="flex items-center w-full">
                                                 <span className="text-neutral-500 mr-1">
                                                     {memberId}
                                                 </span>
                                                 {commentModify === commentId ? (
                                                     <form
                                                         onSubmit={onComment}
-                                                        className="w-full flex"
+                                                        className="w-full flex gap-4 items-center justify-between"
                                                     >
                                                         <input
-                                                            className="grow w-full ml-2 border-none outline-none p-3 dark:bg-apple-dark-2 shadow-md dark:text-neutral-200"
+                                                            className="w-full ml-2 border-none outline-none p-3 dark:bg-apple-dark-2 shadow-md dark:text-neutral-200"
                                                             type="text"
                                                             placeholder="Modify a comment..."
                                                             maxLength={50}

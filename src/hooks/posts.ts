@@ -89,6 +89,7 @@ export default function usePosts() {
             }));
             return mutate(removeComment(memoryId, commentId), {
                 optimisticData: newPosts,
+                populateCache: false,
                 rollbackOnError: true
             });
         },
