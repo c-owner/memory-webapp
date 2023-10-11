@@ -101,6 +101,11 @@ export default function PostListCard({ post, user }: Props) {
         });
     };
 
+    const [moreContent, setMoreContent] = useState(false);
+
+    const handleMoreContent = () => {
+        setMoreContent(!moreContent);
+    };
     return (
         <article className="rounded-lg shadow-md border border-gray-200 dark:border-gray-600">
             <div className="flex items-center justify-between">
@@ -142,11 +147,30 @@ export default function PostListCard({ post, user }: Props) {
                     </form>
                 </div>
             ) : (
-                <div className="post_content relative max-h-40 overflow-y-auto px-4">
-                    <div className="py-3 whitespace-pre-wrap overflow-auto">
-                        <MarkdownViewer content={postContent} />
+                <>
+                    {moreContent ? (
+                        <div className="relative max-h-40 overflow-y-auto px-4">
+                            <div className="py-3 whitespace-pre-wrap overflow-auto">
+                                <MarkdownViewer content={postContent} />
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="relative max-h-40 px-4">
+                            <div className="py-3 whitespace-pre-wrap overflow-hidden max-h-[100px]">
+                                <MarkdownViewer content={postContent} />
+                            </div>
+                        </div>
+                    )}
+                    <div className="text-right mr-3">
+                        <button
+                            type="button"
+                            onClick={() => handleMoreContent()}
+                            className="text-sky-600"
+                        >
+                            {!moreContent ? '더보기' : '접기'}
+                        </button>
                     </div>
-                </div>
+                </>
             )}
             <ActionBar post={post} onComment={handlePostComment}>
                 {comments.length >= 1 && !moreComment && (
@@ -161,7 +185,7 @@ export default function PostListCard({ post, user }: Props) {
                     </div>
                 )}
                 {moreComment && (
-                    <div className="post_content relative max-h-40 overflow-y-auto">
+                    <div className="relative max-h-40 overflow-y-auto">
                         <div className="py-3 whitespace-pre-wrap overflow-auto flex flex-col-reverse">
                             {comments.map(
                                 ({ content, memberId, commentId, memoryId, isDeleted }, index) => (

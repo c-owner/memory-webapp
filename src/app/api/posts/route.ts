@@ -34,6 +34,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { content } = await req.json();
+    console.log(content.length);
     return axios
         .post(
             `${process.env.API_DOMAIN}/memories/new`,
