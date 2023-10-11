@@ -59,14 +59,11 @@ export default function PostListCard({ post, user }: Props) {
         });
     };
 
-    /*
-    const [conentHide, setContentHide] = useState([]);
-
-    const post_contents = document.getElementsByClassName(
-        'post_content'
-    ) as HTMLCollectionOf<Element>;
+    const [moreContent, setMoreContent] = useState(false);
     // post_content height 300px 이상 넘어가면 접기 버튼 생성
-*/
+    const handleContentHide = () => {
+        setMoreContent(!moreContent);
+    };
 
     const handlePostComment = (comment: Comment) => {
         return postComment(post, comment);
@@ -120,13 +117,35 @@ export default function PostListCard({ post, user }: Props) {
                 </div>
             )}
             <ActionBar post={post} onComment={handlePostComment}>
-                {comments.length > 1 && (
+                {comments.length > 1 && !moreContent && (
                     <button
                         className="font-bold my-2 text-sky-500"
-                        onClick={() => setOpenModal(true)}
+                        onClick={() => handleContentHide()}
                     >{`View all ${comments.length} comments`}</button>
                 )}
             </ActionBar>
+            {moreContent && (
+                <div className="post_content relative max-h-40 overflow-y-auto px-4">
+                    <div className="py-3 whitespace-pre-wrap overflow-auto">
+                        {comments.map(({ content, memberId }, index) => (
+                            <div key={index}>
+                                <span className="font-bold mr-1">{memberId}</span>
+                                <span>{content}</span>
+                                {comments.length - 1 === index && (
+                                    <div>
+                                        <button
+                                            className="font-bold my-2 text-sky-500"
+                                            onClick={() => handleContentHide()}
+                                        >
+                                            {`View less`}
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {openModal && (
                 <ModalPortal>
