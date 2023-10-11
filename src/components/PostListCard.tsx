@@ -149,14 +149,14 @@ export default function PostListCard({ post, user }: Props) {
             ) : (
                 <>
                     {moreContent ? (
-                        <div className="post_content relative max-h-40 overflow-y-auto px-4">
+                        <div className="relative max-h-40 overflow-y-auto px-4">
                             <div className="py-3 whitespace-pre-wrap overflow-auto">
                                 <MarkdownViewer content={postContent} />
                             </div>
                         </div>
                     ) : (
-                        <div className="post_content relative max-h-40 overflow-y-auto px-4">
-                            <div className="py-3 whitespace-pre-wrap overflow-auto max-h-[100px]">
+                        <div className="relative max-h-40 px-4">
+                            <div className="py-3 whitespace-pre-wrap overflow-hidden max-h-[100px]">
                                 <MarkdownViewer content={postContent} />
                             </div>
                         </div>
@@ -185,7 +185,7 @@ export default function PostListCard({ post, user }: Props) {
                     </div>
                 )}
                 {moreComment && (
-                    <div className="post_content relative max-h-40 overflow-y-auto">
+                    <div className="relative max-h-40 overflow-y-auto">
                         <div className="py-3 whitespace-pre-wrap overflow-auto flex flex-col-reverse">
                             {comments.map(
                                 ({ content, memberId, commentId, memoryId, isDeleted }, index) => (
