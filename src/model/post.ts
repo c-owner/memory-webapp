@@ -20,6 +20,7 @@ export type BookmarkPost = {
     reactions: [];
     comments: Comment[];
     createdAt: string;
+    isSaved: boolean;
 };
 
 export type FullPost = {
@@ -36,4 +37,5 @@ export type FullPost = {
     reactions: [];
     status: string;
     comments: Comment[];
+    isSaved: boolean;
 };

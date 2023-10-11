@@ -49,7 +49,11 @@ async function getBookmark() {
         method: 'GET'
     }).then((res) => res.json());
 }
-
+async function updateBookmark(id: string) {
+    return fetch(`/api/bookmarks/${id}`, {
+        method: 'POST'
+    }).then((res) => res.json());
+}
 export default function usePosts() {
     const cacheKeys = useCacheKeys();
     const { data, isLoading, error, mutate } = useSWR<SimplePost[]>(cacheKeys.postsKey);
@@ -120,7 +124,20 @@ export default function usePosts() {
     const bookmarkPost = useCallback(() => {
         return mutate(getBookmark());
     }, [data, mutate]);
-
+    const setBookmark = useCallback(
+        (memoryId: string) => {
+            const newPosts = data?.map((post) => ({
+                ...post,
+                isSaved: post.isSaved
+            }));
+            return mutate(updateBookmark(memoryId), {
+                optimisticData: newPosts,
+                populateCache: false,
+                rollbackOnError: true
+            });
+        },
+        [data, mutate]
+    );
     return {
         data,
         isLoading,
@@ -130,6 +147,7 @@ export default function usePosts() {
         newPost,
         modifyPost,
         deletePost,
-        bookmarkPost
+        bookmarkPost,
+        setBookmark
     };
 }

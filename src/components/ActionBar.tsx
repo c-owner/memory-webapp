@@ -2,14 +2,14 @@
 
 import { parseDate } from '@/util/date';
 import { BookmarkPost, Comment, SimplePost } from '@/model/post';
-import usePosts from '@/hooks/posts';
 import useMe from '@/hooks/me';
-import HeartIcon from '@/components/ui/icon/HeartIcon';
-import HeartFillIcon from '@/components/ui/icon/HeartFillIcon';
 import BookmarkFillIcon from '@/components/ui/icon/BookmarkFillIcon';
 import BookmarkIcon from '@/components/ui/icon/BookmarkIcon';
 import ToggleButton from '@/components/ui/ToggleButton';
 import CommentForm from '@/components/posts/CommentForm';
+import { useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import usePosts from '@/hooks/posts';
 
 type Props = {
     post: SimplePost | BookmarkPost;
@@ -17,13 +17,18 @@ type Props = {
     onComment: (comment: Comment) => void;
 };
 export default function ActionBar({ post, children, onComment }: Props) {
-    const { memoryId, createdAt, angryCnt, sadCnt, comments, reactions } = post;
-    const { user, setBookmark } = useMe();
+    const { memoryId, createdAt, isSaved } = post;
+    const { user } = useMe();
+    const { data, setBookmark } = usePosts();
+    const [isPending, startTransition] = useTransition();
+    const router = useRouter();
+    const bookmarked = isSaved;
 
-    // const bookmarked = user?.bookmarks.includes(memberId) ?? false;
-
-    const handleBookmark = (bookmarked: boolean) => {
-        if (user) setBookmark(memoryId);
+    const handleBookmark = async (bookmarked: boolean) => {
+        if (user) await setBookmark(memoryId);
+        startTransition(() => {
+            router.refresh();
+        });
     };
 
     const handleComment = (comment: string) => {
@@ -34,7 +39,7 @@ export default function ActionBar({ post, children, onComment }: Props) {
             <div className="px-4">
                 <div className="flex justify-between my-2">
                     <ToggleButton
-                        toggled={false}
+                        toggled={bookmarked}
                         onToggle={handleBookmark}
                         onIcon={<BookmarkFillIcon />}
                         offIcon={<BookmarkIcon />}

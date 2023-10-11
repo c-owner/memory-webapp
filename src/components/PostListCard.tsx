@@ -22,10 +22,13 @@ export default function PostListCard({ post, user }: Props) {
         memoryId,
         memberId,
         content: postContent,
-        likeCnt,
         comments,
         memberName,
-        userImage
+        userImage,
+        reactions,
+        sadCnt,
+        likeCnt,
+        angryCnt
     } = post;
     const { id: userId, memberName: userName } = user;
     const [openModal, setOpenModal] = useState(false);
@@ -137,6 +140,16 @@ export default function PostListCard({ post, user }: Props) {
                 <div className="post_content relative max-h-40 overflow-y-auto px-4">
                     <div className="py-3 whitespace-pre-wrap overflow-auto">
                         <MarkdownViewer content={postContent} />
+                    </div>
+                    {reactions?.map((reaction, index) => (
+                        <div className="flex justify-center items-center" key={index}>
+                            {reaction}
+                        </div>
+                    ))}
+                    <div className="flex justify-center items-end gap-x-12">
+                        <span> 😊: {likeCnt}</span>
+                        <span> 😢: {sadCnt}</span>
+                        <span> 😡: {angryCnt}</span>
                     </div>
                 </div>
             )}
