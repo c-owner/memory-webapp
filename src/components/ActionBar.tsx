@@ -53,46 +53,25 @@ export default function ActionBar({ post, children, onComment }: Props) {
                         offIcon={<BookmarkIcon />}
                     />
                     <div className="flex justify-center items-end gap-x-12">
-                        <button
-                            type="button"
-                            className="hover:scale-150"
-                            onClick={() => handlerReaction('LIKE')}
-                        >
-                            <div className="flex-col">
-                                <FaSmileBeam
-                                    className="text-emerald-500 scale-125"
-                                    fontSize="1.5em"
-                                />
-                                <span className="text-sm/[17px]">{likeCnt}</span>
-                            </div>
-                        </button>
-                        <button
-                            type="button"
-                            className="hover:scale-150"
-                            onClick={() => handlerReaction('SAD')}
-                        >
-                            <div className="flex-col">
-                                <FaSadTear color="yellow" className="scale-125" fontSize="1.5em" />
-                                <span className="text-sm/[17px]">{sadCnt}</span>
-                            </div>
-                        </button>
-                        <button
-                            type="button"
-                            className="hover:scale-150"
-                            onClick={() => handlerReaction('ANGRY')}
-                        >
-                            <div className="flex-col">
-                                <FaFaceAngry color="red" className="scale-125" fontSize="1.5em" />
-                                <span className="text-sm/[17px]">{angryCnt}</span>
-                            </div>
-                        </button>
+                        <div className="flex flex-col items-center">
+                            <FaSmileBeam className="text-emerald-500 scale-125" fontSize="1.5em" />
+                            <span className="text-sm/[17px]">{likeCnt}</span>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <FaSadTear color="yellow" className="scale-125" fontSize="1.5em" />
+                            <span className="text-sm/[17px]">{sadCnt}</span>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <FaFaceAngry color="red" className="scale-125" fontSize="1.5em" />
+                            <span className="text-sm/[17px]">{angryCnt}</span>
+                        </div>
                     </div>
                 </div>
                 <div className="py-1">{children}</div>
                 <p className="text-xs text-neutral-500 uppercase my-2">{parseDate(createdAt)}</p>
             </div>
 
-            <CommentForm onPostComment={handleComment} />
+            <CommentForm handlerReaction={handlerReaction} onPostComment={handleComment} />
         </>
     );
 }

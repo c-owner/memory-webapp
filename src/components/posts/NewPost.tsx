@@ -32,6 +32,7 @@ export default function NewPost({ user: { id, memberName, image } }: Props) {
                     cols={30}
                     rows={10}
                     value={content}
+                    maxLength={91}
                     onChange={(e) => setContent(e.target.value)}
                 ></textarea>
             </div>
