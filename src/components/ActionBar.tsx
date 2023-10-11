@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import usePosts from '@/hooks/posts';
 import { FaSadTear, FaSmileBeam } from 'react-icons/fa';
 import { FaFaceAngry } from 'react-icons/fa6';
+import { PulseLoader } from 'react-spinners';
 
 type Props = {
     post: SimplePost | BookmarkPost;
@@ -44,7 +45,12 @@ export default function ActionBar({ post, children, onComment }: Props) {
     };
     return (
         <>
-            <div className="px-4">
+            <div className="px-4 relative">
+                {isPending && (
+                    <div className="w-full absolute top-0 left-1/2 right-1/2 inset-0 z-20">
+                        <PulseLoader color={'indigo'} size={10} />
+                    </div>
+                )}
                 <div className="flex justify-between my-2">
                     <ToggleButton
                         toggled={bookmarked}
@@ -70,7 +76,6 @@ export default function ActionBar({ post, children, onComment }: Props) {
                 <div className="py-1">{children}</div>
                 <p className="text-xs text-neutral-500 uppercase my-2">{parseDate(createdAt)}</p>
             </div>
-
             <CommentForm handlerReaction={handlerReaction} onPostComment={handleComment} />
         </>
     );

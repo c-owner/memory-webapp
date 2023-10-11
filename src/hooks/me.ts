@@ -17,12 +17,6 @@ export function modifyUser(user: UpdateUser) {
     }).then((res) => res.json());
 }
 
-async function updateFollow(targetId: string) {
-    return fetch(`/api/users/follow/${targetId}`, {
-        method: 'GET'
-    }).then((res) => res.json());
-}
-
 export default function useMe() {
     const { data: user, isLoading, error, mutate } = useSWR<HomeUser>(`/api/users/me`);
 
@@ -57,17 +51,11 @@ export default function useMe() {
     const updateUser = useCallback(
         async (users: UpdateUser) => {
             const data = await modifyUser(users);
-            await mutate(data);
-            return { data, mutate, isLoading, error };
-        },
-        [user, mutate]
-    );
-
-    const toggleFollow = useCallback(
-        (targetId: string) => {
-            return mutate(updateFollow(targetId), {
-                populateCache: false
+            await mutate(data, {
+                populateCache: false,
+                rollbackOnError: true
             });
+            return { data, mutate, isLoading, error };
         },
         [user, mutate]
     );
@@ -79,7 +67,6 @@ export default function useMe() {
         mutate,
         addUser,
         emailLogin,
-        updateUser,
-        toggleFollow
+        updateUser
     };
 }

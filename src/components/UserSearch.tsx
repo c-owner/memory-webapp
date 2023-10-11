@@ -1,40 +1,54 @@
 'use client';
 
-import useSWR from 'swr';
-import { FormEvent, useState } from 'react';
-import { SearchUser } from '@/model/user';
-import GridSpinner from '@/components/ui/GridSpinner';
+import { FormEvent, useEffect, useState } from 'react';
 import useDebounce from '@/hooks/debounce';
 import UserCard from '@/components/auth/UserCard';
-import useMe from '@/hooks/me';
-import { useSession } from 'next-auth/react';
-import AccessDenied from '@/components/ui/AccessDenied';
+import useUsers from '@/hooks/users';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { PulseLoader } from 'react-spinners';
+import { AuthUser, SearchUser } from '@/model/user';
 
-export default function UserSearch() {
+type Props = {
+    userData: AuthUser;
+};
+export default function UserSearch(userData: Props) {
+    const myInfo = userData?.userData;
     const [keyword, setKeyword] = useState('');
     const debounceKeyword = useDebounce(keyword);
+    const { users, isLoading: loading, error, mutate } = useUsers(debounceKeyword);
 
-    const {
-        data: users,
-        isLoading: loading,
-        error
-    } = useSWR<SearchUser[]>(`/api/search/${debounceKeyword}`);
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 5;
+    const [userList, setUserList] = useState<SearchUser[]>([]);
+    const [hasMore, setHasMore] = useState(true);
 
-    const myInfoData = useMe();
-    const myInfo = myInfoData.user;
-
-    const { data: mySession } = useSession();
-
-    if (!mySession) {
-        return <AccessDenied />;
-    }
-
-    const onSubmit = (e: FormEvent) => {
-        e.preventDefault();
+    useEffect(() => {
+        if (users) {
+            if (currentPage === 1) {
+                setUserList(users?.slice(0, pageSize));
+            }
+        }
+    }, [users]);
+    const onFetchMoreList = async () => {
+        const current = currentPage;
+        if (users) {
+            const originalLength = userList.length;
+            if (originalLength >= users?.length) {
+                setHasMore(false);
+            }
+            const data = users.slice(currentPage * pageSize, (currentPage + 1) * pageSize);
+            if (data.length === 0) {
+                setHasMore(false);
+                return false;
+            }
+            setUserList([...userList, ...data]);
+            setCurrentPage(current + 1);
+        }
     };
+
     return (
         <section className="w-full max-w-2xl my-4 flex flex-col items-center mx-3">
-            <form onSubmit={onSubmit} className="w-full mb-4 px-2">
+            <div className="w-full mb-4 px-2">
                 <input
                     type="text"
                     className="w-full text-xl p-3 outline-none border border-gray-400 rounded-lg shadow-md
@@ -45,37 +59,57 @@ export default function UserSearch() {
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
                 />
-            </form>
+            </div>
             {error && <div>Failed to load</div>}
-            {loading && <GridSpinner />}
-            <ul className="w-full p-4">
-                {users &&
-                    users.map((user, index) =>
-                        user.memberName !== myInfo?.memberName || users.length === 1 ? (
-                            <li key={`${user.memberName}_${index}`}>
-                                {typeof user === 'string' ? (
-                                    <p className="text-center">
-                                        Nothing found for <strong>{keyword}</strong>
-                                    </p>
-                                ) : (
-                                    <UserCard user={user} />
-                                )}
-                            </li>
-                        ) : (
-                            <li key={index}>
-                                {users.length === 1 ? (
-                                    <>
-                                        <UserCard user={user} />
-                                        <p className="text-center text-xl font-bold">
-                                            This is you!
+            <ul
+                className="w-full h-full p-4 overflow-auto"
+                id="userList"
+                style={{ height: 'calc(100% - 150px)', overflowY: 'auto' }}
+            >
+                {userList && (
+                    <InfiniteScroll
+                        dataLength={currentPage * 5 || 0}
+                        next={onFetchMoreList}
+                        hasMore={hasMore}
+                        scrollableTarget="userList"
+                        loader={
+                            <div className="flex justify-center items-center">
+                                <PulseLoader color={'indigo'} size={10} />
+                            </div>
+                        }
+                        endMessage={
+                            <>
+                                <hr className="border-neutral-600 my-3" />
+                                <h4 className="text-center">더 이상 불러올것이 없습니다.</h4>
+                            </>
+                        }
+                    >
+                        {userList?.map((user, index) =>
+                            user.memberName !== myInfo.memberName || userList.length > 2 ? (
+                                <li key={`${user.memberName}_${index}`}>
+                                    {typeof user === 'string' ? (
+                                        <p className="text-center">
+                                            Nothing found for <strong>{keyword}</strong>
                                         </p>
-                                    </>
-                                ) : (
-                                    <UserCard user={user} />
-                                )}
-                            </li>
-                        )
-                    )}
+                                    ) : (
+                                        <UserCard user={user} />
+                                    )}
+                                </li>
+                            ) : (
+                                <li key={index}>
+                                    {userList.length === 1 && user.id === myInfo.id && (
+                                        <>
+                                            <UserCard user={user} />
+                                            <p className="text-center text-xl font-bold">
+                                                This is you!
+                                            </p>
+                                        </>
+                                    )}
+                                </li>
+                            )
+                        )}
+                    </InfiniteScroll>
+                )}
             </ul>
         </section>
     );

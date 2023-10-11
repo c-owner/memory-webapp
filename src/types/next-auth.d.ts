@@ -9,12 +9,16 @@ declare module 'next-auth' {
     interface Session {
         user: {
             id: string;
-            email: string;
+            memberEmail: string;
             memberName: string;
             username: string;
             image?: string | null | undefined;
             following: string[];
             followers: string[];
+            followingCnt: number;
+            followersCnt: number;
+            followingStatus: boolean;
+            memories: string[];
             accessToken: string;
         } & DefaultSession;
     }

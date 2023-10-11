@@ -70,7 +70,7 @@ export const authOptions: NextAuthOptions = {
                         return {
                             ...user,
                             id: user.id,
-                            email: user.memberEmail,
+                            memberEmail: user.memberEmail,
                             memberName: user.memberName,
                             username: user.memberEmail?.split('@')[0] || '',
                             image: user.memberImage,
@@ -102,11 +102,11 @@ export const authOptions: NextAuthOptions = {
         signIn: '/api/auth/signin'
     }, */
     session: {
-        strategy: 'jwt',
-        // 7days
-        maxAge: 7 * 24 * 60 * 60,
-        // 24 hours in seconds
-        updateAge: 24 * 60 * 60
+        strategy: 'jwt'
+        // 1 hour
+        // maxAge: 60 * 60,
+        // 30 min in seconds
+        // updateAge: 30 * 60
     },
     callbacks: {
         async signIn({ user, account, profile }) {
