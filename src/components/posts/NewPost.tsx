@@ -16,7 +16,7 @@ export default function NewPost({ user: { id, memberName, image } }: Props) {
     const { newPost, modifyPost } = usePosts();
     const submit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await newPost(`### **@${memberName}**\n\n&nbsp;&nbsp; ${content}`);
+        await newPost(content);
         setContent('');
         router.push('/');
     };
@@ -24,9 +24,9 @@ export default function NewPost({ user: { id, memberName, image } }: Props) {
     return (
         <form onSubmit={submit} className="flex flex-col gap-4 w-full">
             <div className="flex flex-col gap-2">
-                <label htmlFor="content">Content</label>
+                <label htmlFor="content">새 글 작성</label>
                 <textarea
-                    className="border border-gray-300 dark:border-gray-700 rounded-md p-2 resize-none"
+                    className="shadow-md dark:border-gray-700 dark:bg-apple-dark-1 rounded-md p-2 resize-none"
                     name="content"
                     id="content"
                     cols={30}

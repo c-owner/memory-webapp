@@ -10,6 +10,20 @@ async function addComment(id: string, content: string) {
     }).then((res) => res.json());
 }
 
+async function modifyComment(id: string, comment: Comment) {
+    return fetch(`/api/posts/${id}/comments`, {
+        method: 'PATCH',
+        body: JSON.stringify(comment)
+    }).then((res) => res.json());
+}
+
+async function removeComment(id: string, commentId: string) {
+    return fetch(`/api/posts/${id}/comments`, {
+        method: 'DELETE',
+        body: JSON.stringify({ commentId })
+    }).then((res) => res.json());
+}
+
 async function addPost(content: string) {
     return fetch('/api/posts', {
         method: 'POST',
@@ -41,17 +55,40 @@ export default function usePosts() {
     const { data, isLoading, error, mutate } = useSWR<SimplePost[]>(cacheKeys.postsKey);
 
     const postComment = useCallback(
-        (post: SimplePost, comment: Comment) => {
+        (post: SimplePost, comment: Comment, type: boolean) => {
             const newPost = {
                 ...post,
                 comments: [...post.comments, comment]
             };
             const newPosts = data?.map((p) => (p.memoryId === post.memoryId ? newPost : p));
             const content = comment?.content;
+
+            if (type) {
+                // modify comment
+                return mutate(modifyComment(post.memoryId, comment), {
+                    optimisticData: newPosts,
+                    populateCache: false,
+                    rollbackOnError: true
+                });
+            }
+
             return mutate(addComment(post.memoryId, content), {
                 optimisticData: newPosts,
                 populateCache: false,
-                revalidate: false,
+                rollbackOnError: true
+            });
+        },
+        [data, mutate]
+    );
+
+    const deleteComment = useCallback(
+        (memoryId: string, commentId: string) => {
+            const newPosts = data?.map((post) => ({
+                ...post,
+                comments: post.comments.filter((c) => c.isDeleted)
+            }));
+            return mutate(removeComment(memoryId, commentId), {
+                optimisticData: newPosts,
                 rollbackOnError: true
             });
         },
@@ -83,5 +120,15 @@ export default function usePosts() {
         return mutate(getBookmark());
     }, [data, mutate]);
 
-    return { data, isLoading, error, postComment, newPost, modifyPost, deletePost, bookmarkPost };
+    return {
+        data,
+        isLoading,
+        error,
+        postComment,
+        deleteComment,
+        newPost,
+        modifyPost,
+        deletePost,
+        bookmarkPost
+    };
 }

@@ -3,6 +3,7 @@ export type Comment = {
     memberId?: string;
     commentId?: string;
     content: string;
+    isDeleted?: boolean;
 };
 
 export type SimplePost = Omit<FullPost, 'comments'> & {
@@ -18,6 +19,7 @@ export type BookmarkPost = {
     sadCnt: number;
     reactions: [];
     comments: Comment[];
+    createdAt: string;
 };
 
 export type FullPost = {

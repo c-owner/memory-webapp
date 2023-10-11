@@ -17,7 +17,7 @@ type Props = {
     onComment: (comment: Comment) => void;
 };
 export default function ActionBar({ post, children, onComment }: Props) {
-    const { memberId, content, likeCnt, memoryId, angryCnt, sadCnt, comments, reactions } = post;
+    const { memoryId, createdAt, angryCnt, sadCnt, comments, reactions } = post;
     const { user, setBookmark } = useMe();
 
     // const bookmarked = user?.bookmarks.includes(memberId) ?? false;
@@ -41,7 +41,7 @@ export default function ActionBar({ post, children, onComment }: Props) {
                     />
                 </div>
                 <div className="py-1">{children}</div>
-                <p className="text-xs text-neutral-500 uppercase my-2">{parseDate('')}</p>
+                <p className="text-xs text-neutral-500 uppercase my-2">{parseDate(createdAt)}</p>
             </div>
 
             <CommentForm onPostComment={handleComment} />
