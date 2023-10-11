@@ -1,6 +1,6 @@
 'use client';
 
-import { Comment, SimplePost } from '@/model/post';
+import { Comment, Reactions, SimplePost } from '@/model/post';
 import { useState, useTransition } from 'react';
 import usePosts from '@/hooks/posts';
 import PostUserAvatar from '@/components/PostUserAvatar';
@@ -12,6 +12,9 @@ import { AuthUser } from '@/model/user';
 import MarkdownViewer from '@/components/MarkdownViewer';
 import DeleteButton from '@/components/DeleteButton';
 import ActionBar from '@/components/ActionBar';
+import { FcLike } from 'react-icons/fc';
+import { FaSadTear, FaSmileBeam } from 'react-icons/fa';
+import { FaFaceAngry } from 'react-icons/fa6';
 
 type Props = {
     post: SimplePost;
@@ -26,10 +29,12 @@ export default function PostListCard({ post, user }: Props) {
         memberName,
         userImage,
         reactions,
+        reactionStatus,
         sadCnt,
         likeCnt,
         angryCnt
     } = post;
+
     const { id: userId, memberName: userName } = user;
     const [openModal, setOpenModal] = useState(false);
     const [modify, setModify] = useState(false);
@@ -42,7 +47,7 @@ export default function PostListCard({ post, user }: Props) {
     const [isPending, startTransition] = useTransition();
     const submit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const data = await modifyPost(memoryId, `### **@${userName}**\n\n&nbsp;&nbsp; ${content}`);
+        const data = await modifyPost(memoryId, content);
         if (!data) {
             return false;
         }
@@ -140,16 +145,6 @@ export default function PostListCard({ post, user }: Props) {
                 <div className="post_content relative max-h-40 overflow-y-auto px-4">
                     <div className="py-3 whitespace-pre-wrap overflow-auto">
                         <MarkdownViewer content={postContent} />
-                    </div>
-                    {reactions?.map((reaction, index) => (
-                        <div className="flex justify-center items-center" key={index}>
-                            {reaction}
-                        </div>
-                    ))}
-                    <div className="flex justify-center items-end gap-x-12">
-                        <span> 😊: {likeCnt}</span>
-                        <span> 😢: {sadCnt}</span>
-                        <span> 😡: {angryCnt}</span>
                     </div>
                 </div>
             )}

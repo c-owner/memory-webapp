@@ -10,6 +10,8 @@ import CommentForm from '@/components/posts/CommentForm';
 import { useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import usePosts from '@/hooks/posts';
+import { FaSadTear, FaSmileBeam } from 'react-icons/fa';
+import { FaFaceAngry } from 'react-icons/fa6';
 
 type Props = {
     post: SimplePost | BookmarkPost;
@@ -17,9 +19,9 @@ type Props = {
     onComment: (comment: Comment) => void;
 };
 export default function ActionBar({ post, children, onComment }: Props) {
-    const { memoryId, createdAt, isSaved } = post;
+    const { memoryId, createdAt, isSaved, reactionStatus, likeCnt, angryCnt, sadCnt } = post;
     const { user } = useMe();
-    const { data, setBookmark } = usePosts();
+    const { data, setBookmark, updateReactionStatus } = usePosts();
     const [isPending, startTransition] = useTransition();
     const router = useRouter();
     const bookmarked = isSaved;
@@ -34,6 +36,12 @@ export default function ActionBar({ post, children, onComment }: Props) {
     const handleComment = (comment: string) => {
         return user && onComment({ content: comment, memoryId });
     };
+    const handlerReaction = async (reaction: string) => {
+        await updateReactionStatus(memoryId, reaction);
+        startTransition(() => {
+            router.refresh();
+        });
+    };
     return (
         <>
             <div className="px-4">
@@ -44,6 +52,41 @@ export default function ActionBar({ post, children, onComment }: Props) {
                         onIcon={<BookmarkFillIcon />}
                         offIcon={<BookmarkIcon />}
                     />
+                    <div className="flex justify-center items-end gap-x-12">
+                        <button
+                            type="button"
+                            className="hover:scale-150"
+                            onClick={() => handlerReaction('LIKE')}
+                        >
+                            <div className="flex-col">
+                                <FaSmileBeam
+                                    className="text-emerald-500 scale-125"
+                                    fontSize="1.5em"
+                                />
+                                <span className="text-sm/[17px]">{likeCnt}</span>
+                            </div>
+                        </button>
+                        <button
+                            type="button"
+                            className="hover:scale-150"
+                            onClick={() => handlerReaction('SAD')}
+                        >
+                            <div className="flex-col">
+                                <FaSadTear color="yellow" className="scale-125" fontSize="1.5em" />
+                                <span className="text-sm/[17px]">{sadCnt}</span>
+                            </div>
+                        </button>
+                        <button
+                            type="button"
+                            className="hover:scale-150"
+                            onClick={() => handlerReaction('ANGRY')}
+                        >
+                            <div className="flex-col">
+                                <FaFaceAngry color="red" className="scale-125" fontSize="1.5em" />
+                                <span className="text-sm/[17px]">{angryCnt}</span>
+                            </div>
+                        </button>
+                    </div>
                 </div>
                 <div className="py-1">{children}</div>
                 <p className="text-xs text-neutral-500 uppercase my-2">{parseDate(createdAt)}</p>
