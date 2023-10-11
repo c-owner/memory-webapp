@@ -29,7 +29,7 @@ export type HomeUser = AuthUser & {
     followers: SimpleUser[];
 };
 
-export type SearchUser = {
+export type SearchUser = AuthUser & {
     id: string; // memberId
     memberEmail: string;
     memberName: string;
@@ -41,5 +41,5 @@ export type SearchUser = {
 };
 
 export type ProfileUser = SearchUser & {
-    posts: number;
+    memories: number;
 };

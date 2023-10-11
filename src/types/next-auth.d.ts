@@ -15,6 +15,10 @@ declare module 'next-auth' {
             image?: string | null | undefined;
             following: string[];
             followers: string[];
+            followingCnt: number;
+            followersCnt: number;
+            followingStatus: boolean;
+            memories: string[];
             accessToken: string;
         } & DefaultSession;
     }
