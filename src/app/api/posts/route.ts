@@ -11,13 +11,17 @@ export async function GET() {
     }
 
     return axios
-        .get(`${process.env.API_DOMAIN}/memories`, {
-            headers: {
-                Authorization: accessToken
+        .post(
+            `${process.env.API_DOMAIN}/memories`,
+            {},
+            {
+                headers: {
+                    Authorization: accessToken
+                }
             }
-        })
+        )
         .then((res) => {
-            return NextResponse.json(res.data.responseObject.content || [], { status: 200 });
+            return NextResponse.json(res.data.responseObject || [], { status: 200 });
         })
         .catch((err) => NextResponse.json(err, { status: err.status }));
 }

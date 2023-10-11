@@ -21,6 +21,9 @@ export async function GET(req: NextRequest, context: Context) {
         .get(`${process.env.API_DOMAIN}/memories`, {
             headers: {
                 Authorization: accessToken
+            },
+            params: {
+                keyword: JSON.stringify('')
             }
         })
         .then((res) => {
