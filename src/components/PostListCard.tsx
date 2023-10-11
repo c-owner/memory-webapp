@@ -107,7 +107,7 @@ export default function PostListCard({ post, user }: Props) {
         setMoreContent(!moreContent);
     };
     return (
-        <article className="rounded-lg shadow-md border border-gray-200 dark:border-gray-600">
+        <article className="rounded-lg shadow-md border border-gray-200 dark:border-gray-600 relative">
             <div className="flex items-center justify-between">
                 <div className="flex items-center">
                     <PostUserAvatar image={userImage} memberName={memberName} />
@@ -120,6 +120,12 @@ export default function PostListCard({ post, user }: Props) {
                     </div>
                 )}
             </div>
+
+            {isPending && (
+                <div className="w-full absolute top-1/2 left-1/2 right-1/2 inset-0 z-20">
+                    <PulseLoader color={'indigo'} size={10} />
+                </div>
+            )}
 
             {modify ? (
                 <div className="py-5 px-5 w-full flex flex-col gap-3">

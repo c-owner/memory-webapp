@@ -9,16 +9,12 @@ import UserCard from '@/components/auth/UserCard';
 import useMe from '@/hooks/me';
 import { useSession } from 'next-auth/react';
 import AccessDenied from '@/components/ui/AccessDenied';
+import useUsers from '@/hooks/users';
 
 export default function UserSearch() {
     const [keyword, setKeyword] = useState('');
     const debounceKeyword = useDebounce(keyword);
-
-    const {
-        data: users,
-        isLoading: loading,
-        error
-    } = useSWR<SearchUser[]>(`/api/search/${debounceKeyword}`);
+    const { users, isLoading: loading, error, mutate } = useUsers(debounceKeyword);
 
     const myInfoData = useMe();
     const myInfo = myInfoData.user;

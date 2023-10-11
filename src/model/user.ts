@@ -29,12 +29,15 @@ export type HomeUser = AuthUser & {
     followers: SimpleUser[];
 };
 
-export type SearchUser = AuthUser & {
+export type SearchUser = {
+    id: string; // memberId
     memberEmail: string;
+    memberName: string;
     following: [];
     followers: [];
     followersCnt: number;
     followingCnt: number;
+    followingStatus: boolean;
 };
 
 export type ProfileUser = SearchUser & {
