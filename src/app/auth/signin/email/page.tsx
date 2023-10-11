@@ -6,7 +6,9 @@ import Link from 'next/link';
 
 export default async function EmailPage() {
     const session = await getServerSession(authOptions);
-
+    if (session) {
+        redirect('/');
+    }
     return (
         <section className="w-full py-24 grid place-items-center h-full gap-3">
             <h1 className={'text-3xl font-semibold'}>Login</h1>

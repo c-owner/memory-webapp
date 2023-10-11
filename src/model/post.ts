@@ -21,6 +21,7 @@ export type BookmarkPost = {
     comments: Comment[];
     createdAt: string;
     isSaved: boolean;
+    reactionStatus: string;
 };
 
 export type FullPost = {
@@ -38,4 +39,11 @@ export type FullPost = {
     status: string;
     comments: Comment[];
     isSaved: boolean;
+    reactionStatus: string;
+};
+
+export type Reactions = {
+    memberId: string;
+    memoryId: string;
+    status: string;
 };

@@ -54,6 +54,13 @@ async function updateBookmark(id: string) {
         method: 'POST'
     }).then((res) => res.json());
 }
+
+async function updateReaction(id: string, reaction: string) {
+    return fetch(`/api/reactions`, {
+        method: 'POST',
+        body: JSON.stringify({ memoryId: id, reactionStatus: reaction })
+    }).then((res) => res.json());
+}
 export default function usePosts() {
     const cacheKeys = useCacheKeys();
     const { data, isLoading, error, mutate } = useSWR<SimplePost[]>(cacheKeys.postsKey);
@@ -102,27 +109,50 @@ export default function usePosts() {
 
     const newPost = useCallback(
         (content: string) => {
-            return mutate(addPost(content));
+            const newPosts = data?.map((post) => ({
+                ...post
+            }));
+            return mutate(addPost(content), {
+                optimisticData: newPosts,
+                populateCache: false,
+                rollbackOnError: true
+            });
         },
         [data, mutate]
     );
 
     const modifyPost = useCallback(
         (memoryId: string, content: string) => {
-            return mutate(updatePost(memoryId, content));
+            const newPosts = data?.map((post) => ({
+                ...post
+            }));
+            return mutate(updatePost(memoryId, content), {
+                optimisticData: newPosts,
+                populateCache: false
+            });
         },
         [data, mutate]
     );
 
     const deletePost = useCallback(
         (memoryId: string) => {
-            return mutate(removePost(memoryId));
+            const newPosts = data?.map((post) => ({
+                ...post
+            }));
+            return mutate(removePost(memoryId), {
+                optimisticData: newPosts,
+                populateCache: false,
+                rollbackOnError: true
+            });
         },
         [data, mutate]
     );
 
     const bookmarkPost = useCallback(() => {
-        return mutate(getBookmark());
+        return mutate(getBookmark(), {
+            populateCache: false,
+            rollbackOnError: true
+        });
     }, [data, mutate]);
     const setBookmark = useCallback(
         (memoryId: string) => {
@@ -131,6 +161,18 @@ export default function usePosts() {
                 isSaved: post.isSaved
             }));
             return mutate(updateBookmark(memoryId), {
+                optimisticData: newPosts,
+                populateCache: false,
+                rollbackOnError: true
+            });
+        },
+        [data, mutate]
+    );
+
+    const updateReactionStatus = useCallback(
+        (memoryId: string, reaction: string) => {
+            const newPosts = data?.map((post) => ({ ...post }));
+            return mutate(updateReaction(memoryId, reaction), {
                 optimisticData: newPosts,
                 populateCache: false,
                 rollbackOnError: true
@@ -148,6 +190,7 @@ export default function usePosts() {
         modifyPost,
         deletePost,
         bookmarkPost,
-        setBookmark
+        setBookmark,
+        updateReactionStatus
     };
 }
