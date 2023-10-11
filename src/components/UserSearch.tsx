@@ -9,7 +9,7 @@ import { PulseLoader } from 'react-spinners';
 import { AuthUser, SearchUser } from '@/model/user';
 
 type Props = {
-    userData: SearchUser;
+    userData: AuthUser;
 };
 export default function UserSearch(userData: Props) {
     const myInfo = userData?.userData;

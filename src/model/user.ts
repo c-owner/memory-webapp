@@ -1,6 +1,6 @@
 export type AuthUser = {
     id: string;
-    email: string;
+    memberEmail: string;
     memberName: string;
     username: string;
     image?: string | null | undefined;
@@ -29,10 +29,11 @@ export type HomeUser = AuthUser & {
     followers: SimpleUser[];
 };
 
-export type SearchUser = AuthUser & {
+export type SearchUser = {
     id: string; // memberId
     memberEmail: string;
     memberName: string;
+    username: string;
     following: [];
     followers: [];
     followersCnt: number;

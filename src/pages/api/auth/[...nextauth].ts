@@ -70,7 +70,7 @@ export const authOptions: NextAuthOptions = {
                         return {
                             ...user,
                             id: user.id,
-                            email: user.memberEmail,
+                            memberEmail: user.memberEmail,
                             memberName: user.memberName,
                             username: user.memberEmail?.split('@')[0] || '',
                             image: user.memberImage,

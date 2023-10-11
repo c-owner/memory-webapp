@@ -5,8 +5,8 @@ import { ProfileUser, SearchUser } from '@/model/user';
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { PulseLoader } from 'react-spinners';
-import Button from './ui/Button';
 import useUsers from '@/hooks/users';
+import Button from './ui/Button';
 
 type Props = {
     user: ProfileUser | SearchUser;
