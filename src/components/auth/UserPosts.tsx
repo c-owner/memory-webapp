@@ -7,6 +7,8 @@ import BookmarkIcon from '@/components/ui/icon/BookmarkIcon';
 import HeartIcon from '@/components/ui/icon/HeartIcon';
 import PostIcon from '@/components/ui/icon/PostIcon';
 import PostGrid from '@/components/posts/PostGrid';
+import PostList from '@/components/PostList';
+import SideBar from '@/components/SideBar';
 
 type Props = {
     user: ProfileUser;
@@ -39,7 +41,12 @@ export default function UserPosts({ user }: Props) {
                     postsKey: query === 'posts' ? `/api/posts/self` : `/api/bookmarks`
                 }}
             >
-                <PostGrid user={user} />
+                <section className="w-full flex flex-col md:flex-row max-w-[850px] p-4 mx-auto">
+                    <div className="w-full basis-3/4 min-w-0">
+                        <PostList user={user} />
+                    </div>
+                    <div className="basis-1/4 ml-8">{user && <SideBar user={user} />}</div>
+                </section>
             </CacheKeysContext.Provider>
         </section>
     );
