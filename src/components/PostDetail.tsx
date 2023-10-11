@@ -19,8 +19,8 @@ export default function PostDetail({ post }: Props) {
         memoryId,
         memberId,
         comments: comment,
-        sadCnt,
         content,
+        sadCnt,
         likeCnt,
         angryCnt,
         reactions

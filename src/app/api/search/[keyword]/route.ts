@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, context: Context) {
     const { keyword } = context.params;
 
     return axios
-        .get(`${process.env.API_DOMAIN}/members/${keyword}`, {
+        .get(`${process.env.API_DOMAIN}/members/member/${keyword}`, {
             headers: {
                 Authorization: accessToken
             }

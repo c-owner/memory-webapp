@@ -23,7 +23,7 @@ export default async function SignInPage({ searchParams: { callbackUrl } }: Prop
     const providers = (await getProviders()) ?? {};
 
     if (session) {
-        redirect(callbackUrl ?? '/');
+        redirect('/');
     }
 
     return (

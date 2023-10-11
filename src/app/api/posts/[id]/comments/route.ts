@@ -68,3 +68,36 @@ export async function DELETE(req: NextRequest, context: Context) {
             );
         });
 }
+
+export async function PATCH(req: NextRequest, context: Context) {
+    const session = await getServerSession(authOptions);
+    const accessToken = session?.user?.accessToken;
+    if (!accessToken) {
+        return NextResponse.json('Not Authorized', { status: 401 });
+    }
+
+    const { commentId, content } = await req.json();
+    const { id } = context.params;
+
+    return axios
+        .patch(
+            `${process.env.API_DOMAIN}/memories/${id}/comments/${commentId}`,
+            { content },
+            {
+                headers: {
+                    Authorization: accessToken,
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                }
+            }
+        )
+        .then((res) => {
+            return NextResponse.json(res.data || {}, { status: 200 });
+        })
+        .catch((err) => {
+            return NextResponse.json(
+                { message: err.message, data: err.response.data },
+                { status: err.status }
+            );
+        });
+}
