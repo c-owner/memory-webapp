@@ -1,7 +1,7 @@
 import { useCacheKeys } from '@/context/CacheKeysContext';
-import useSWR from 'swr';
 import { Comment, SimplePost } from '@/model/post';
 import { useCallback } from 'react';
+import useSWRInfinite from 'swr/infinite';
 
 async function addComment(id: string, content: string) {
     return fetch(`/api/posts/${id}/comments`, {
@@ -61,9 +61,23 @@ async function updateReaction(id: string, reaction: string) {
         body: JSON.stringify({ memoryId: id, reactionStatus: reaction })
     }).then((res) => res.json());
 }
+export const getPostKey = (index: number, previousPageData: SimplePost[]) => {
+    if (previousPageData && !previousPageData.length) return null;
+    return `/api/posts?page=${index}&size=2`;
+};
+
+export const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 export default function usePosts() {
-    const cacheKeys = useCacheKeys();
-    const { data, isLoading, error, mutate } = useSWR<SimplePost[]>(cacheKeys.postsKey);
+    // const cacheKeys = useCacheKeys();
+    // const { data, isLoading, error, mutate } = useSWR<SimplePost[]>(cacheKeys.postsKey);
+    const { data, mutate, isLoading, error, size, setSize } = useSWRInfinite(getPostKey, fetcher);
+
+    const isLoadingInitialData = !data && !error;
+    const isLoadingMore =
+        isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === `undefined`);
+    const isEmpty = data?.[0]?.length === 0;
+    const hasReachedEnd = isEmpty || (data && data[data.length - 1]?.length < 2);
 
     const postComment = useCallback(
         (post: SimplePost, comment: Comment, type: boolean) => {
@@ -96,7 +110,7 @@ export default function usePosts() {
         (memoryId: string, commentId: string) => {
             const newPosts = data?.map((post) => ({
                 ...post,
-                comments: post.comments.filter((c) => c.isDeleted)
+                comments: post.comments.filter((c: { isDeleted: any }) => c.isDeleted)
             }));
             return mutate(removeComment(memoryId, commentId), {
                 optimisticData: newPosts,
@@ -181,7 +195,7 @@ export default function usePosts() {
         [data, mutate]
     );
     return {
-        data,
+        data: data?.flat(),
         isLoading,
         error,
         postComment,
@@ -191,6 +205,10 @@ export default function usePosts() {
         deletePost,
         bookmarkPost,
         setBookmark,
-        updateReactionStatus
+        updateReactionStatus,
+        size,
+        setSize,
+        isLoadingMore,
+        hasReachedEnd
     };
 }

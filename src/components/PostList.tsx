@@ -1,53 +1,31 @@
 'use client';
 
 import PostListCard from '@/components/PostListCard';
-import { FullPost, SimplePost } from '@/model/post';
-import { AuthUser, SearchUser } from '@/model/user';
+import { SimplePost } from '@/model/post';
+import { AuthUser } from '@/model/user';
 import { PulseLoader } from 'react-spinners';
+import usePosts from '@/hooks/posts';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useEffect, useState, useTransition } from 'react';
-import useSWR from 'swr';
 
 type Props = {
     user: AuthUser;
 };
-
 export default function PostList({ user }: Props) {
-    const [currentPage, setCurrentPage] = useState(0);
-    const size = 2;
-    const [hasMore, setHasMore] = useState(true);
+    const { data, size, setSize, hasReachedEnd, isLoadingMore, isLoading } = usePosts();
 
-    const [postList, setPostList] = useState<FullPost[]>([]);
-
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        onFetchMoreList().then((r) => r);
-    }, []);
-    const onFetchMoreList = async () => {
-        const current = currentPage;
-        // const data = posts.slice(currentPage * size, (currentPage + 1) * size);
-        const query = `size=${size}&page=${current}`;
-        // const { data } = useSWR<SimplePost[]>(`/api/posts?${query}`);
-        const data = await fetch(`/api/posts?${query}`, {
-            method: 'GET'
-        }).then((res) => res.json());
-        if (data?.length === 0) {
-            setHasMore(false);
-            return false;
-        }
-        if (data) {
-            setPostList([...postList, ...data]);
-            setCurrentPage(current + 1);
-        }
-    };
     return (
         <section className="w-full h-full">
-            {postList && (
-                <ul id="postList" className="w-full h-full">
+            {isLoading && (
+                <div className="flex justify-center items-center">
+                    <PulseLoader color={'indigo'} size={10} />
+                </div>
+            )}
+            {data && (
+                <ul className="w-full h-full">
                     <InfiniteScroll
-                        dataLength={currentPage * 5 || 0}
-                        next={onFetchMoreList}
-                        hasMore={hasMore}
+                        dataLength={data.length || 0}
+                        next={() => setSize((size) => size + 1)}
+                        hasMore={!hasReachedEnd}
                         scrollableTarget="body"
                         loader={
                             <div className="flex justify-center items-center">
@@ -61,9 +39,9 @@ export default function PostList({ user }: Props) {
                             </>
                         }
                     >
-                        {postList.length > 0 &&
-                            Object.keys(postList).length > 0 &&
-                            postList?.map((post: SimplePost, index: number) => (
+                        {data.length > 0 &&
+                            Object.keys(data).length > 0 &&
+                            data?.map((post: SimplePost, index: number) => (
                                 <li key={post.memoryId} className="mb-4">
                                     <PostListCard post={post} user={user} />
                                 </li>

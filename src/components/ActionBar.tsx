@@ -22,7 +22,7 @@ type Props = {
 export default function ActionBar({ post, children, onComment }: Props) {
     const { memoryId, createdAt, isSaved, reactionStatus, likeCnt, angryCnt, sadCnt } = post;
     const { user } = useMe();
-    const { data, setBookmark, updateReactionStatus } = usePosts();
+    const { setBookmark, updateReactionStatus } = usePosts();
     const [isPending, startTransition] = useTransition();
     const router = useRouter();
     const bookmarked = isSaved;
