@@ -21,16 +21,16 @@ export default function PostList({ user }: Props) {
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        useOnFetchMoreList().then((r) => r);
+        onFetchMoreList().then((r) => r);
     }, []);
-    const useOnFetchMoreList = async () => {
+    const onFetchMoreList = async () => {
         const current = currentPage;
         // const data = posts.slice(currentPage * size, (currentPage + 1) * size);
         const query = `size=${size}&page=${current}`;
-        const { data } = useSWR<SimplePost[]>(`/api/posts?${query}`);
-        /* const res = await fetch(`/api/posts?${query}`, {
+        // const { data } = useSWR<SimplePost[]>(`/api/posts?${query}`);
+        const data = await fetch(`/api/posts?${query}`, {
             method: 'GET'
-        }).then((res) => res.json()); */
+        }).then((res) => res.json());
         if (data?.length === 0) {
             setHasMore(false);
             return false;
@@ -46,7 +46,7 @@ export default function PostList({ user }: Props) {
                 <ul id="postList" className="w-full h-full">
                     <InfiniteScroll
                         dataLength={currentPage * 5 || 0}
-                        next={useOnFetchMoreList}
+                        next={onFetchMoreList}
                         hasMore={hasMore}
                         scrollableTarget="body"
                         loader={
