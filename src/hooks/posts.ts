@@ -86,7 +86,7 @@ export default function usePosts() {
                 ...post,
                 comments: [...post.comments, comment]
             };
-            const newPosts = data?.map((p) => (p.memoryId === post.memoryId ? newPost : p));
+            const newPosts = data?.flat().map((p) => (p.memoryId === post.memoryId ? newPost : p));
             const content = comment?.content;
 
             if (type) {
@@ -109,7 +109,7 @@ export default function usePosts() {
 
     const deleteComment = useCallback(
         (memoryId: string, commentId: string) => {
-            const newPosts = data?.map((post) => ({
+            const newPosts = data?.flat().map((post) => ({
                 ...post,
                 comments: post.comments.filter((c: { isDeleted: any }) => c.isDeleted)
             }));
@@ -124,7 +124,7 @@ export default function usePosts() {
 
     const newPost = useCallback(
         (content: string) => {
-            const newPosts = data?.map((post) => ({
+            const newPosts = data?.flat().map((post) => ({
                 ...post
             }));
             return mutate(addPost(content), {
@@ -138,7 +138,7 @@ export default function usePosts() {
 
     const modifyPost = useCallback(
         (memoryId: string, content: string) => {
-            const newPosts = data?.map((post) => ({
+            const newPosts = data?.flat().map((post) => ({
                 ...post
             }));
             return mutate(updatePost(memoryId, content), {
@@ -151,7 +151,7 @@ export default function usePosts() {
 
     const deletePost = useCallback(
         (memoryId: string) => {
-            const newPosts = data?.map((post) => ({
+            const newPosts = data?.flat().map((post) => ({
                 ...post
             }));
             return mutate(removePost(memoryId), {
@@ -171,7 +171,7 @@ export default function usePosts() {
     }, [data, mutate]);
     const setBookmark = useCallback(
         (memoryId: string) => {
-            const newPosts = data?.map((post) => ({
+            const newPosts = data?.flat().map((post) => ({
                 ...post,
                 isSaved: post.isSaved
             }));
@@ -186,7 +186,7 @@ export default function usePosts() {
 
     const updateReactionStatus = useCallback(
         (memoryId: string, reaction: string) => {
-            const newPosts = data?.map((post) => ({ ...post }));
+            const newPosts = data?.flat().map((post) => ({ ...post }));
             return mutate(updateReaction(memoryId, reaction), {
                 optimisticData: newPosts,
                 populateCache: false,
@@ -199,6 +199,7 @@ export default function usePosts() {
         data: data?.flat(),
         isLoading,
         error,
+        mutate,
         postComment,
         deleteComment,
         newPost,

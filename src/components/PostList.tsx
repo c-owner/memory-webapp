@@ -6,12 +6,27 @@ import { AuthUser } from '@/model/user';
 import { PulseLoader } from 'react-spinners';
 import usePosts from '@/hooks/posts';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { mutate } from 'swr';
 
 type Props = {
     user: AuthUser;
 };
 export default function PostList({ user }: Props) {
-    const { data, size, setSize, hasReachedEnd, isLoadingMore, isLoading } = usePosts();
+    const {
+        data,
+        size,
+        setSize,
+        hasReachedEnd,
+        isLoadingMore,
+        isLoading,
+        mutate,
+        updateReactionStatus,
+        setBookmark,
+        postComment,
+        deleteComment,
+        modifyPost,
+        deletePost
+    } = usePosts();
 
     return (
         <section className="w-full h-full">
@@ -28,9 +43,11 @@ export default function PostList({ user }: Props) {
                         hasMore={!hasReachedEnd}
                         scrollableTarget="body"
                         loader={
-                            <div className="flex justify-center items-center">
-                                <PulseLoader color={'indigo'} size={10} />
-                            </div>
+                            isLoadingMore && (
+                                <div className="flex justify-center items-center">
+                                    <PulseLoader color={'indigo'} size={10} />
+                                </div>
+                            )
                         }
                         endMessage={
                             <>
@@ -42,8 +59,20 @@ export default function PostList({ user }: Props) {
                         {data.length > 0 &&
                             Object.keys(data).length > 0 &&
                             data?.map((post: SimplePost, index: number) => (
-                                <li key={post.memoryId} className="mb-4">
-                                    <PostListCard post={post} user={user} />
+                                <li key={post?.memoryId || index} className="mb-4">
+                                    <PostListCard
+                                        post={post}
+                                        user={user}
+                                        usePosts={{
+                                            isLoading,
+                                            setBookmark,
+                                            updateReactionStatus,
+                                            postComment,
+                                            deleteComment,
+                                            modifyPost,
+                                            deletePost
+                                        }}
+                                    />
                                 </li>
                             ))}
                     </InfiniteScroll>

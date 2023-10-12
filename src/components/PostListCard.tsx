@@ -2,7 +2,6 @@
 
 import { Comment, Reactions, SimplePost } from '@/model/post';
 import { useState, useTransition } from 'react';
-import usePosts from '@/hooks/posts';
 import PostUserAvatar from '@/components/PostUserAvatar';
 import EditorButton from '@/components/EditorButton';
 import { useRouter } from 'next/navigation';
@@ -12,15 +11,13 @@ import { AuthUser } from '@/model/user';
 import MarkdownViewer from '@/components/MarkdownViewer';
 import DeleteButton from '@/components/DeleteButton';
 import ActionBar from '@/components/ActionBar';
-import { FcLike } from 'react-icons/fc';
-import { FaSadTear, FaSmileBeam } from 'react-icons/fa';
-import { FaFaceAngry } from 'react-icons/fa6';
 
 type Props = {
     post: SimplePost;
     user: AuthUser;
+    usePosts: any;
 };
-export default function PostListCard({ post, user }: Props) {
+export default function PostListCard({ post, user, usePosts }: Props) {
     const { memoryId, memberId, content: postContent, comments, memberName, userImage } = post;
 
     const { id: userId, memberName: userName } = user;
@@ -28,7 +25,8 @@ export default function PostListCard({ post, user }: Props) {
     const [commentModify, setCommentModify] = useState('');
     const [commentText, setCommentText] = useState('');
 
-    const { postComment, deleteComment, isLoading, modifyPost, deletePost } = usePosts();
+    const { postComment, deleteComment, isLoading, modifyPost, deletePost } = usePosts;
+
     const router = useRouter();
     const [content, setContent] = useState(postContent);
     const [isPending, startTransition] = useTransition();
@@ -165,14 +163,14 @@ export default function PostListCard({ post, user }: Props) {
                     </div>
                 </>
             )}
-            <ActionBar post={post} onComment={handlePostComment}>
-                {comments.length >= 1 && !moreComment && (
+            <ActionBar post={post} usePosts={usePosts} onComment={handlePostComment}>
+                {comments?.length >= 1 && !moreComment && (
                     <button
                         className="font-bold my-2 text-sky-500"
                         onClick={() => handleContentHide()}
                     >{`View all ${comments.length} comments`}</button>
                 )}
-                {comments.length < 1 && (
+                {comments?.length < 1 && (
                     <div className="flex items-center">
                         <span className="text-neutral-500">댓글이 없습니다.</span>
                     </div>
@@ -275,7 +273,6 @@ export default function PostListCard({ post, user }: Props) {
                     </div>
                 )}
             </ActionBar>
-
         </article>
     );
 }

@@ -9,7 +9,6 @@ import ToggleButton from '@/components/ui/ToggleButton';
 import CommentForm from '@/components/posts/CommentForm';
 import { useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import usePosts from '@/hooks/posts';
 import { FaSadTear, FaSmileBeam } from 'react-icons/fa';
 import { FaFaceAngry } from 'react-icons/fa6';
 import { PulseLoader } from 'react-spinners';
@@ -18,11 +17,12 @@ type Props = {
     post: SimplePost | BookmarkPost;
     children?: React.ReactNode;
     onComment: (comment: Comment) => void;
+    usePosts: any;
 };
-export default function ActionBar({ post, children, onComment }: Props) {
+export default function ActionBar({ post, children, onComment, usePosts }: Props) {
     const { memoryId, createdAt, isSaved, reactionStatus, likeCnt, angryCnt, sadCnt } = post;
     const { user } = useMe();
-    const { setBookmark, updateReactionStatus } = usePosts();
+    const { setBookmark, updateReactionStatus } = usePosts;
     const [isPending, startTransition] = useTransition();
     const router = useRouter();
     const bookmarked = isSaved;
