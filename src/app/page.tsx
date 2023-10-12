@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth';
 import SideBar from '@/components/SideBar';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import FollowingBar from '@/components/FollowingBar';
-import PostList from '@/components/PostList';
+import PostList from '@/components/list/PostList';
 import { redirect } from 'next/navigation';
 import SearchForm from '@/components/SearchForm';
 

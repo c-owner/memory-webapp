@@ -5,7 +5,7 @@ import { AuthUser, ProfileUser, SearchUser } from '@/model/user';
 import { useState } from 'react';
 import BookmarkIcon from '@/components/ui/icon/BookmarkIcon';
 import PostIcon from '@/components/ui/icon/PostIcon';
-import PostList from '@/components/PostList';
+import PostList from '@/components/list/PostList';
 import SideBar from '@/components/SideBar';
 
 type Props = {
