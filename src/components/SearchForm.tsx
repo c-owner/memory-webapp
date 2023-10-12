@@ -13,11 +13,10 @@ export default function SearchForm() {
         <form onSubmit={submitHandler}>
             <input
                 type="text"
-                className="w-[195px] px-3 h-10 text-sm text-gray-700 placeholder-neutral-300
-                                        border rounded-full focus:outline-none focus:border-indigo-300
-                                        dark:bg-apple-dark-2 dark:text-white dark:placeholder-neutral-400
-                                        "
-                placeholder="Search for users or posts..."
+                className="w-full text-xl p-3 outline-none border border-gray-400 rounded-lg shadow-md
+                    dark:placeholder-gray-300 dark:bg-apple-dark-2 dark:text-neutral-200 dark:border-neutral-700
+                    "
+                placeholder="Search for posts..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
             />

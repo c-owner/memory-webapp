@@ -13,6 +13,7 @@ const getUser = cache(async (id: string) => getUserForProfile(id));
 
 export default async function UserPage({ params: { id } }: Props) {
     const user = await getUser(id);
+    const memories = user?.memories;
     const session = await getServerSession(authOptions);
 
     if (!user) {
@@ -25,7 +26,7 @@ export default async function UserPage({ params: { id } }: Props) {
     return (
         <section className="w-full">
             <UserProfile user={user} />
-            <UserPosts user={user} />
+            <UserPosts user={user} mySession={session && session?.user} />
         </section>
     );
 }

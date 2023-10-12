@@ -42,5 +42,5 @@ export type SearchUser = {
 };
 
 export type ProfileUser = SearchUser & {
-    memories: number;
+    memories: [];
 };

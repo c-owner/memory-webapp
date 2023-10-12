@@ -64,7 +64,7 @@ export default function ActionBar({ post, children, onComment }: Props) {
                             <span className="text-sm/[17px]">{likeCnt}</span>
                         </div>
                         <div className="flex flex-col items-center">
-                            <FaSadTear color="yellow" className="scale-125" fontSize="1.5em" />
+                            <FaSadTear color="tomato" className="scale-125" fontSize="1.5em" />
                             <span className="text-sm/[17px]">{sadCnt}</span>
                         </div>
                         <div className="flex flex-col items-center">
