@@ -26,7 +26,7 @@ export default function UserSearch(userData: Props) {
                     dark:placeholder-gray-300 dark:bg-apple-dark-2 dark:text-neutral-200 dark:border-neutral-700
                     "
                     autoFocus
-                    placeholder="Search for a username or id"
+                    placeholder="Search for a username"
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
                 />
