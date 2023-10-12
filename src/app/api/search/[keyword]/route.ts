@@ -20,11 +20,16 @@ export async function GET(req: NextRequest, context: Context) {
     const searchParams = new URLSearchParams(url.search);
 
     return axios
-        .get(`${process.env.API_DOMAIN}/members/member/${keyword}?${searchParams.get('query')}`, {
-            headers: {
-                Authorization: accessToken
+        .get(
+            `${process.env.API_DOMAIN}/members/member/${keyword}?size=${searchParams.get(
+                'size'
+            )}&page=${searchParams.get('page')}`,
+            {
+                headers: {
+                    Authorization: accessToken
+                }
             }
-        })
+        )
         .then((res) => {
             return NextResponse.json([{ ...res.data.responseObject }], { status: res.status });
         })

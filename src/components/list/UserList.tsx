@@ -12,40 +12,22 @@ type Props = {
     debounceKeyword: string;
 };
 export default function UserList({ myInfo, debounceKeyword }: Props) {
-    const [currentPage, setCurrentPage] = useState(0);
-    const size = 5;
-    const [hasMore, setHasMore] = useState(true);
-    const [userList, setUserList] = useState<SearchUser[]>([]);
-
-    useEffect(() => {
-        onFetchMoreList();
-    }, []);
-
-    const onFetchMoreList = async () => {
-        const current = currentPage;
-        const query = `size=${size}&page=${current}`;
-
-        const res = await fetch(`/api/search/${debounceKeyword}?${query}`, {
-            method: 'GET'
-        }).then((res) => res.json());
-
-        if (res.length === 0) {
-            setHasMore(false);
-            return false;
-        }
-
-        setUserList([...userList, ...res]);
-        setCurrentPage(current + 1);
-    };
+    const { users, error, isLoading, size, setSize, isLoadingMore, mutate, hasReachedEnd } =
+        useUsers(debounceKeyword);
 
     return (
         <>
             <ul className="w-full h-full ">
-                {userList && (
+                {isLoading && (
+                    <div className="flex justify-center items-center">
+                        <PulseLoader color={'indigo'} size={10} />
+                    </div>
+                )}
+                {users && (
                     <InfiniteScroll
-                        dataLength={currentPage * 5 || 0}
-                        next={onFetchMoreList}
-                        hasMore={hasMore}
+                        dataLength={users.length || 0}
+                        next={() => setSize((size) => size + 1)}
+                        hasMore={!hasReachedEnd}
                         scrollableTarget="body"
                         loader={
                             <div className="flex justify-center items-center">
@@ -59,8 +41,8 @@ export default function UserList({ myInfo, debounceKeyword }: Props) {
                             </>
                         }
                     >
-                        {userList?.map((user, index) =>
-                            user.memberName !== myInfo.memberName || userList.length > 2 ? (
+                        {users?.map((user, index) =>
+                            user.memberName !== myInfo.memberName || users.length > 2 ? (
                                 <li key={`${user.memberName}_${index}`}>
                                     {typeof user === 'string' ? (
                                         <p className="text-center">
@@ -72,7 +54,7 @@ export default function UserList({ myInfo, debounceKeyword }: Props) {
                                 </li>
                             ) : (
                                 <li key={index}>
-                                    {userList.length === 1 && user.id === myInfo.id && (
+                                    {users.length === 1 && user.id === myInfo.id && (
                                         <>
                                             <UserCard user={user} />
                                             <p className="text-center text-xl font-bold">

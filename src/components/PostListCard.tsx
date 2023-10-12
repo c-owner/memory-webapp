@@ -24,7 +24,6 @@ export default function PostListCard({ post, user }: Props) {
     const { memoryId, memberId, content: postContent, comments, memberName, userImage } = post;
 
     const { id: userId, memberName: userName } = user;
-    const [openModal, setOpenModal] = useState(false);
     const [modify, setModify] = useState(false);
     const [commentModify, setCommentModify] = useState('');
     const [commentText, setCommentText] = useState('');
@@ -277,13 +276,6 @@ export default function PostListCard({ post, user }: Props) {
                 )}
             </ActionBar>
 
-            {/*  {openModal && (
-                <ModalPortal>
-                    <PostModal onClose={() => setOpenModal(false)}>
-                        <PostDetail post={post} />
-                    </PostModal>
-                </ModalPortal>
-            )} */}
         </article>
     );
 }

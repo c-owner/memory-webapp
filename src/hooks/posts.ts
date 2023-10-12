@@ -61,14 +61,15 @@ async function updateReaction(id: string, reaction: string) {
         body: JSON.stringify({ memoryId: id, reactionStatus: reaction })
     }).then((res) => res.json());
 }
-export const getPostKey = (index: number, previousPageData: SimplePost[]) => {
-    if (previousPageData && !previousPageData.length) return null;
-    return `/api/posts?page=${index}&size=2`;
-};
 
 export const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
+const PAGE_SIZE = 2;
 export default function usePosts() {
+    const getPostKey = (index: number, previousPageData: SimplePost[]) => {
+        if (previousPageData && !previousPageData.length) return null;
+        return `/api/posts?page=${index}&size=${PAGE_SIZE}`;
+    };
     // const cacheKeys = useCacheKeys();
     // const { data, isLoading, error, mutate } = useSWR<SimplePost[]>(cacheKeys.postsKey);
     const { data, mutate, isLoading, error, size, setSize } = useSWRInfinite(getPostKey, fetcher);
@@ -77,7 +78,7 @@ export default function usePosts() {
     const isLoadingMore =
         isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === `undefined`);
     const isEmpty = data?.[0]?.length === 0;
-    const hasReachedEnd = isEmpty || (data && data[data.length - 1]?.length < 2);
+    const hasReachedEnd = isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
 
     const postComment = useCallback(
         (post: SimplePost, comment: Comment, type: boolean) => {
