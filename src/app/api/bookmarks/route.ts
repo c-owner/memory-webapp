@@ -17,6 +17,11 @@ export async function GET(req: NextRequest) {
                 'Content-Type': 'application/json'
             }
         })
-        .then((res) => NextResponse.json(res.data.responseObject.content || [], { status: 200 }))
+        .then((res) => {
+            const filterPosts = res.data.responseObject.content.filter(
+                (post: { isDeleted: boolean }) => !post.isDeleted
+            );
+            return NextResponse.json(filterPosts || [], { status: 200 });
+        })
         .catch((err) => NextResponse.json(err, { status: err.status }));
 }
