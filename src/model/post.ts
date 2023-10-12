@@ -6,8 +6,22 @@ export type Comment = {
     isDeleted?: boolean;
 };
 
-export type SimplePost = Omit<FullPost, 'comments'> & {
+export type SimplePost = {
+    memoryId: string;
+    memberId: string;
+    memberName: string;
+    userImage: string;
+    image: string;
+    content: string;
+    createdAt: string;
+    likeCnt: number;
+    sadCnt: number;
+    angryCnt: number;
+    reactions: [];
+    status: string;
     comments: Comment[];
+    isSaved: boolean;
+    reactionStatus: string;
 };
 
 export type BookmarkPost = {

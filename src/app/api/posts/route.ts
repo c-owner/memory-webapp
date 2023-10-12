@@ -2,17 +2,22 @@ import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
+import { NextApiRequest } from 'next';
 
-export async function GET() {
+export async function GET(req: NextApiRequest) {
     const session = await getServerSession(authOptions);
     const accessToken = session?.user?.accessToken;
     if (!accessToken) {
         return NextResponse.json('Not Authorized', { status: 401 });
     }
+    const url = new URL(req.url || '');
+    const searchParams = new URLSearchParams(url.search);
 
     return axios
         .post(
-            `${process.env.API_DOMAIN}/memories`,
+            `${process.env.API_DOMAIN}/memories?size=${searchParams.get(
+                'size'
+            )}&page=${searchParams.get('page')}`,
             {},
             {
                 headers: {
@@ -21,7 +26,10 @@ export async function GET() {
             }
         )
         .then((res) => {
-            return NextResponse.json(res.data.responseObject || [], { status: 200 });
+            const newPosts = res.data.responseObject.filter(
+                (post: { isDeleted: boolean }) => !post.isDeleted
+            );
+            return NextResponse.json(newPosts || [], { status: 200 });
         })
         .catch((err) => NextResponse.json(err, { status: err.status }));
 }

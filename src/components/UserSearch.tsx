@@ -12,23 +12,20 @@ type Props = {
     userData: AuthUser;
 };
 export default function UserSearch(userData: Props) {
+    const [currentPage, setCurrentPage] = useState(1);
+    const size = 5;
+    const [hasMore, setHasMore] = useState(true);
+
     const myInfo = userData?.userData;
     const [keyword, setKeyword] = useState('');
     const debounceKeyword = useDebounce(keyword);
     const { users, isLoading: loading, error, mutate } = useUsers(debounceKeyword);
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 5;
     const [userList, setUserList] = useState<SearchUser[]>([]);
-    const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
-        if (users) {
-            if (currentPage === 1) {
-                setUserList(users?.slice(0, pageSize));
-            }
-        }
-    }, [users]);
+        onFetchMoreList();
+    }, []);
     const onFetchMoreList = async () => {
         const current = currentPage;
         if (users) {
@@ -36,7 +33,7 @@ export default function UserSearch(userData: Props) {
             if (originalLength >= users?.length) {
                 setHasMore(false);
             }
-            const data = users.slice(currentPage * pageSize, (currentPage + 1) * pageSize);
+            const data = users.slice(currentPage * size, (currentPage + 1) * size);
             if (data.length === 0) {
                 setHasMore(false);
                 return false;
@@ -61,17 +58,13 @@ export default function UserSearch(userData: Props) {
                 />
             </div>
             {error && <div>Failed to load</div>}
-            <ul
-                className="w-full h-full p-4 overflow-auto"
-                id="userList"
-                style={{ height: 'calc(100% - 150px)', overflowY: 'auto' }}
-            >
+            <ul className="w-full h-full ">
                 {userList && (
                     <InfiniteScroll
                         dataLength={currentPage * 5 || 0}
                         next={onFetchMoreList}
                         hasMore={hasMore}
-                        scrollableTarget="userList"
+                        scrollableTarget="body"
                         loader={
                             <div className="flex justify-center items-center">
                                 <PulseLoader color={'indigo'} size={10} />
