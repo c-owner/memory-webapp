@@ -11,7 +11,7 @@ async function updateFollow(targetId: string) {
 
 export const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 12;
 export default function useUsers(keyword?: string) {
     /* const {
         data: users,
@@ -42,7 +42,7 @@ export default function useUsers(keyword?: string) {
 
     const toggleFollow = useCallback(
         (targetId: string) => {
-            const newUsers = users?.map((user) => {
+            const newUsers = users?.flat().map((user) => {
                 if (user.id === targetId) {
                     return { ...user, followingStatus: !user.followingStatus };
                 }
