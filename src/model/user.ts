@@ -3,7 +3,13 @@ export type AuthUser = {
     memberEmail: string;
     memberName: string;
     username: string;
-    image?: string | null | undefined;
+    following: [];
+    followers: [];
+    followersCnt: number;
+    followingCnt: number;
+    followingStatus: boolean;
+    memories: string[];
+    accessToken: string;
 };
 
 export type OAuthUser = {
@@ -22,11 +28,18 @@ export type UpdateUser = {
     memberPassword?: string;
 };
 
-export type SimpleUser = Pick<AuthUser, 'id' | 'memberName' | 'image'>;
-
-export type HomeUser = AuthUser & {
-    following: SimpleUser[];
-    followers: SimpleUser[];
+export type HomeUser = {
+    id: string; // memberId
+    memberEmail: string;
+    memberName: string;
+    username: string;
+    following: [];
+    followers: [];
+    followersCnt: number;
+    followingCnt: number;
+    followingStatus: boolean;
+    memories: string[];
+    accessToken: string;
 };
 
 export type SearchUser = {
@@ -39,6 +52,8 @@ export type SearchUser = {
     followersCnt: number;
     followingCnt: number;
     followingStatus: boolean;
+    memories: string[];
+    accessToken: string;
 };
 
 export type ProfileUser = SearchUser & {

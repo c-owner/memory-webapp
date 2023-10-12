@@ -1,53 +1,59 @@
 'use client';
 
 import { AuthUser } from '@/model/user';
-import ColorButton from '@/components/ui/ColorButton';
 import DefaultButton from '@/components/ui/DefaultButton';
-import { useState } from 'react';
-import useMe from '@/hooks/me';
-import { GridLoader } from 'react-spinners';
+import { useState, useTransition } from 'react';
 import GridSpinner from '@/components/ui/GridSpinner';
 
 type Props = {
-    username: AuthUser['username'];
+    memberName: AuthUser['memberName'];
     onClose: () => void;
+    useMe: any;
 };
-export default function NameEditor({ username, onClose }: Props) {
-    const [memberName, setMemberName] = useState('');
+export default function NameEditor({ memberName, onClose, useMe }: Props) {
+    const [name, setName] = useState(memberName);
     const [password, setPassword] = useState('');
     const [nameChange, setNameChange] = useState(false);
     const [passwordChange, setPasswordChange] = useState(false);
 
-    const { updateUser } = useMe();
-    const [loading, setLoading] = useState(false);
+    const [openError, setOpenError] = useState(false);
     const [errorMsg, setErrorMsg] = useState({
         message: '',
-        status: 200
+        status: 0
     });
-    const [isError, setIsError] = useState(false);
+
+    const { updateUser, isLoading, error } = useMe;
     const submitName = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoading(true);
         setErrorMsg({
             message: '',
             status: 200
         });
 
-        const { data, isLoading, error, mutate } = await updateUser({
-            memberName,
+        const {
+            newUser,
+            data,
+            error: isError,
+            isLoading: loading
+        } = await updateUser({
+            memberName: name,
             memberPassword: password
         });
-        if (data) {
-            if (data.status !== 200) {
-                setLoading(false);
-                setIsError(true);
-                setErrorMsg({
-                    message: data.message,
-                    status: data.status
-                });
-            } else {
-                onClose();
-            }
+        if (error) {
+            setOpenError(true);
+            setErrorMsg({
+                message: error.response.data.message,
+                status: error.response.data.status
+            });
+        }
+        if (newUser) {
+            onClose();
+        } else {
+            setOpenError(true);
+            setErrorMsg({
+                message: data.message,
+                status: data.status
+            });
         }
     };
 
@@ -62,17 +68,17 @@ export default function NameEditor({ username, onClose }: Props) {
                 }
             }}
         >
-            {loading && (
-                <div className="text-center absolute right-1/2 left-1/2 bottom-1/2">
-                    <GridSpinner />
-                </div>
-            )}
             <div
                 className={`bg-white relative sm:fixed top-8 sm:top-1/4 overflow-y-auto
                 dark:bg-apple-dark-2 rounded-lg shadow-2xl p-3 dark:text-white sm:px-40 sm:py-14
-                    ${loading && 'opacity-10'}
+                    ${isLoading && 'opacity-10'}
                 `}
             >
+                {isLoading && (
+                    <div className="text-center absolute my-auto mx-auto z-30 right-1/2 left-1/2 bottom-[50%] top-[50%]">
+                        <GridSpinner />
+                    </div>
+                )}
                 <h1 className="dark:text-emerald-200 text-center text-2xl ">Update My Info</h1>
                 <form onSubmit={submitName} className="w-full h-full text-left pt-3">
                     <div className="flex flex-col gap-4 pb-5">
@@ -85,8 +91,9 @@ export default function NameEditor({ username, onClose }: Props) {
                                     name="name"
                                     placeholder="Name"
                                     disabled={!nameChange}
-                                    value={memberName}
-                                    onChange={(event) => setMemberName(event.target.value)}
+                                    maxLength={8}
+                                    value={name}
+                                    onChange={(event) => setName(event.target.value)}
                                     className="border border-gray-300 dark:text-black dark:border-neutral-700 rounded-md p-2"
                                 />
                                 <button
@@ -121,7 +128,7 @@ export default function NameEditor({ username, onClose }: Props) {
                             </div>
                         </div>
                     </div>
-                    {isError && (
+                    {openError && (
                         <div className="text-center pb-3">
                             <div className="text-lg">Oops!</div>
                             <div className="text-sm text-red-400">{errorMsg.status}</div>

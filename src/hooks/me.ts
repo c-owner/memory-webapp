@@ -1,4 +1,12 @@
-import { HomeUser, OAuthUser, SignUser, UpdateUser } from '@/model/user';
+import {
+    AuthUser,
+    HomeUser,
+    OAuthUser,
+    ProfileUser,
+    SearchUser,
+    SignUser,
+    UpdateUser
+} from '@/model/user';
 import useSWR from 'swr';
 import { useCallback } from 'react';
 import { signIn } from 'next-auth/react';
@@ -49,13 +57,20 @@ export default function useMe() {
     );
 
     const updateUser = useCallback(
-        async (users: UpdateUser) => {
+        async (users: UpdateUser | AuthUser | HomeUser) => {
             const data = await modifyUser(users);
-            await mutate(data, {
-                populateCache: false,
+            if (typeof data === 'string') {
+                return { data, newUser: null, mutate, isLoading, error };
+            }
+            const newUser = <HomeUser>{
+                ...user,
+                memberName: users.memberName || ''
+            };
+            await mutate(newUser, {
+                optimisticData: newUser,
                 rollbackOnError: true
             });
-            return { data, mutate, isLoading, error };
+            return { data, newUser, mutate, isLoading, error };
         },
         [user, mutate]
     );

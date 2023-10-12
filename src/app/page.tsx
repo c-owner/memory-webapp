@@ -18,13 +18,9 @@ export default async function Home() {
             <div className="w-full basis-3/4 min-w-0">
                 <FollowingBar />
 
-                {/* <div className="py-3">
-                    <SearchForm />
-                </div> */}
-
                 <PostList user={user && user} />
             </div>
-            <div className="basis-1/4 ml-8">{user && <SideBar user={user} />}</div>
+            <div className="basis-1/4 ml-8">{user && <SideBar />}</div>
         </section>
     );
 }

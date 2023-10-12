@@ -35,7 +35,14 @@ export async function PATCH(req: NextRequest) {
     const { memberName, memberPassword } = await req.json();
 
     if (!memberName && !memberPassword) {
-        return NextResponse.json('Bad Request! Please check your api spec', { status: 400 });
+        return NextResponse.json(
+            {
+                message: 'Please provide at least one field to update',
+                status: 400,
+                data: {}
+            },
+            { status: 400 }
+        );
     }
 
     return axios

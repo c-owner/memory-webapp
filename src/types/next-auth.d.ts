@@ -12,9 +12,9 @@ declare module 'next-auth' {
             memberEmail: string;
             memberName: string;
             username: string;
-            image?: string | null | undefined;
-            following: string[];
-            followers: string[];
+            // image?: string | null | undefined;
+            following: [];
+            followers: [];
             followingCnt: number;
             followersCnt: number;
             followingStatus: boolean;
