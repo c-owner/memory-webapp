@@ -23,7 +23,6 @@ export default function PostDetail({ post }: Props) {
         sadCnt,
         likeCnt,
         angryCnt,
-        reactions
     } = post;
     const { post: data, deleteComment, postComment, isLoading, error } = useFullPost(memoryId);
     const comments = data?.comments;
@@ -45,11 +44,6 @@ export default function PostDetail({ post }: Props) {
                 <div className="flex justify-center items-start">
                     <MarkdownViewer content={content} />
                 </div>
-                {reactions?.map((reaction, index) => (
-                    <div className="flex justify-center items-center" key={index}>
-                        {reaction}
-                    </div>
-                ))}
                 <div className="flex justify-center items-end gap-x-12">
                     <span> 😊: {likeCnt}</span>
                     <span> 😢: {sadCnt}</span>

@@ -102,9 +102,9 @@ export const authOptions: NextAuthOptions = {
         signIn: '/api/auth/signin'
     }, */
     session: {
-        strategy: 'jwt'
-        // 1 hour
-        // maxAge: 60 * 60,
+        strategy: 'jwt',
+        // 1 day
+        maxAge: 1 * 23 * 60 * 60
         // 30 min in seconds
         // updateAge: 30 * 60
     },

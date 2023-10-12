@@ -2,9 +2,8 @@ import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
-import { NextApiRequest } from 'next';
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
     const accessToken = session?.user?.accessToken;
     if (!accessToken) {

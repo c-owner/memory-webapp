@@ -6,6 +6,7 @@ import { AuthUser, SearchUser } from '@/model/user';
 import { PulseLoader } from 'react-spinners';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useEffect, useState, useTransition } from 'react';
+import useSWR from 'swr';
 
 type Props = {
     user: AuthUser;
@@ -19,22 +20,25 @@ export default function PostList({ user }: Props) {
     const [postList, setPostList] = useState<FullPost[]>([]);
 
     useEffect(() => {
-        onFetchMoreList().then((r) => r);
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useOnFetchMoreList().then((r) => r);
     }, []);
-    const onFetchMoreList = async () => {
+    const useOnFetchMoreList = async () => {
         const current = currentPage;
         // const data = posts.slice(currentPage * size, (currentPage + 1) * size);
         const query = `size=${size}&page=${current}`;
-        const res = await fetch(`/api/posts?${query}`, {
+        const { data } = useSWR<SimplePost[]>(`/api/posts?${query}`);
+        /* const res = await fetch(`/api/posts?${query}`, {
             method: 'GET'
-        }).then((res) => res.json());
-        if (res.length === 0) {
+        }).then((res) => res.json()); */
+        if (data?.length === 0) {
             setHasMore(false);
             return false;
         }
-
-        setPostList([...postList, ...res]);
-        setCurrentPage(current + 1);
+        if (data) {
+            setPostList([...postList, ...data]);
+            setCurrentPage(current + 1);
+        }
     };
     return (
         <section className="w-full h-full">
@@ -42,7 +46,7 @@ export default function PostList({ user }: Props) {
                 <ul id="postList" className="w-full h-full">
                     <InfiniteScroll
                         dataLength={currentPage * 5 || 0}
-                        next={onFetchMoreList}
+                        next={useOnFetchMoreList}
                         hasMore={hasMore}
                         scrollableTarget="body"
                         loader={

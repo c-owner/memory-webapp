@@ -17,7 +17,6 @@ export type SimplePost = {
     likeCnt: number;
     sadCnt: number;
     angryCnt: number;
-    reactions: [];
     status: string;
     comments: Comment[];
     isSaved: boolean;
@@ -32,7 +31,6 @@ export type BookmarkPost = {
     likeCnt: number;
     angryCnt: number;
     sadCnt: number;
-    reactions: [];
     comments: Comment[];
     createdAt: string;
     isSaved: boolean;
@@ -51,7 +49,6 @@ export type FullPost = {
     likeCnt: number;
     sadCnt: number;
     angryCnt: number;
-    reactions: [];
     status: string;
     comments: Comment[];
     isSaved: boolean;
