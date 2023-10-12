@@ -21,14 +21,7 @@ type Props = {
     user: AuthUser;
 };
 export default function PostListCard({ post, user }: Props) {
-    const {
-        memoryId,
-        memberId,
-        content: postContent,
-        comments,
-        memberName,
-        userImage,
-    } = post;
+    const { memoryId, memberId, content: postContent, comments, memberName, userImage } = post;
 
     const { id: userId, memberName: userName } = user;
     const [openModal, setOpenModal] = useState(false);

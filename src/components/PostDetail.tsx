@@ -15,15 +15,7 @@ type Props = {
     post: BookmarkPost | SimplePost;
 };
 export default function PostDetail({ post }: Props) {
-    const {
-        memoryId,
-        memberId,
-        comments: comment,
-        content,
-        sadCnt,
-        likeCnt,
-        angryCnt,
-    } = post;
+    const { memoryId, memberId, comments: comment, content, sadCnt, likeCnt, angryCnt } = post;
     const { post: data, deleteComment, postComment, isLoading, error } = useFullPost(memoryId);
     const comments = data?.comments;
     const session = useSession();
