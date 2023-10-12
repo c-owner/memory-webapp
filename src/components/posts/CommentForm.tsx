@@ -38,7 +38,7 @@ export default function CommentForm({ onPostComment, handlerReaction }: Props) {
                     <SmileIcon />
                 </button>
                 {openEmoji && (
-                    <section className="absolute top-[-50px] dark:bg-apple-dark-2 dark:text-neutral-100">
+                    <section className="absolute top-[-50px] bg-apple-dark-2 rounded dark:text-neutral-100">
                         <div className="relative basis-3/5 p-4 grid">
                             <div className="flex justify-center items-end gap-x-12">
                                 <button
