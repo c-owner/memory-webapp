@@ -4,6 +4,7 @@ import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import FollowingBar from '@/components/FollowingBar';
 import PostList from '@/components/PostList';
 import { redirect } from 'next/navigation';
+import SearchForm from '@/components/SearchForm';
 
 export default async function Home() {
     const session = await getServerSession(authOptions);
@@ -19,6 +20,10 @@ export default async function Home() {
         <section className="w-full flex flex-col md:flex-row max-w-[850px] p-4">
             <div className="w-full basis-3/4 min-w-0">
                 <FollowingBar />
+
+                {/* <div className="py-3">
+                    <SearchForm />
+                </div> */}
 
                 <PostList user={user && user} />
             </div>

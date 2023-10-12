@@ -7,41 +7,15 @@ import useUsers from '@/hooks/users';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { PulseLoader } from 'react-spinners';
 import { AuthUser, SearchUser } from '@/model/user';
+import UserList from '@/components/list/UserList';
 
 type Props = {
     userData: AuthUser;
 };
 export default function UserSearch(userData: Props) {
-    const [currentPage, setCurrentPage] = useState(1);
-    const size = 5;
-    const [hasMore, setHasMore] = useState(true);
-
     const myInfo = userData?.userData;
     const [keyword, setKeyword] = useState('');
     const debounceKeyword = useDebounce(keyword);
-    const { users, isLoading: loading, error, mutate } = useUsers(debounceKeyword);
-
-    const [userList, setUserList] = useState<SearchUser[]>([]);
-
-    useEffect(() => {
-        onFetchMoreList();
-    }, []);
-    const onFetchMoreList = async () => {
-        const current = currentPage;
-        if (users) {
-            const originalLength = userList.length;
-            if (originalLength >= users?.length) {
-                setHasMore(false);
-            }
-            const data = users.slice(currentPage * size, (currentPage + 1) * size);
-            if (data.length === 0) {
-                setHasMore(false);
-                return false;
-            }
-            setUserList([...userList, ...data]);
-            setCurrentPage(current + 1);
-        }
-    };
 
     return (
         <section className="w-full max-w-2xl my-4 flex flex-col items-center mx-3">
@@ -57,53 +31,7 @@ export default function UserSearch(userData: Props) {
                     onChange={(e) => setKeyword(e.target.value)}
                 />
             </div>
-            {error && <div>Failed to load</div>}
-            <ul className="w-full h-full ">
-                {userList && (
-                    <InfiniteScroll
-                        dataLength={currentPage * 5 || 0}
-                        next={onFetchMoreList}
-                        hasMore={hasMore}
-                        scrollableTarget="body"
-                        loader={
-                            <div className="flex justify-center items-center">
-                                <PulseLoader color={'indigo'} size={10} />
-                            </div>
-                        }
-                        endMessage={
-                            <>
-                                <hr className="border-neutral-600 my-3" />
-                                <h4 className="text-center">더 이상 불러올것이 없습니다.</h4>
-                            </>
-                        }
-                    >
-                        {userList?.map((user, index) =>
-                            user.memberName !== myInfo.memberName || userList.length > 2 ? (
-                                <li key={`${user.memberName}_${index}`}>
-                                    {typeof user === 'string' ? (
-                                        <p className="text-center">
-                                            Nothing found for <strong>{keyword}</strong>
-                                        </p>
-                                    ) : (
-                                        <UserCard user={user} />
-                                    )}
-                                </li>
-                            ) : (
-                                <li key={index}>
-                                    {userList.length === 1 && user.id === myInfo.id && (
-                                        <>
-                                            <UserCard user={user} />
-                                            <p className="text-center text-xl font-bold">
-                                                This is you!
-                                            </p>
-                                        </>
-                                    )}
-                                </li>
-                            )
-                        )}
-                    </InfiniteScroll>
-                )}
-            </ul>
+            <UserList myInfo={myInfo} debounceKeyword={debounceKeyword} />
         </section>
     );
 }

@@ -61,11 +61,9 @@ async function updateReaction(id: string, reaction: string) {
         body: JSON.stringify({ memoryId: id, reactionStatus: reaction })
     }).then((res) => res.json());
 }
-export default function usePosts(query?: string) {
+export default function usePosts() {
     const cacheKeys = useCacheKeys();
-    const { data, isLoading, error, mutate } = useSWR<SimplePost[]>(
-        query ? `${cacheKeys.postsKey}?${query}` : cacheKeys.postsKey
-    );
+    const { data, isLoading, error, mutate } = useSWR<SimplePost[]>(cacheKeys.postsKey);
 
     const postComment = useCallback(
         (post: SimplePost, comment: Comment, type: boolean) => {

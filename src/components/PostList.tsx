@@ -12,19 +12,20 @@ type Props = {
 };
 
 export default function PostList({ user }: Props) {
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
     const size = 2;
     const [hasMore, setHasMore] = useState(true);
 
     const [postList, setPostList] = useState<FullPost[]>([]);
 
     useEffect(() => {
-        onFetchMoreList();
+        onFetchMoreList().then((r) => r);
     }, []);
     const onFetchMoreList = async () => {
         const current = currentPage;
         // const data = posts.slice(currentPage * size, (currentPage + 1) * size);
-        const res = await fetch(`/api/posts?size=${size}&page=${currentPage}`, {
+        const query = `size=${size}&page=${current}`;
+        const res = await fetch(`/api/posts?${query}`, {
             method: 'GET'
         }).then((res) => res.json());
         if (res.length === 0) {

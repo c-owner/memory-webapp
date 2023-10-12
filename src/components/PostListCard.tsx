@@ -28,11 +28,6 @@ export default function PostListCard({ post, user }: Props) {
         comments,
         memberName,
         userImage,
-        reactions,
-        reactionStatus,
-        sadCnt,
-        likeCnt,
-        angryCnt
     } = post;
 
     const { id: userId, memberName: userName } = user;

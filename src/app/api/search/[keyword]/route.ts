@@ -16,9 +16,11 @@ export async function GET(req: NextRequest, context: Context) {
     }
 
     const { keyword } = context.params;
+    const url = new URL(req.url || '');
+    const searchParams = new URLSearchParams(url.search);
 
     return axios
-        .get(`${process.env.API_DOMAIN}/members/member/${keyword}`, {
+        .get(`${process.env.API_DOMAIN}/members/member/${keyword}?${searchParams.get('query')}`, {
             headers: {
                 Authorization: accessToken
             }

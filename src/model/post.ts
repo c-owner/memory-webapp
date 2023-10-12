@@ -21,6 +21,7 @@ export type SimplePost = {
     status: string;
     comments: Comment[];
     isSaved: boolean;
+    isDeleted: boolean;
     reactionStatus: string;
 };
 
@@ -35,6 +36,7 @@ export type BookmarkPost = {
     comments: Comment[];
     createdAt: string;
     isSaved: boolean;
+    isDeleted: boolean;
     reactionStatus: string;
 };
 
@@ -53,6 +55,7 @@ export type FullPost = {
     status: string;
     comments: Comment[];
     isSaved: boolean;
+    isDeleted: boolean;
     reactionStatus: string;
 };
 
