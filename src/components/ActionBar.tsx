@@ -43,6 +43,7 @@ export default function ActionBar({ post, children, onComment, usePosts }: Props
             router.refresh();
         });
     };
+
     return (
         <>
             <div className="px-4 relative">
@@ -60,15 +61,29 @@ export default function ActionBar({ post, children, onComment, usePosts }: Props
                     />
                     <div className="flex justify-center items-end gap-x-12">
                         <div className="flex flex-col items-center">
-                            <FaSmileBeam className="text-emerald-500 scale-125" fontSize="1.5em" />
+                            <FaSmileBeam
+                                className="text-emerald-500 scale-125 hover:scale-150"
+                                onClick={() => handlerReaction('LIKE')}
+                                fontSize="1.5em"
+                            />
                             <span className="text-sm/[17px]">{likeCnt}</span>
                         </div>
                         <div className="flex flex-col items-center">
-                            <FaSadTear color="tomato" className="scale-125" fontSize="1.5em" />
+                            <FaSadTear
+                                color="tomato"
+                                className="scale-125  hover:scale-150"
+                                onClick={() => handlerReaction('SAD')}
+                                fontSize="1.5em"
+                            />
                             <span className="text-sm/[17px]">{sadCnt}</span>
                         </div>
                         <div className="flex flex-col items-center">
-                            <FaFaceAngry color="red" className="scale-125" fontSize="1.5em" />
+                            <FaFaceAngry
+                                color="red"
+                                className="scale-125  hover:scale-150"
+                                onClick={() => handlerReaction('ANGRY')}
+                                fontSize="1.5em"
+                            />
                             <span className="text-sm/[17px]">{angryCnt}</span>
                         </div>
                     </div>
