@@ -62,7 +62,7 @@ export default function ActionBar({ post, children, onComment, usePosts }: Props
                     <div className="flex justify-center items-end gap-x-12">
                         <div className="flex flex-col items-center">
                             <FaSmileBeam
-                                className="text-emerald-500 scale-125 hover:scale-150"
+                                className="text-emerald-500 scale-125 hover:scale-150 cursor-pointer"
                                 onClick={() => handlerReaction('LIKE')}
                                 fontSize="1.5em"
                             />
@@ -71,7 +71,7 @@ export default function ActionBar({ post, children, onComment, usePosts }: Props
                         <div className="flex flex-col items-center">
                             <FaSadTear
                                 color="tomato"
-                                className="scale-125  hover:scale-150"
+                                className="scale-125  hover:scale-150 cursor-pointer"
                                 onClick={() => handlerReaction('SAD')}
                                 fontSize="1.5em"
                             />
@@ -80,7 +80,7 @@ export default function ActionBar({ post, children, onComment, usePosts }: Props
                         <div className="flex flex-col items-center">
                             <FaFaceAngry
                                 color="red"
-                                className="scale-125  hover:scale-150"
+                                className="scale-125  hover:scale-150 cursor-pointer"
                                 onClick={() => handlerReaction('ANGRY')}
                                 fontSize="1.5em"
                             />
