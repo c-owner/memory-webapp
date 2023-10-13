@@ -71,7 +71,7 @@ export default function usePosts(postKey?: string) {
         if (previousPageData && !previousPageData.length) return null;
         return postKey === ''
             ? `/api/posts?page=${index}&size=${PAGE_SIZE}`
-            : `/api/bookmarks?page=${index}&size=${PAGE_SIZE}`;
+            : `${postKey}?page=${index}&size=${PAGE_SIZE}`;
     };
     // const cacheKeys = useCacheKeys();
     // const { data, isLoading, error, mutate } = useSWR<SimplePost[]>(cacheKeys.postsKey);

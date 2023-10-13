@@ -3,16 +3,17 @@ import { Memories, SimplePost } from '@/model/post';
 import { PulseLoader } from 'react-spinners';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import PostListCard from '@/components/PostListCard';
-import useSelfPost from '@/hooks/post';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import usePosts from '@/hooks/posts';
 
 type Props = {
     user: ProfileUser;
     id: string;
     posts: Memories[];
+    postKey: string;
 };
-export default function UserPostList({ user, id, posts }: Props) {
-    const [postList, setPostList] = useState(posts);
+export default function UserPostList({ user, id, posts, postKey }: Props) {
+    const [postList, setPostList] = useState<Memories[]>(posts);
     const {
         data,
         size,
@@ -27,7 +28,8 @@ export default function UserPostList({ user, id, posts }: Props) {
         deleteComment,
         modifyPost,
         deletePost
-    } = useSelfPost(id);
+    } = usePosts(postKey);
+
     return (
         <section className="w-full h-full">
             {!postList && (

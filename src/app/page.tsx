@@ -17,7 +17,7 @@ export default async function Home() {
             <div className="w-full basis-3/4 min-w-0">
                 <FollowingBar />
 
-                <PostList user={user && user} />
+                <PostList user={user && user} postKey={`/api/posts`} />
             </div>
             <div className="basis-1/4 ml-8">{user && <SideBar />}</div>
         </section>

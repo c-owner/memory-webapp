@@ -6,10 +6,7 @@ import usePosts from '@/hooks/posts';
 import { useRouter } from 'next/navigation';
 import { AuthUser } from '@/model/user';
 
-type Props = {
-    user: AuthUser;
-};
-export default function NewPost({ user: { id, memberName, image } }: Props) {
+export default function NewPost() {
     const [content, setContent] = useState('');
 
     const router = useRouter();

@@ -12,7 +12,7 @@ export default async function NewPage() {
     return (
         <div className="py-5 px-5 w-full flex flex-col gap-3">
             <h1 className="text-2xl">Memory</h1>
-            <NewPost user={user && user} />
+            <NewPost />
         </div>
     );
 }

@@ -11,6 +11,7 @@ import { AuthUser } from '@/model/user';
 import MarkdownViewer from '@/components/MarkdownViewer';
 import DeleteButton from '@/components/ui/DeleteButton';
 import ActionBar from '@/components/ActionBar';
+import Link from 'next/link';
 
 type Props = {
     post: SimplePost | Memories;
@@ -93,17 +94,19 @@ export default function PostListCard({ post, user, usePosts }: Props) {
     };
     return (
         <article className="rounded-lg shadow-md border border-gray-200 dark:border-gray-600 relative">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                    <PostUserAvatar image={''} memberName={memberName} />
-                </div>
-                {userId === memberId && (
-                    <div className="flex items-center justify-center gap-4">
-                        <EditorButton onClick={() => setModify(!modify)} />
-                        <DeleteButton onClick={() => handlerDeletePost(memoryId)} />
+            <Link href={`/user/${memberId}`}>
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                        <PostUserAvatar image={''} memberName={memberName} />
                     </div>
-                )}
-            </div>
+                    {userId === memberId && (
+                        <div className="flex items-center justify-center gap-4">
+                            <EditorButton onClick={() => setModify(!modify)} />
+                            <DeleteButton onClick={() => handlerDeletePost(memoryId)} />
+                        </div>
+                    )}
+                </div>
+            </Link>
 
             {isPending && (
                 <div className="w-full absolute top-1/2 left-1/2 right-1/2 inset-0 z-20">

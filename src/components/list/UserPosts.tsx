@@ -54,9 +54,14 @@ export default function UserPosts({ user, mySession, id, posts }: Props) {
             <section className="w-full flex flex-col md:flex-row max-w-[850px] p-4 mx-auto">
                 <div className="w-full basis-3/4 min-w-0">
                     {query === 'posts' ? (
-                        <UserPostList user={user} posts={posts} id={id} />
+                        <UserPostList
+                            user={user}
+                            posts={posts}
+                            id={id}
+                            postKey={`/api/user-post/${id}`}
+                        />
                     ) : (
-                        <PostList user={user} postKey={`bookmark`} />
+                        <PostList user={user} postKey={`/api/bookmarks`} />
                     )}
                 </div>
                 <div className="basis-1/4 ml-8">{user && <SideBar />}</div>
