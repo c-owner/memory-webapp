@@ -181,7 +181,17 @@ export default function PostListCard({ post, user, usePosts }: Props) {
                     <div className="relative max-h-40 overflow-y-auto">
                         <div className="py-3 whitespace-pre-wrap overflow-auto flex flex-col-reverse">
                             {comments.map(
-                                ({ content, memberId, commentId, memoryId, isDeleted }, index) => (
+                                (
+                                    {
+                                        content,
+                                        memberId,
+                                        memberName,
+                                        commentId,
+                                        memoryId,
+                                        isDeleted
+                                    },
+                                    index
+                                ) => (
                                     <div key={index}>
                                         {index === comments.length - 1 && (
                                             <div>
@@ -196,7 +206,7 @@ export default function PostListCard({ post, user, usePosts }: Props) {
                                         <div className="flex justify-between">
                                             <div className="flex items-center w-full">
                                                 <span className="text-neutral-500 mr-1">
-                                                    {memberId}
+                                                    {memberName ?? memberId}
                                                 </span>
                                                 {commentModify === commentId ? (
                                                     <form

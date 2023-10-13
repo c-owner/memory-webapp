@@ -2,6 +2,16 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/a768e4e8-46bd-420c-856e-9581d10eaf6f/deploy-status)](https://app.netlify.com/sites/baby-memory/deploys)
 
+
+## Projects
+- <a style="font-size:24px;color: indigo; font-weight: bold" target="_blank" href="https://memory-webapp.vercel.app/">메모리 웹 SNS 사이트</a>
+
+### [Project Workflow Road Map](https://github.com/users/c-owner/projects/10/views/3?sortedBy%5Bdirection%5D=asc&sortedBy%5BcolumnId%5D=58798488)
+
+--- 
+
+
+
 ## 1. 프로젝트 소개
 
 ### 1.1. 프로젝트 개요
@@ -30,3 +40,4 @@
 -   프로젝트 기획, 설계, 개발, 배포, 유지보수까지 전 과정을 경험
 -   프로젝트를 통해 협업 능력 향상
 -   프로젝트를 통해 문제 해결 능력 향상
+

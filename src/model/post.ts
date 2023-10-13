@@ -2,6 +2,7 @@ export type Comment = {
     memoryId: string;
     memberId?: string;
     commentId?: string;
+    memberName?: string;
     content: string;
     isDeleted?: boolean;
 };
