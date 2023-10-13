@@ -1,24 +1,24 @@
 'use client';
 
-import { Comment, Reactions, SimplePost } from '@/model/post';
+import { Comment, Memories, SimplePost } from '@/model/post';
 import { useState, useTransition } from 'react';
 import PostUserAvatar from '@/components/PostUserAvatar';
-import EditorButton from '@/components/EditorButton';
+import EditorButton from '@/components/ui/EditorButton';
 import { useRouter } from 'next/navigation';
 import DefaultButton from '@/components/ui/DefaultButton';
 import { PulseLoader } from 'react-spinners';
 import { AuthUser } from '@/model/user';
 import MarkdownViewer from '@/components/MarkdownViewer';
-import DeleteButton from '@/components/DeleteButton';
+import DeleteButton from '@/components/ui/DeleteButton';
 import ActionBar from '@/components/ActionBar';
 
 type Props = {
-    post: SimplePost;
+    post: SimplePost | Memories;
     user: AuthUser;
     usePosts: any;
 };
 export default function PostListCard({ post, user, usePosts }: Props) {
-    const { memoryId, memberId, content: postContent, comments, memberName, userImage } = post;
+    const { memoryId, memberId, content: postContent, comments, memberName } = post;
 
     const { id: userId, memberName: userName } = user;
     const [modify, setModify] = useState(false);
@@ -87,7 +87,7 @@ export default function PostListCard({ post, user, usePosts }: Props) {
     };
 
     const [moreContent, setMoreContent] = useState(false);
-
+    const [, set] = useState();
     const handleMoreContent = () => {
         setMoreContent(!moreContent);
     };
@@ -95,8 +95,7 @@ export default function PostListCard({ post, user, usePosts }: Props) {
         <article className="rounded-lg shadow-md border border-gray-200 dark:border-gray-600 relative">
             <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                    <PostUserAvatar image={userImage} memberName={memberName} />
-                    <span className="text-neutral-400 text-sm mr-1">No.{memoryId}</span>
+                    <PostUserAvatar image={''} memberName={memberName} />
                 </div>
                 {userId === memberId && (
                     <div className="flex items-center justify-center gap-4">

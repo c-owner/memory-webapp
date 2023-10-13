@@ -5,13 +5,23 @@ export type Comment = {
     content: string;
     isDeleted?: boolean;
 };
-
+export type Memories = {
+    memoryId: string;
+    memberId: string;
+    memberName: string;
+    content: string;
+    comments: Comment[];
+    likeCnt: number;
+    sadCnt: number;
+    angryCnt: number;
+    reactionStatus: string;
+    isSaved: boolean;
+    createdAt: string;
+};
 export type SimplePost = {
     memoryId: string;
     memberId: string;
     memberName: string;
-    userImage: string;
-    image: string;
     content: string;
     createdAt: string;
     likeCnt: number;
@@ -42,8 +52,6 @@ export type FullPost = {
     memoryId: string;
     memberId: string;
     memberName: string;
-    userImage: string;
-    image: string;
     content: string;
     createdAt: string;
     likeCnt: number;

@@ -4,7 +4,6 @@ import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import FollowingBar from '@/components/FollowingBar';
 import PostList from '@/components/list/PostList';
 import { redirect } from 'next/navigation';
-import SearchForm from '@/components/SearchForm';
 
 export default async function Home() {
     const session = await getServerSession(authOptions);

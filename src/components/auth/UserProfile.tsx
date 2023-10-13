@@ -1,7 +1,6 @@
 import { SearchUser } from '@/model/user';
 import Avatar from '@/components/Avatar';
-import FollowButton from '@/components/FollowButton';
-import usePosts from '@/hooks/posts';
+import FollowButton from '@/components/ui/FollowButton';
 
 type Props = {
     user: SearchUser;

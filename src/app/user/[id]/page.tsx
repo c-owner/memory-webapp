@@ -3,7 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import { cache } from 'react';
 import { getUserForProfile } from '@/service/user';
 import UserProfile from '@/components/auth/UserProfile';
-import UserPosts from '@/components/auth/UserPosts';
+import UserPosts from '@/components/list/UserPosts';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 
@@ -13,7 +13,7 @@ const getUser = cache(async (id: string) => getUserForProfile(id));
 
 export default async function UserPage({ params: { id } }: Props) {
     const user = await getUser(id);
-    const memories = user?.memories;
+
     const session = await getServerSession(authOptions);
 
     if (!user) {
@@ -22,11 +22,14 @@ export default async function UserPage({ params: { id } }: Props) {
     if (!session) {
         redirect('/auth/signin');
     }
+    const newPosts = user.memories
+        .reverse()
+        .filter((post: { isDeleted: boolean }) => !post.isDeleted);
 
     return (
         <section className="w-full">
             <UserProfile user={user} />
-            <UserPosts user={user} mySession={session && session?.user} />
+            <UserPosts id={id} posts={newPosts} user={user} mySession={session && session?.user} />
         </section>
     );
 }

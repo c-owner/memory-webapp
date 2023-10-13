@@ -10,15 +10,23 @@ export async function GET(req: NextRequest) {
         return NextResponse.json('Not Authorized', { status: 401 });
     }
 
+    const url = new URL(req.url || '');
+    const searchParams = new URLSearchParams(url.search);
+
     return axios
-        .get(`${process.env.API_DOMAIN}/saved-memories`, {
-            headers: {
-                Authorization: accessToken,
-                'Content-Type': 'application/json'
+        .get(
+            `${process.env.API_DOMAIN}/saved-memories?page=${searchParams.get(
+                'page'
+            )}&size=${searchParams.get('size')}`,
+            {
+                headers: {
+                    Authorization: accessToken,
+                    'Content-Type': 'application/json'
+                }
             }
-        })
+        )
         .then((res) => {
-            const filterPosts = res.data.responseObject.content.filter(
+            const filterPosts = res.data.responseObject.filter(
                 (post: { isDeleted: boolean }) => !post.isDeleted
             );
             return NextResponse.json(filterPosts || [], { status: 200 });

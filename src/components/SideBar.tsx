@@ -1,7 +1,7 @@
 'use client';
 
 import Avatar from '@/components/Avatar';
-import EditorButton from '@/components/EditorButton';
+import EditorButton from '@/components/ui/EditorButton';
 import { useState } from 'react';
 import ModalPortal from '@/components/ui/ModalPortal';
 import NameEditor from '@/components/auth/NameEditor';

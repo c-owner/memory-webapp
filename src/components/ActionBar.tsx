@@ -1,7 +1,7 @@
 'use client';
 
 import { parseDate } from '@/util/date';
-import { BookmarkPost, Comment, SimplePost } from '@/model/post';
+import { BookmarkPost, Comment, Memories, SimplePost } from '@/model/post';
 import useMe from '@/hooks/me';
 import BookmarkFillIcon from '@/components/ui/icon/BookmarkFillIcon';
 import BookmarkIcon from '@/components/ui/icon/BookmarkIcon';
@@ -14,7 +14,7 @@ import { FaFaceAngry } from 'react-icons/fa6';
 import { PulseLoader } from 'react-spinners';
 
 type Props = {
-    post: SimplePost | BookmarkPost;
+    post: SimplePost | BookmarkPost | Memories;
     children?: React.ReactNode;
     onComment: (comment: Comment) => void;
     usePosts: any;

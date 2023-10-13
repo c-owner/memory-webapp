@@ -2,6 +2,7 @@ import { useCacheKeys } from '@/context/CacheKeysContext';
 import { Comment, SimplePost } from '@/model/post';
 import { useCallback } from 'react';
 import useSWRInfinite from 'swr/infinite';
+import { useSWRConfig } from 'swr';
 
 async function addComment(id: string, content: string) {
     return fetch(`/api/posts/${id}/comments`, {
@@ -65,10 +66,12 @@ async function updateReaction(id: string, reaction: string) {
 export const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const PAGE_SIZE = 2;
-export default function usePosts() {
+export default function usePosts(postKey?: string) {
     const getPostKey = (index: number, previousPageData: SimplePost[]) => {
         if (previousPageData && !previousPageData.length) return null;
-        return `/api/posts?page=${index}&size=${PAGE_SIZE}`;
+        return postKey === ''
+            ? `/api/posts?page=${index}&size=${PAGE_SIZE}`
+            : `/api/bookmarks?page=${index}&size=${PAGE_SIZE}`;
     };
     // const cacheKeys = useCacheKeys();
     // const { data, isLoading, error, mutate } = useSWR<SimplePost[]>(cacheKeys.postsKey);
@@ -79,6 +82,8 @@ export default function usePosts() {
         isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === `undefined`);
     const isEmpty = data?.[0]?.length === 0;
     const hasReachedEnd = isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
+
+    const { mutate: globalMutate } = useSWRConfig();
 
     const postComment = useCallback(
         (post: SimplePost, comment: Comment, type: boolean) => {
@@ -104,7 +109,7 @@ export default function usePosts() {
                 rollbackOnError: true
             });
         },
-        [data, mutate]
+        [data, mutate, globalMutate]
     );
 
     const deleteComment = useCallback(
@@ -119,7 +124,7 @@ export default function usePosts() {
                 rollbackOnError: true
             });
         },
-        [data, mutate]
+        [data, mutate, globalMutate]
     );
 
     const newPost = useCallback(
@@ -133,7 +138,7 @@ export default function usePosts() {
                 rollbackOnError: true
             });
         },
-        [data, mutate]
+        [data, mutate, globalMutate]
     );
 
     const modifyPost = useCallback(
@@ -146,7 +151,7 @@ export default function usePosts() {
                 populateCache: false
             });
         },
-        [data, mutate]
+        [data, mutate, globalMutate]
     );
 
     const deletePost = useCallback(
@@ -160,7 +165,7 @@ export default function usePosts() {
                 rollbackOnError: true
             });
         },
-        [data, mutate]
+        [data, mutate, globalMutate]
     );
 
     const bookmarkPost = useCallback(() => {
@@ -168,7 +173,7 @@ export default function usePosts() {
             populateCache: false,
             rollbackOnError: true
         });
-    }, [data, mutate]);
+    }, [data, mutate, globalMutate]);
     const setBookmark = useCallback(
         (memoryId: string) => {
             const newPosts = data?.flat().map((post) => ({
@@ -181,7 +186,7 @@ export default function usePosts() {
                 rollbackOnError: true
             });
         },
-        [data, mutate]
+        [data, mutate, globalMutate]
     );
 
     const updateReactionStatus = useCallback(
@@ -193,7 +198,7 @@ export default function usePosts() {
                 rollbackOnError: true
             });
         },
-        [data, mutate]
+        [data, mutate, globalMutate]
     );
     return {
         data: data?.flat(),

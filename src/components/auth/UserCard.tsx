@@ -1,7 +1,7 @@
 import { SearchUser } from '@/model/user';
 import Link from 'next/link';
 import Avatar from '@/components/Avatar';
-import FollowButton from '@/components/FollowButton';
+import FollowButton from '@/components/ui/FollowButton';
 
 type Props = {
     user: SearchUser;

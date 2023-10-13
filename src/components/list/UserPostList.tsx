@@ -1,18 +1,18 @@
-'use client';
-
-import PostListCard from '@/components/PostListCard';
-import { SimplePost } from '@/model/post';
-import { AuthUser } from '@/model/user';
+import { ProfileUser } from '@/model/user';
+import { Memories, SimplePost } from '@/model/post';
 import { PulseLoader } from 'react-spinners';
-import usePosts from '@/hooks/posts';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { mutate } from 'swr';
+import PostListCard from '@/components/PostListCard';
+import useSelfPost from '@/hooks/post';
+import { useEffect, useState } from 'react';
 
 type Props = {
-    user: AuthUser;
-    postKey?: string;
+    user: ProfileUser;
+    id: string;
+    posts: Memories[];
 };
-export default function PostList({ user, postKey = '' }: Props) {
+export default function UserPostList({ user, id, posts }: Props) {
+    const [postList, setPostList] = useState(posts);
     const {
         data,
         size,
@@ -27,28 +27,25 @@ export default function PostList({ user, postKey = '' }: Props) {
         deleteComment,
         modifyPost,
         deletePost
-    } = usePosts(postKey || '');
-
+    } = useSelfPost(id);
     return (
         <section className="w-full h-full">
-            {isLoading && (
+            {!postList && (
                 <div className="flex justify-center items-center">
                     <PulseLoader color={'indigo'} size={10} />
                 </div>
             )}
-            {data && (
+            {postList && (
                 <ul className="w-full h-full">
                     <InfiniteScroll
-                        dataLength={data.length || 0}
+                        dataLength={postList.length || 0}
                         next={() => setSize((size) => size + 1)}
                         hasMore={!hasReachedEnd}
                         scrollableTarget="body"
                         loader={
-                            isLoadingMore && (
-                                <div className="flex justify-center items-center">
-                                    <PulseLoader color={'indigo'} size={10} />
-                                </div>
-                            )
+                            <div className="flex justify-center items-center">
+                                <PulseLoader color={'indigo'} size={10} />
+                            </div>
                         }
                         endMessage={
                             <>
@@ -57,14 +54,15 @@ export default function PostList({ user, postKey = '' }: Props) {
                             </>
                         }
                     >
-                        {data.length > 0 &&
-                            Object.keys(data).length > 0 &&
-                            data?.map((post: SimplePost, index: number) => (
-                                <li key={post?.memoryId || index} className="mb-4">
+                        {postList.length > 0 &&
+                            Object.keys(postList).length > 0 &&
+                            postList?.map((post: Memories, index: number) => (
+                                <li key={post?.memoryId} className="mb-4">
                                     <PostListCard
                                         post={post}
                                         user={user}
                                         usePosts={{
+                                            setPostList,
                                             isLoading,
                                             setBookmark,
                                             updateReactionStatus,
