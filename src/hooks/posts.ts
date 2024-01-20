@@ -73,8 +73,6 @@ export default function usePosts(postKey?: string) {
             ? `/api/posts?page=${index}&size=${PAGE_SIZE}`
             : `${postKey}?page=${index}&size=${PAGE_SIZE}`;
     };
-    // const cacheKeys = useCacheKeys();
-    // const { data, isLoading, error, mutate } = useSWR<SimplePost[]>(cacheKeys.postsKey);
     const { data, mutate, isLoading, error, size, setSize } = useSWRInfinite(getPostKey, fetcher);
 
     const isLoadingInitialData = !data && !error;
